@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('status', ['todo', 'in_progress', 'review', 'done'])->default('todo');
             $table->enum('priority', ['low', 'medium', 'high'])->default('medium');
             $table->date('due_date')->nullable();
-            $table->softDeletes();
+            $table->softDeletes(); // Adds the nullable 'deleted_at' timestamp column
             $table->timestamps();
         });
     }
