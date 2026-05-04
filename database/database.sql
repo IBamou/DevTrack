@@ -69,12 +69,3 @@ CREATE TABLE tasks (
     FOREIGN KEY (collaborator_id) REFERENCES collaborators(id) ON DELETE SET NULL,
     FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE
 );
-
-CREATE TABLE archives (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    task_id BIGINT UNSIGNED NOT NULL,
-    project_id BIGINT UNSIGNED NOT NULL,
-    archived_at TIMESTAMP NULL,
-    FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE,
-    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
-);
