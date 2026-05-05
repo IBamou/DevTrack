@@ -25,4 +25,8 @@ class Task extends Model
     public function collaborator(): BelongsTo{
         return $this->belongsTo(Collaborator::class);
     }
+
+    public function creator(): BelongsTo{
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }
