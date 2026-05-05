@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/{project}', 'show')->name('project.show');
             Route::post('/{project}/edit', 'edit')->name('project.edit');
             Route::put('/{project}/update', 'update')->name('project.update');
-            Route::delete('/{project}/archive', 'archive')->name('projects.archive');
+            Route::patch('/{project}/archive', 'archive')->name('projects.archive');
             Route::patch('/{project}/restore', 'restore')->name('projects.restore');
             Route::delete('/{project}/forceDelete', 'forceDelete')->name('projects.forceDelete');
         });
