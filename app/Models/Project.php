@@ -16,8 +16,12 @@ class Project extends Model
 
 
 
-    public function collaborators(): HasMany {
-        return $this->hasMany(Collaborator::class);
+    public function collaborators()
+    {
+        return $this->belongsToMany(User::class , "collaborators")
+            ->using(Collaborator::class) 
+            ->withPivot('role')
+            ->withTimestamps();
     }
 
 }
