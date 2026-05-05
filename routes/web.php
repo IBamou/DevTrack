@@ -6,7 +6,7 @@ Route::get('/', fn() => view('welcome'))->name('welcome');
 
 Route::get('/dashboard', fn() => view('dashboard'))->middleware(['auth', 'verified'])->name('dashboard');
 
-// Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function () {
     // Projects
     Route::get('/projects', fn() => view('projects.index'))->name('projects.index');
     Route::get('/projects/create', fn() => view('projects.create'))->name('projects.create');
@@ -25,6 +25,6 @@ Route::get('/dashboard', fn() => view('dashboard'))->middleware(['auth', 'verifi
     Route::get('/tasks/{id}/edit', fn() => view('tasks.edit'))->name('tasks.edit');
     Route::patch('/tasks/{id}', fn() => redirect('/projects'))->name('tasks.update');
     Route::delete('/tasks/{id}', fn() => redirect('/projects'))->name('tasks.destroy');
-// });
+});
 
 require __DIR__.'/auth.php';
