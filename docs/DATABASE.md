@@ -18,6 +18,16 @@ erDiagram
         timestamp updated_at
     }
 
+    COLLABORATORS {
+        bigint id
+        bigint user_id
+        bigint project_id
+        enum role
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
+    }
+
     PROJECTS {
         bigint id
         string title
