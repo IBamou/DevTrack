@@ -12,22 +12,22 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+// Route::middleware('auth')->group(function () {
     Route::prefix('/projects')->group(function () {
 
         Route::controller(ProjectController::class)->group(function(){
-            Route::get('/', 'index')->name('project.index');
+            Route::get('/', 'index')->name('projects.index');
             Route::get('/archives', 'archives')->name('projects.archives');
-            Route::get('/create', 'create')->name('project.create');
-            Route::post('/store', 'store')->name('project.store');
-            Route::get('/{project}', 'show')->name('project.show');
-            Route::post('/{project}/edit', 'edit')->name('project.edit');
-            Route::put('/{project}/update', 'update')->name('project.update');
+            Route::get('/create', 'create')->name('projects.create');
+            Route::post('/store', 'store')->name('projects.store');
+            Route::get('/{project}', 'show')->name('projects.show');
+            Route::post('/{project}/edit', 'edit')->name('projects.edit');
+            Route::put('/{project}/update', 'update')->name('projects.update');
             Route::patch('/{project}/archive', 'archive')->name('projects.archive');
             Route::patch('/{project}/restore', 'restore')->name('projects.restore');
             Route::delete('/{project}/forceDelete', 'forceDelete')->name('projects.forceDelete');
         });
-    
+
 
         Route::controller(TaskController::class)->group(function () {
             Route::get('/{project}/task/create', 'create')->name('projects.tasks.create');
@@ -39,6 +39,6 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{project}/task/{task}/forceDelete', 'forceDelete')->name('projects.tasks.forceDelete');
         });
     });
-});
+// });
 
 require __DIR__.'/auth.php';
