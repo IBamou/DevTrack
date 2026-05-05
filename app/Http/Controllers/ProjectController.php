@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,16 +42,12 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProjectRequest $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
+        $data =  $request->validated();
 
         Project::create([
-            'title' => $request->title,
-            'description' => $request->description,
+            ...$data,
             'created_by' => Auth::id(),
         ]);
 
@@ -76,23 +73,21 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(ProjectRequest $request, Project $project)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
+        if ($project->created_by !== Auth::id()) {
+            abort(403);
+        }
 
-        $project->update([
-            'title' => $request->title,
-            'description' => $request->description,
-        ]);
+        $data = $request->validated();
+
+        $project->update($data);
 
         return redirect()->route('projects.index');
     }
 
     /**
-     * Softdelete the specified resource from storage.
+     * SoftDelete the specified resource from storage.
      */
     public function archive(Project $project)
     {
@@ -101,7 +96,7 @@ class ProjectController extends Controller
     }
 
     /**
-     * Softdelete the specified resource from storage.
+     * Restore the specified resource from storage.
      */
     public function restore(Project $project)
     {
@@ -110,11 +105,11 @@ class ProjectController extends Controller
     }
 
     /**
-     * ForceDeelete the specified resource from storage.
+     * ForceDelete the specified resource from storage.
      */
     public function forceDelete(Project $project)
     {
         $project->forceDelete();
-        return back();
+        return redirect()->route('projects.index');
     }
 }
