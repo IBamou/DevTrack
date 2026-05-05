@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,7 +15,12 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
-        $projects = Project::query();
+        $this->authorize('viewAny', Project::class);
+
+        $projects = Project::where('created_by', Auth::id())
+            ->orWhereHas('collaborators', function ($query) {
+                $query->where('user_id', Auth::id());
+            });
 
         if ($request->has('search') && ! empty($request->search)) {
             $projects = $projects->where('title', 'LIKE', "%{$request->search}%");
@@ -31,11 +37,24 @@ class ProjectController extends Controller
         return view('projects.index', compact('projects'));
     }
 
+    public function archives(Request $request)
+    {
+        $this->authorize('viewAnyArchived', Project::class);
+
+        $projects = Project::onlyTrashed()
+            ->where('created_by', Auth::id())
+            ->paginate(6);
+
+        return view('projects.archives', compact('projects'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
+        $this->authorize('create', Project::class);
+
         return view('projects.create');
     }
 
@@ -44,12 +63,16 @@ class ProjectController extends Controller
      */
     public function store(ProjectRequest $request)
     {
-        $data =  $request->validated();
+        $this->authorize('create', Project::class);
 
-        Project::create([
+        $data = $request->validated();
+
+        $project = Project::create([
             ...$data,
             'created_by' => Auth::id(),
         ]);
+
+        $project->collaborators()->attach(Auth::id(), ['role' => 'admin']);
 
         return redirect()->route('projects.index');
     }
@@ -59,6 +82,8 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+        $this->authorize('view', $project);
+
         return view('projects.show', compact('project'));
     }
 
@@ -67,6 +92,8 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
+        $this->authorize('update', $project);
+
         return view('projects.edit', compact('project'));
     }
 
@@ -75,9 +102,7 @@ class ProjectController extends Controller
      */
     public function update(ProjectRequest $request, Project $project)
     {
-        if ($project->created_by !== Auth::id()) {
-            abort(403);
-        }
+        $this->authorize('update', $project);
 
         $data = $request->validated();
 
@@ -91,7 +116,10 @@ class ProjectController extends Controller
      */
     public function archive(Project $project)
     {
+        $this->authorize('delete', $project);
+
         $project->delete();
+
         return redirect()->route('projects.index');
     }
 
@@ -100,6 +128,8 @@ class ProjectController extends Controller
      */
     public function restore(Project $project)
     {
+        $this->authorize('restore', $project);
+
         $project->restore();
         return redirect()->route('projects.index');
     }
@@ -109,7 +139,35 @@ class ProjectController extends Controller
      */
     public function forceDelete(Project $project)
     {
+        $this->authorize('forceDelete', $project);
+
         $project->forceDelete();
         return redirect()->route('projects.index');
+    }
+
+    /**
+     * Add a collaborator to the project.
+     */
+    public function addCollaborator(Request $request, Project $project)
+    {
+        $this->authorize('update', $project);
+
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'role' => 'required|string',
+        ]);
+
+        $project->collaborators()->attach($request->user_id, ['role' => $request->role]);
+
+        return back();
+    }
+
+    public function removeCollaborator(Project $project, User $user)
+    {
+        $this->authorize('update', $project);
+
+        $project->collaborators()->detach($user->id);
+
+        return back();
     }
 }
