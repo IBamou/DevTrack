@@ -26,6 +26,8 @@ Route::get('/dashboard', function () {
             Route::patch('/{project}/archive', 'archive')->name('projects.archive');
             Route::patch('/{project}/restore', 'restore')->name('projects.restore');
             Route::delete('/{project}/forceDelete', 'forceDelete')->name('projects.forceDelete');
+            Route::post('/{project}/collaborator/add', 'addCollaborator')->name('projects.collaborator.add');
+            Route::delete('/{project}/collaborator/{user}/remove', 'removeCollaborator')->name('projects.collaborator.remove');
         });
 
 
