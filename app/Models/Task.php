@@ -22,7 +22,7 @@ class Task extends Model
         return $this->belongsTo(Project::class);
     }
 
-    public function collaborator(): BelongsTo{
+    public function assignedTo(): BelongsTo{
         return $this->belongsTo(Collaborator::class);
     }
 
