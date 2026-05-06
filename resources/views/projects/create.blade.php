@@ -27,7 +27,7 @@
         <aside class="hidden lg:flex w-64 flex-shrink-0 bg-white border-r border-slate-200 flex-col">
             <!-- Logo -->
             <div class="h-16 flex items-center px-4">
-                 <a href="#" class="flex-shrink-0 flex items-center space-x-2">
+                 <a href="{{ route('projects.index') }}" class="flex-shrink-0 flex items-center space-x-2">
                     <svg class="h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M11.917 15.242 6.023 9.478l.083-.083L12 3l5.977 6.395-.083.083-5.894 5.764Z" fill="currentColor"/>
                         <path d="m6.023 15.325 5.894 5.761 5.894-5.761-.083.083-5.811 5.681-5.811-5.681.083-.083Z" fill="currentColor"/>
@@ -38,22 +38,22 @@
             <!-- Navigation -->
             <nav class="flex-1 px-4 py-4 space-y-2">
                 <h3 class="px-3 text-xs font-semibold uppercase text-slate-500 tracking-wider">Main Menu</h3>
-                <a href="#" class="flex items-center px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md">
+                <a href="{{ route('dashboard') }}" class="flex items-center px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md">
                     <svg class="h-6 w-6 mr-3 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
                     <span class="text-sm font-medium">Dashboard</span>
                 </a>
-                <a href="#" class="flex items-center px-3 py-2 bg-blue-50 text-blue-700 rounded-md">
+                <a href="{{ route('projects.index') }}" class="flex items-center px-3 py-2 bg-blue-50 text-blue-700 rounded-md">
                     <svg class="h-6 w-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
                     <span class="text-sm font-medium">Projects</span>
                 </a>
-                <a href="#" class="flex items-center px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md">
+                <a href="{{ route('projects.archives') }}" class="flex items-center px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md">
                     <svg class="h-6 w-6 mr-3 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>
                     <span class="text-sm font-medium">Archives</span>
                 </a>
                 <div class="pt-4">
                     <h3 class="px-3 text-xs font-semibold uppercase text-slate-500 tracking-wider">Actions</h3>
                     <div class="mt-2 p-2">
-                        <a href="#" class="flex items-center justify-center w-full px-3 py-2 text-slate-700 border border-slate-300 hover:bg-slate-50 rounded-md">
+                        <a href="{{ route('projects.create') }}" class="flex items-center justify-center w-full px-3 py-2 text-slate-700 border border-slate-300 hover:bg-slate-50 rounded-md">
                            <svg class="w-5 h-5 mr-2 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                             <span class="text-sm font-medium">New Project</span>
                         </a>
@@ -118,38 +118,32 @@
                                 </div>
                             </div>
 
-                            <form class="mt-6 space-y-6">
+                            <form method="POST" action="{{ route('projects.store') }}" class="mt-6 space-y-6">
+                                @csrf
                                 <div>
-                                    <label for="project-name" class="text-sm font-medium text-slate-700">Project Name <span class="text-red-500">*</span></label>
-                                    <input type="text" id="project-name" value="Q3 Product Roadmap" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                                    <label for="title" class="text-sm font-medium text-slate-700">Project Name <span class="text-red-500">*</span></label>
+                                    <input type="text" name="title" id="title" value="{{ old('title') }}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" required>
+                                    @error('title')
+                                    <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
+                                    @enderror
                                     <p class="mt-2 text-xs text-slate-500">This will be the primary identifier for your project board.</p>
                                 </div>
                                 <div>
                                     <label for="description" class="text-sm font-medium text-slate-700">Description</label>
-                                    <textarea id="description" rows="4" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">Planning the key features and milestones for the upcoming third quarter product release, focusing on mobile responsiveness and user retention.</textarea>
+                                    <textarea name="description" id="description" rows="4" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">{{ old('description') }}</textarea>
+                                    @error('description')
+                                    <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
+                                    @enderror
                                     <p class="mt-2 text-xs text-slate-500">Try to describe the primary objective in 1-2 sentences.</p>
                                 </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                     <div>
-                                        <label for="deadline" class="text-sm font-medium text-slate-700">Deadline <span class="text-red-500">*</span></label>
+                                        <label for="due_date" class="text-sm font-medium text-slate-700">Deadline</label>
                                         <div class="relative mt-1">
                                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                                 <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                             </div>
-                                            <input type="date" id="deadline" value="2024-09-30" class="block w-full rounded-md border-slate-300 pl-10 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label class="text-sm font-medium text-slate-700">Initial Visibility</label>
-                                        <div class="mt-2 flex items-center space-x-6">
-                                            <div class="flex items-center">
-                                                <input id="private" name="visibility" type="radio" checked class="h-4 w-4 border-slate-300 text-blue-600 focus:ring-blue-500">
-                                                <label for="private" class="ml-2 block text-sm text-slate-800">Private (Default)</label>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <input id="invite-only" name="visibility" type="radio" class="h-4 w-4 border-slate-300 text-blue-600 focus:ring-blue-500">
-                                                <label for="invite-only" class="ml-2 block text-sm text-slate-800">Invite only</label>
-                                            </div>
+                                            <input type="date" name="due_date" id="due_date" value="{{ old('due_date') }}" class="block w-full rounded-md border-slate-300 pl-10 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                                         </div>
                                     </div>
                                 </div>
@@ -160,7 +154,7 @@
                             <div class="flex items-center justify-between">
                                 <p class="text-xs text-slate-500">* Required fields must be completed to launch.</p>
                                 <div class="flex items-center space-x-4">
-                                    <button type="button" class="text-sm font-medium text-slate-600 hover:text-slate-800">Cancel</button>
+                                    <a href="{{ route('projects.index') }}" class="text-sm font-medium text-slate-600 hover:text-slate-800">Cancel</a>
                                     <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                                         Create Project
                                     </button>

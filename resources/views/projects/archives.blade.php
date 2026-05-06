@@ -27,7 +27,7 @@
         <aside class="hidden lg:flex w-64 flex-shrink-0 bg-white border-r border-slate-200 flex-col">
             <!-- Logo -->
             <div class="h-16 flex items-center px-4">
-                 <a href="#" class="flex-shrink-0 flex items-center space-x-2">
+                 <a href="{{ route('projects.index') }}" class="flex-shrink-0 flex items-center space-x-2">
                     <svg class="h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M11.917 15.242 6.023 9.478l.083-.083L12 3l5.977 6.395-.083.083-5.894 5.764Z" fill="currentColor"/>
                         <path d="m6.023 15.325 5.894 5.761 5.894-5.761-.083.083-5.811 5.681-5.811-5.681.083-.083Z" fill="currentColor"/>
@@ -38,22 +38,22 @@
             <!-- Navigation -->
             <nav class="flex-1 px-4 py-4 space-y-2">
                 <h3 class="px-3 text-xs font-semibold uppercase text-slate-500 tracking-wider">Main Menu</h3>
-                <a href="#" class="flex items-center px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md">
+                <a href="{{ route('dashboard') }}" class="flex items-center px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md">
                     <svg class="h-6 w-6 mr-3 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
                     <span class="text-sm font-medium">Dashboard</span>
                 </a>
-                <a href="#" class="flex items-center px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md">
+                <a href="{{ route('projects.index') }}" class="flex items-center px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md">
                     <svg class="h-6 w-6 mr-3 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
                     <span class="text-sm font-medium">Projects</span>
                 </a>
-                <a href="#" class="flex items-center px-3 py-2 bg-blue-50 text-blue-700 rounded-md">
+                <a href="{{ route('projects.archives') }}" class="flex items-center px-3 py-2 bg-blue-50 text-blue-700 rounded-md">
                     <svg class="h-6 w-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>
                     <span class="text-sm font-medium">Archives</span>
                 </a>
                 <div class="pt-4">
                     <h3 class="px-3 text-xs font-semibold uppercase text-slate-500 tracking-wider">Actions</h3>
                     <div class="mt-2 p-2">
-                        <a href="#" class="flex items-center justify-center w-full px-3 py-2 text-slate-700 border border-slate-300 hover:bg-slate-50 rounded-md">
+                        <a href="{{ route('projects.create') }}" class="flex items-center justify-center w-full px-3 py-2 text-slate-700 border border-slate-300 hover:bg-slate-50 rounded-md">
                            <svg class="w-5 h-5 mr-2 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                             <span class="text-sm font-medium">New Project</span>
                         </a>
@@ -96,13 +96,81 @@
 
             <!-- Main area -->
             <main class="flex-1 overflow-y-auto p-6 lg:p-8">
-                <!-- Page Header -->
+<!-- Page Header -->
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
                     <div>
                         <p class="text-sm font-medium text-slate-500">Workspace <span class="mx-1 text-slate-400">›</span> <span class="text-slate-700 font-semibold">Archives</span></p>
                         <h1 class="text-3xl font-bold text-slate-800 mt-2">Project Archives</h1>
                         <p class="mt-1 text-slate-600">View, restore, or permanently remove retired projects and workspaces.</p>
                     </div>
+                    <a href="{{ route('projects.index') }}" class="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none mt-4 sm:mt-0">
+                        <svg class="w-5 h-5 mr-2 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0011.667 0l3.181-3.183m-4.991-2.693L7.985 5.989m10.158 1.953l-3.181-3.182A8.25 8.25 0 004.828 7.5M12 6a.75.75 0 100-1.5.75.75 0 000 1.5z" /></svg>
+                        Active Projects
+                    </a>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-sm p-5 flex items-center"><div class="p-3 rounded-full bg-blue-100 text-blue-600"><svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.012-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.12-1.588H6.88a2.25 2.25 0 00-2.12 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z" /></svg></div><div class="ml-4"><p class="text-sm text-slate-500">Total Archived</p><p class="text-2xl font-bold">{{ $projects->total() }}</p></div></div>
+                    <div class="bg-white rounded-lg shadow-sm p-5 flex items-center"><div class="p-3 rounded-full bg-green-100 text-green-600"><svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 16V8a2 2 0 00-1-1.732l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.732l7 4a2 2 0 002 0l7-4A2 2 0 0021 16zM3.27 6.96l7.443-4.253a.25.25 0 01.254 0l7.443 4.253M12 21.75v-10.5" /></svg></div><div class="ml-4"><p class="text-sm text-slate-500">Storage Saved</p><p class="text-2xl font-bold">-</p></div></div>
+                    <div class="bg-white rounded-lg shadow-sm p-5 flex items-center"><div class="p-3 rounded-full bg-yellow-100 text-yellow-600"><svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div><div class="ml-4"><p class="text-sm text-slate-500">Oldest Entry</p><p class="text-2xl font-bold">{{ $projects->first() ? $projects->first()->deleted_at->diffForHumans() : 'N/A' }}</p></div></div>
+                </div>
+
+                <!-- Archived Projects Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @forelse($projects as $project)
+                    <div class="bg-white rounded-lg shadow-sm flex flex-col">
+                        <div class="p-5">
+                            <div class="flex justify-between items-start">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">Archived</span>
+                                <div class="flex -space-x-2">
+                                    @foreach($project->collaborators->take(2) as $collaborator)
+                                    <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white" src="{{ $collaborator->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($collaborator->name) }}" alt="">
+                                    @endforeach
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-semibold mt-3">{{ $project->title }}</h3>
+                            <p class="text-sm text-slate-600 mt-1 line-clamp-2">{{ $project->description }}</p>
+                            <div class="mt-4 flex items-center space-x-4 text-sm text-slate-500">
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                                    {{ $project->tasks->count() }} tasks
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                    Archived {{ $project->deleted_at->format('M d, Y') }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-t border-slate-200 mt-auto flex divide-x divide-slate-200">
+                            <form action="{{ route('projects.restore', $project) }}" method="POST" class="w-full">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="w-full py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 flex items-center justify-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M20 20v-5h-5M4 4l16 16"></path></svg>
+                                    Restore
+                                </button>
+                            </form>
+                            <form action="{{ route('projects.forceDelete', $project) }}" method="POST" class="w-full">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="w-full py-3 text-sm font-medium text-red-600 hover:bg-slate-50 flex items-center justify-center" onclick="return confirm('Permanently delete this project? This cannot be undone!')">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1 10V10a2 2 0 00-2-2H8a2 2 0 00-2 2v10a2 2 0 002 2h2a2 2 0 002-2z" /></svg>
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    @empty
+                    <div class="col-span-full flex flex-col items-center justify-center py-12 text-center">
+                        <svg class="h-12 w-12 text-slate-400 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                        </svg>
+                        <h3 class="text-lg font-medium text-slate-900 mb-1">No archived projects</h3>
+                        <p class="text-slate-500">Archived projects will appear here</p>
+                    </div>
+                    @endforelse
+                </div>
                     <a href="#" class="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none mt-4 sm:mt-0">
                         <svg class="w-5 h-5 mr-2 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0011.667 0l3.181-3.183m-4.991-2.693L7.985 5.989m10.158 1.953l-3.181-3.182A8.25 8.25 0 004.828 7.5M12 6a.75.75 0 100-1.5.75.75 0 000 1.5z" /></svg>
                         Active Projects

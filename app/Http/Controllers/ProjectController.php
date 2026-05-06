@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProjectRequest;
+use App\Http\Requests\ProjectStoreRequest;
+use App\Http\Requests\ProjectUpdateRequest;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -24,6 +25,10 @@ class ProjectController extends Controller
 
         if ($request->has('search') && ! empty($request->search)) {
             $projects = $projects->where('title', 'LIKE', "%{$request->search}%");
+        }
+
+        if ($request->has('filter') && $request->filter === 'archived') {
+            $projects = $projects->onlyTrashed();
         }
 
         if ($request->has('sort') && $request->sort === 'oldest') {
@@ -61,7 +66,7 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ProjectRequest $request)
+    public function store(ProjectStoreRequest $request)
     {
         $this->authorize('create', Project::class);
 
@@ -100,7 +105,7 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProjectRequest $request, Project $project)
+    public function update(ProjectUpdateRequest $request, Project $project)
     {
         $this->authorize('update', $project);
 

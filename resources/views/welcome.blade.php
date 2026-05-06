@@ -29,7 +29,7 @@
                 <div class="flex h-16 items-center justify-between">
                     <!-- Logo -->
                     <div class="flex items-center">
-                        <a href="#" class="flex-shrink-0 flex items-center space-x-2">
+                        <a href="{{ url('/') }}" class="flex-shrink-0 flex items-center space-x-2">
                             <svg class="h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M11.917 15.242 6.023 9.478l.083-.083L12 3l5.977 6.395-.083.083-5.894 5.764Z" fill="currentColor"/>
                                 <path d="m6.023 15.325 5.894 5.761 5.894-5.761-.083.083-5.811 5.681-5.811-5.681.083-.083Z" fill="currentColor"/>
@@ -39,10 +39,18 @@
                     </div>
                     <!-- Navigation -->
                     <div class="flex items-center space-x-4">
-                        <a href="#" class="text-sm font-medium text-slate-600 hover:text-slate-900">Login</a>
-                        <a href="#" class="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                            Sign Up
-                        </a>
+                        @auth
+                            <a href="{{ route('dashboard') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">Dashboard</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="text-sm font-medium text-slate-600 hover:text-slate-900">Logout</button>
+                            </form>
+                        @else
+                            <a href="{{ route('login') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">Login</a>
+                            <a href="{{ route('register') }}" class="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                Sign Up
+                            </a>
+                        @endauth
                     </div>
                 </div>
             </div>
@@ -61,8 +69,12 @@
                             DevTrack is the all-in-one platform for modern software teams. Plan, track, and ship great products with less friction and more focus.
                         </p>
                         <div class="mt-8 flex justify-center gap-3">
-                            <a href="#" class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-700">Get Started Free</a>
-                            <a href="#" class="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-6 py-3 text-base font-medium text-slate-700 shadow-sm hover:bg-slate-50">Request a Demo</a>
+                            @auth
+                                <a href="{{ route('dashboard') }}" class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-700">Go to Dashboard</a>
+                            @else
+                                <a href="{{ route('register') }}" class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-700">Get Started Free</a>
+                                <a href="#" class="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-6 py-3 text-base font-medium text-slate-700 shadow-sm hover:bg-slate-50">Request a Demo</a>
+                            @endauth
                         </div>
                     </div>
                 </div>
@@ -70,7 +82,7 @@
                 <div class="relative mt-12 sm:mt-16 lg:mt-24">
                     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div class="relative rounded-xl shadow-2xl overflow-hidden bg-slate-800 border border-slate-700">
-                           <img class="w-full" src="https://storage.googleapis.com/devo-prod.appspot.com/assets%2Fv2%2Fhome%2Fhero-light-new.png" alt="DevTrack App Screenshot">
+                           <img class="w-full" src="https://placehold.co/1200x600/1e293b/3b82f6?text=DevTrack+Dashboard" alt="DevTrack App Screenshot">
                         </div>
                     </div>
                 </div>
@@ -83,11 +95,11 @@
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <p class="text-center text-sm font-semibold uppercase text-slate-500 tracking-wider">Trusted by the world's most innovative teams</p>
             <div class="mt-8 grid grid-cols-2 gap-8 md:grid-cols-6 lg:grid-cols-5">
-                <div class="col-span-1 flex justify-center md:col-span-2 lg:col-span-1"><img class="h-10" src="https://tailwindui.com/img/logos/tuple-logo-gray-400.svg" alt="Tuple"></div>
-                <div class="col-span-1 flex justify-center md:col-span-2 lg:col-span-1"><img class="h-10" src="https://tailwindui.com/img/logos/mirage-logo-gray-400.svg" alt="Mirage"></div>
-                <div class="col-span-1 flex justify-center md:col-span-2 lg:col-span-1"><img class="h-10" src="https://tailwindui.com/img/logos/statickit-logo-gray-400.svg" alt="StaticKit"></div>
-                <div class="col-span-1 flex justify-center md:col-span-3 lg:col-span-1"><img class="h-10" src="https://tailwindui.com/img/logos/transistor-logo-gray-400.svg" alt="Transistor"></div>
-                <div class="col-span-2 flex justify-center md:col-span-3 lg:col-span-1"><img class="h-10" src="https://tailwindui.com/img/logos/workcation-logo-gray-400.svg" alt="Workcation"></div>
+                <div class="col-span-1 flex justify-center md:col-span-2 lg:col-span-1"><span class="text-2xl font-bold text-slate-400">ACME</span></div>
+                <div class="col-span-1 flex justify-center md:col-span-2 lg:col-span-1"><span class="text-2xl font-bold text-slate-400">TechCorp</span></div>
+                <div class="col-span-1 flex justify-center md:col-span-2 lg:col-span-1"><span class="text-2xl font-bold text-slate-400">StartupX</span></div>
+                <div class="col-span-1 flex justify-center md:col-span-3 lg:col-span-1"><span class="text-2xl font-bold text-slate-400">DevCo</span></div>
+                <div class="col-span-2 flex justify-center md:col-span-3 lg:col-span-1"><span class="text-2xl font-bold text-slate-400">BuildLab</span></div>
             </div>
         </div>
     </div>
@@ -136,7 +148,7 @@
     <section class="bg-slate-50 py-16 sm:py-24">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="text-center">
-                <img class="mx-auto h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Testimonial author">
+                <img class="mx-auto h-12 w-12 rounded-full" src="https://ui-avatars.com/api/?name=Alex+Rivera&background=3b82f6&color=fff" alt="Testimonial author">
                 <blockquote class="mt-6 max-w-3xl mx-auto">
                     <p class="text-xl font-medium text-slate-900">"DevTrack has revolutionized our workflow. We're shipping features 30% faster and our team has never been more aligned. It's the command center for our entire engineering department."</p>
                 </blockquote>
@@ -154,7 +166,11 @@
             <div class="text-center">
                 <h2 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Ready to supercharge your team?</h2>
                 <p class="mt-4 text-lg text-slate-500">Start building better software today. No credit card required.</p>
-                <a href="#" class="mt-8 inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-700">Create your free account</a>
+                @auth
+                <a href="{{ route('dashboard') }}" class="mt-8 inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-700">Go to Dashboard</a>
+                @else
+                <a href="{{ route('register') }}" class="mt-8 inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-700">Create your free account</a>
+                @endauth
             </div>
         </div>
     </div>
@@ -167,7 +183,7 @@
                     &copy; 2024 Startup OS Inc. All rights reserved.
                 </p>
                 <div class="flex items-center space-x-6 order-1 sm:order-2">
-                    <a href="#" class="text-sm text-slate-500 hover:text-slate-700">Privacy</a>
+                    <a href="{{ route('register') }}" class="text-sm text-slate-500 hover:text-slate-700">Privacy</a>
                     <a href="#" class="text-sm text-slate-500 hover:text-slate-700">Terms</a>
                     <a href="#" class="text-sm text-slate-500 hover:text-slate-700">Support</a>
                     <a href="#" class="text-sm text-slate-500 hover:text-slate-700">API Docs</a>

@@ -30,7 +30,7 @@
                 <div class="flex h-16 items-center justify-between">
                     <!-- Logo -->
                     <div class="flex items-center">
-                        <a href="#" class="flex-shrink-0 flex items-center space-x-2">
+                        <a href="{{ url('/') }}" class="flex-shrink-0 flex items-center space-x-2">
                             <svg class="h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M11.917 15.242 6.023 9.478l.083-.083L12 3l5.977 6.395-.083.083-5.894 5.764Z" fill="currentColor"/>
                                 <path d="m6.023 15.325 5.894 5.761 5.894-5.761-.083.083-5.811 5.681-5.811-5.681.083-.083Z" fill="currentColor"/>
@@ -40,10 +40,14 @@
                     </div>
                     <!-- Navigation -->
                     <div class="flex items-center space-x-4">
-                        <a href="#" class="text-sm font-medium text-slate-600 hover:text-slate-900">Login</a>
-                        <a href="#" class="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        @if(Route::has('login'))
+                        <a href="{{ route('login') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">Login</a>
+                        @endif
+                        @if(Route::has('register'))
+                        <a href="{{ route('register') }}" class="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                             Sign Up
                         </a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -59,7 +63,8 @@
                         <h2 class="text-2xl font-bold text-slate-900">Sign In</h2>
                         <p class="mt-2 text-sm text-slate-600">Enter your credentials to access your workspace</p>
 
-                        <form class="mt-8 space-y-6">
+                        <form method="POST" action="{{ route('login') }}" class="mt-8 space-y-6">
+                            @csrf
                             <!-- Email Input -->
                             <div>
                                 <label for="email" class="text-sm font-medium text-slate-700">Email Address</label>
@@ -70,15 +75,20 @@
                                             <path d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
                                         </svg>
                                     </div>
-                                    <input id="email" name="email" type="email" placeholder="name@startup.com" class="block w-full rounded-md border-slate-300 py-2 pl-10 pr-3 text-sm placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                    <input id="email" name="email" type="email" value="{{ old('email') }}" placeholder="name@startup.com" class="block w-full rounded-md border-slate-300 py-2 pl-10 pr-3 text-sm placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
                                 </div>
+                                @error('email')
+                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Password Input -->
                             <div>
                                 <div class="flex items-center justify-between">
                                     <label for="password" class="text-sm font-medium text-slate-700">Password</label>
-                                    <a href="#" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
+                                    @if(Route::has('password.request'))
+                                    <a href="{{ route('password.request') }}" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
+                                    @endif
                                 </div>
                                 <div class="relative mt-2">
                                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -88,17 +98,20 @@
                                     </div>
                                     <input id="password" name="password" type="password" placeholder="••••••••" class="block w-full rounded-md border-slate-300 py-2 pl-10 pr-3 text-sm placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
                                 </div>
+                                @error('password')
+                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Remember Me Checkbox -->
                             <div class="flex items-center">
-                                <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
-                                <label for="remember-me" class="ml-2 block text-sm text-slate-700">Remember me for 30 days</label>
+                                <input id="remember-me" name="remember" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                                <label for="remember-me" class="ml-2 block text-sm text-slate-700">Remember me</label>
                             </div>
 
                             <!-- Submit Button -->
                             <div>
-                                <button type="submit" class="w-full justify-center rounded-md bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Login to Dashboard</button>
+                                <button type="submit" class="w-full justify-center rounded-md bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Sign In</button>
                             </div>
                         </form>
 
@@ -129,7 +142,7 @@
                         </div>
 
                         <p class="mt-8 text-center text-sm text-slate-600">
-                            Don't have an account? <a href="#" class="font-medium text-blue-600 hover:underline">Sign up now</a>
+                            Don't have an account? <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:underline">Sign up now</a>
                         </p>
                     </div>
                 </div>
@@ -168,7 +181,7 @@
                         </li>
                     </ul>
 
-                    <a href="#" class="mt-8 inline-flex items-center justify-center w-full rounded-md border border-slate-300 bg-white py-2 px-4 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">
+                    <a href="{{ route('register') }}" class="mt-8 inline-flex items-center justify-center w-full rounded-md border border-slate-300 bg-white py-2 px-4 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">
                         Create an Account
                         <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -184,7 +197,7 @@
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="flex h-16 items-center justify-between">
                     <p class="text-sm text-slate-500">
-                        DevTrack &copy; 2024 Startup OS Inc.
+                        DevTrack &copy; {{ date('Y') }} Startup OS Inc.
                     </p>
                     <div class="flex items-center space-x-6">
                         <a href="#" class="text-sm text-slate-500 hover:text-slate-700">Privacy</a>
