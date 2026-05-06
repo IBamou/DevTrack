@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Settings - DevTrack</title>
+    <title>Edit {{ $project->title }} - DevTrack</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -27,7 +27,7 @@
         <aside class="hidden lg:flex w-64 flex-shrink-0 bg-white border-r border-slate-200 flex-col">
             <!-- Logo -->
             <div class="h-16 flex items-center px-4">
-                 <a href="#" class="flex-shrink-0 flex items-center space-x-2">
+                 <a href="{{ route('projects.index') }}" class="flex-shrink-0 flex items-center space-x-2">
                     <svg class="h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M11.917 15.242 6.023 9.478l.083-.083L12 3l5.977 6.395-.083.083-5.894 5.764Z" fill="currentColor"/>
                         <path d="m6.023 15.325 5.894 5.761 5.894-5.761-.083.083-5.811 5.681-5.811-5.681.083-.083Z" fill="currentColor"/>
@@ -38,22 +38,22 @@
             <!-- Navigation -->
             <nav class="flex-1 px-4 py-4 space-y-2">
                 <h3 class="px-3 text-xs font-semibold uppercase text-slate-500 tracking-wider">Main Menu</h3>
-                <a href="#" class="flex items-center px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md">
+                <a href="{{ route('dashboard') }}" class="flex items-center px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md">
                     <svg class="h-6 w-6 mr-3 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
                     <span class="text-sm font-medium">Dashboard</span>
                 </a>
-                <a href="#" class="flex items-center px-3 py-2 bg-blue-50 text-blue-700 rounded-md">
+                <a href="{{ route('projects.index') }}" class="flex items-center px-3 py-2 bg-blue-50 text-blue-700 rounded-md">
                     <svg class="h-6 w-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
                     <span class="text-sm font-medium">Projects</span>
                 </a>
-                <a href="#" class="flex items-center px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md">
+                <a href="{{ route('projects.archives') }}" class="flex items-center px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md">
                     <svg class="h-6 w-6 mr-3 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>
                     <span class="text-sm font-medium">Archives</span>
                 </a>
                 <div class="pt-4">
                     <h3 class="px-3 text-xs font-semibold uppercase text-slate-500 tracking-wider">Actions</h3>
                     <div class="mt-2 p-2">
-                        <a href="#" class="flex items-center justify-center w-full px-3 py-2 text-slate-700 border border-slate-300 hover:bg-slate-50 rounded-md">
+                        <a href="{{ route('projects.create') }}" class="flex items-center justify-center w-full px-3 py-2 text-slate-700 border border-slate-300 hover:bg-slate-50 rounded-md">
                            <svg class="w-5 h-5 mr-2 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                             <span class="text-sm font-medium">New Project</span>
                         </a>
@@ -100,15 +100,15 @@
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
                     <div>
                         <p class="text-sm font-medium text-slate-500">
-                            Projects <span class="mx-1 text-slate-400">/</span> Mobile App Redesign <span class="mx-1 text-slate-400">/</span> <span class="text-slate-700 font-semibold">Edit Project</span>
+                            Projects <span class="mx-1 text-slate-400">/</span> {{ $project->title }} <span class="mx-1 text-slate-400">/</span> <span class="text-slate-700 font-semibold">Edit Project</span>
                         </p>
                         <h1 class="text-3xl font-bold text-slate-800 mt-2">Project Settings</h1>
                     </div>
                     <div class="flex items-center space-x-3 mt-4 sm:mt-0">
-                        <button type="button" class="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none">
+                        <a href="{{ route('projects.show', $project) }}" class="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none">
                             <svg class="w-5 h-5 mr-2 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                             Cancel
-                        </button>
+                        </a>
                         <button type="submit" class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none">
                             <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 3.75V16.5m-13.5-3.75h13.5" /></svg>
                             Save Changes
@@ -122,45 +122,84 @@
                     <div class="lg:col-span-2 space-y-6">
                         <!-- General Settings Card -->
                         <div class="bg-white p-6 rounded-lg shadow-sm">
-                            <div class="flex items-start space-x-4">
-                                <div class="flex-shrink-0 h-12 w-12 flex items-center justify-center bg-blue-50 rounded-lg text-blue-500">
-                                    <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-1.007 1.11-1.226m-2.22 2.452a11.95 11.95 0 00-6.868 6.868c-1.226.55-2.22 1.66-2.452 2.9m11.532-9.32a11.95 11.95 0 00-9.32 11.532c.542.09 1.007.56 1.226 1.11m9.32-2.452a11.95 11.95 0 00-6.868-6.868c-1.226-.55-2.22-1.66-2.452-2.9M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" /></svg>
-                                </div>
-                                <div>
-                                    <h2 class="text-lg font-semibold">General Settings</h2>
-                                    <p class="text-sm text-slate-500">Update your project information and visibility settings.</p>
-                                </div>
-                            </div>
-                            <div class="mt-6 space-y-6">
-                                <div>
-                                    <label for="project-name" class="text-sm font-medium text-slate-700">Project Name</label>
-                                    <input type="text" id="project-name" value="Mobile App Redesign" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                                </div>
-                                <div>
-                                    <label for="description" class="text-sm font-medium text-slate-700">Project Description</label>
-                                    <textarea id="description" rows="4" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">Comprehensive redesign of the core mobile application to improve user engagement and accessibility. This project includes new UI/UX components, optimized navigation, and performance improvements.</textarea>
-                                    <p class="mt-2 text-xs text-slate-500">Keep it concise and clear for the developers.</p>
-                                </div>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <form method="POST" action="{{ route('projects.update', $project) }}">
+                                @csrf
+                                @method('PUT')
+                                <div class="flex items-start space-x-4">
+                                    <div class="flex-shrink-0 h-12 w-12 flex items-center justify-center bg-blue-50 rounded-lg text-blue-500">
+                                        <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-1.007 1.11-1.226m-2.22 2.452a11.95 11.95 0 00-6.868 6.868c-1.226.55-2.22 1.66-2.452 2.9m11.532-9.32a11.95 11.95 0 00-9.32 11.532c.542.09 1.007.56 1.226 1.11m9.32-2.452a11.95 11.95 0 00-6.868-6.868c-1.226-.55-2.22-1.66-2.452-2.9M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" /></svg>
+                                    </div>
                                     <div>
-                                        <label for="deadline" class="text-sm font-medium text-slate-700">Deadline</label>
-                                        <div class="relative mt-1">
-                                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                                <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                        <h2 class="text-lg font-semibold">General Settings</h2>
+                                        <p class="text-sm text-slate-500">Update your project information and visibility settings.</p>
+                                    </div>
+                                </div>
+                                <div class="mt-6 space-y-6">
+                                    <div>
+                                        <label for="title" class="text-sm font-medium text-slate-700">Project Name</label>
+                                        <input type="text" name="title" id="title" value="{{ old('title', $project->title) }}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                                        @error('title')
+                                        <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div>
+                                        <label for="description" class="text-sm font-medium text-slate-700">Project Description</label>
+                                        <textarea name="description" id="description" rows="4" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">{{ old('description', $project->description) }}</textarea>
+                                        <p class="mt-2 text-xs text-slate-500">Keep it concise and clear for the developers.</p>
+                                    </div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                        <div>
+                                            <label for="due_date" class="text-sm font-medium text-slate-700">Deadline</label>
+                                            <div class="relative mt-1">
+                                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                                    <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                </div>
+                                                <input type="date" name="due_date" id="due_date" value="{{ old('due_date', $project->due_date) }}" class="block w-full rounded-md border-slate-300 pl-10 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                                             </div>
-                                            <input type="date" id="deadline" value="2024-12-31" class="block w-full rounded-md border-slate-300 pl-10 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                                         </div>
+                                        
                                     </div>
-                                    <div>
-                                        <label class="text-sm font-medium text-slate-700">Priority Status</label>
-                                        <div class="mt-1 flex items-center space-x-2 bg-slate-100 p-1 rounded-lg w-min">
-                                            <button class="px-3 py-1 text-sm font-medium bg-blue-100 text-blue-700 rounded-md">High</button>
-                                            <button class="px-3 py-1 text-sm font-medium text-slate-600 hover:bg-white rounded-md">Medium</button>
-                                            <button class="px-3 py-1 text-sm font-medium text-slate-600 hover:bg-white rounded-md">Low</button>
-                                        </div>
-                                    </div>
+
+
+
+                        <!-- Danger Zone Card -->
+                        <div class="bg-red-50/50 border border-red-200 p-6 rounded-lg">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center text-red-500">
+                                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126z" /></svg>
+                                </div>
+                                <div>
+                                    <h2 class="text-lg font-semibold text-red-800">Danger Zone</h2>
+                                    <p class="text-sm text-red-700">Irreversible actions for this project.</p>
                                 </div>
                             </div>
+                            <div class="mt-4 pt-4 border-t border-red-200 space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-slate-800">Archive Project</p>
+                                        <p class="text-sm text-slate-500">Move this project to archives. It can be restored later.</p>
+                                    </div>
+                                    <form action="{{ route('projects.archive', $project) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50" onclick="return confirm('Archive this project?')">Archive Project</button>
+                                    </form>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-slate-800">Delete Permanently</p>
+                                        <p class="text-sm text-slate-500">All tasks, files, and activity will be permanently erased.</p>
+                                    </div>
+                                    <form action="{{ route('projects.forceDelete', $project) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="rounded-md border border-transparent bg-red-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-red-700" onclick="return confirm('Are you sure? This cannot be undone!')">Delete Project</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                            </form>
                         </div>
 
                         <!-- Danger Zone Card -->

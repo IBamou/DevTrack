@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobile App Redesign - DevTrack</title>
+    <title>{{ $project->title }} - DevTrack</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -48,7 +48,7 @@
         <aside class="hidden lg:flex w-64 flex-shrink-0 bg-white border-r border-slate-200 flex-col">
             <!-- Logo -->
             <div class="h-16 flex items-center px-4">
-                 <a href="#" class="flex-shrink-0 flex items-center space-x-2">
+                 <a href="{{ route('projects.index') }}" class="flex-shrink-0 flex items-center space-x-2">
                     <svg class="h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M11.917 15.242 6.023 9.478l.083-.083L12 3l5.977 6.395-.083.083-5.894 5.764Z" fill="currentColor"/>
                         <path d="m6.023 15.325 5.894 5.761 5.894-5.761-.083.083-5.811 5.681-5.811-5.681.083-.083Z" fill="currentColor"/>
@@ -59,22 +59,22 @@
             <!-- Navigation -->
             <nav class="flex-1 px-4 py-4 space-y-2">
                 <h3 class="px-3 text-xs font-semibold uppercase text-slate-500 tracking-wider">Main Menu</h3>
-                <a href="#" class="flex items-center px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md">
+                <a href="{{ route('dashboard') }}" class="flex items-center px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md">
                     <svg class="h-6 w-6 mr-3 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
                     <span class="text-sm font-medium">Dashboard</span>
                 </a>
-                <a href="#" class="flex items-center px-3 py-2 bg-blue-50 text-blue-700 rounded-md">
+                <a href="{{ route('projects.index') }}" class="flex items-center px-3 py-2 bg-blue-50 text-blue-700 rounded-md">
                     <svg class="h-6 w-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
                     <span class="text-sm font-medium">Projects</span>
                 </a>
-                <a href="#" class="flex items-center px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md">
+                <a href="{{ route('projects.archives') }}" class="flex items-center px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md">
                     <svg class="h-6 w-6 mr-3 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>
                     <span class="text-sm font-medium">Archives</span>
                 </a>
                 <div class="pt-4">
                     <h3 class="px-3 text-xs font-semibold uppercase text-slate-500 tracking-wider">Actions</h3>
                     <div class="mt-2 p-2">
-                        <a href="#" class="flex items-center justify-center w-full px-3 py-2 text-slate-700 border border-slate-300 hover:bg-slate-50 rounded-md">
+                        <a href="{{ route('projects.create') }}" class="flex items-center justify-center w-full px-3 py-2 text-slate-700 border border-slate-300 hover:bg-slate-50 rounded-md">
                            <svg class="w-5 h-5 mr-2 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                             <span class="text-sm font-medium">New Project</span>
                         </a>
@@ -122,25 +122,29 @@
                         <!-- Project Header -->
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                             <div>
-                                <p class="text-xs uppercase font-semibold text-slate-500">PROJECTS <span class="mx-1">›</span> MOBILE APP REDESIGN</p>
-                                <h1 class="text-3xl font-bold text-slate-800 mt-1">Mobile App Redesign</h1>
+                                <p class="text-xs uppercase font-semibold text-slate-500">PROJECTS <span class="mx-1">›</span> {{ strtoupper($project->tasks->first()?->priority ?? 'GENERAL') }}</p>
+                                <h1 class="text-3xl font-bold text-slate-800 mt-1">{{ $project->title }}</h1>
                                 <p class="flex items-center text-sm text-slate-500 mt-2">
                                     <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                    Due: Dec 24, 2024 <span class="mx-2">•</span> Sprint 12
+                                    Due: {{ $project->due_date ? \Carbon\Carbon::parse($project->due_date)->format('M d, Y') : 'No due date' }}
                                 </p>
                             </div>
                             <div class="flex items-center space-x-2 mt-4 sm:mt-0">
-                                <button class="inline-flex items-center px-3 py-2 text-sm font-medium bg-white border border-slate-300 rounded-md shadow-sm hover:bg-slate-50">
+                                <a href="{{ route('projects.edit', $project) }}" class="inline-flex items-center px-3 py-2 text-sm font-medium bg-white border border-slate-300 rounded-md shadow-sm hover:bg-slate-50">
                                     <svg class="w-5 h-5 mr-2 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.841 2.083a.75.75 0 01.758.026l4.5 3a.75.75 0 01-.017 1.342l-4.5 2.25A.75.75 0 018 8.25v-6a.75.75 0 01.159-.475l-.001-.001.001-.001zM11.841 8.083a.75.75 0 01.758.026l4.5 3a.75.75 0 01-.017 1.342l-4.5 2.25A.75.75 0 0112 14.25v-6a.75.75 0 01.159-.475l-.001-.001.001-.001zM7.841 9.083a.75.75 0 01.758.026l4.5 3a.75.75 0 01-.017 1.342l-4.5 2.25a.75.75 0 01-.9-1.29V9.75a.75.75 0 01.159-.475l-.001-.001z" clip-rule="evenodd" /></svg>
                                     Manage
-                                </button>
-                                <button class="inline-flex items-center justify-center w-10 h-10 bg-white border border-slate-300 rounded-md shadow-sm hover:bg-slate-50">
-                                    <svg class="w-5 h-5 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M13 4.5a2.5 2.5 0 11.702 1.744l-6.253 3.126a2.502 2.502 0 010 1.26l6.253 3.126A2.5 2.5 0 1113.5 15a2.5 2.5 0 01-1.12-2.073L6.125 9.802a2.5 2.5 0 110-1.604l6.255-3.127A2.5 2.5 0 0113 4.5z" /></svg>
-                                </button>
-                                <button class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
+                                </a>
+                                <form action="{{ route('projects.archive', $project) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="inline-flex items-center justify-center w-10 h-10 bg-white border border-slate-300 rounded-md shadow-sm hover:bg-slate-50 text-slate-500" onclick="return confirm('Archive this project?')">
+                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6h2v4a2 2 0 002 2h4a2 2 0 002-2V6h2V4a2 2 0 00-2-2H4z" clip-rule="evenodd" /></svg>
+                                    </button>
+                                </form>
+                                <a href="{{ route('projects.tasks.create', $project) }}" class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
                                     <svg class="h-5 w-5 mr-2 -ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg>
                                     Add Task
-                                </button>
+                                </a>
                             </div>
                         </div>
 
@@ -148,16 +152,17 @@
                         <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
                             <div class="flex items-center w-full sm:w-1/2">
                                 <span class="text-sm font-medium text-slate-600 mr-4">Overall Progress</span>
-                                <div class="w-full bg-slate-200 rounded-full h-2"><div class="bg-blue-600 h-2 rounded-full" style="width: 64%"></div></div>
-                                <span class="text-sm font-bold text-slate-600 ml-4">64%</span>
+                                <div class="w-full bg-slate-200 rounded-full h-2"><div class="bg-blue-600 h-2 rounded-full" style="width: {{ $project->progress }}%"></div></div>
+                                <span class="text-sm font-bold text-slate-600 ml-4">{{ $project->progress }}%</span>
                             </div>
                             <div class="flex items-center space-x-3 mt-4 sm:mt-0">
                                 <div class="flex -space-x-2 avatar-group">
-                                    <img class="inline-block h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Avatar">
-                                    <img class="inline-block h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1550525811-e5869105332c?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Avatar">
-                                    <img class="inline-block h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Avatar">
-                                    <img class="inline-block h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Avatar">
-                                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-xs font-medium text-slate-700 ring-2 ring-white">+12</span>
+                                    @foreach($project->collaborators->take(4) as $collaborator)
+                                    <img class="inline-block h-8 w-8 rounded-full" src="{{ $collaborator->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($collaborator->name) }}" alt="Avatar">
+                                    @endforeach
+                                    @if($project->collaborators->count() > 4)
+                                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-xs font-medium text-slate-700 ring-2 ring-white">+{{ $project->collaborators->count() - 4 }}</span>
+                                    @endif
                                 </div>
                                 <button class="flex items-center px-3 py-1.5 text-sm font-medium bg-white border border-slate-300 rounded-md shadow-sm hover:bg-slate-50">
                                     <svg class="h-5 w-5 mr-2 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 01.628.74v2.288a2.25 2.25 0 01-.659 1.59l-4.682 4.683a2.25 2.25 0 00-.659 1.59v3.033a.75.75 0 01-1.5 0v-3.033a2.25 2.25 0 00-.659-1.59L3.372 6.22A2.25 2.25 0 012 4.629V2.34a.75.75 0 01.628-.74z" clip-rule="evenodd" /></svg>

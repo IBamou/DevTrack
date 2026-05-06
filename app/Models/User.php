@@ -36,4 +36,11 @@ class User extends Authenticatable
             ->withPivot('role')
             ->withTimestamps();
     }
+
+    public function getProfilePhotoUrlAttribute(): string
+    {
+        return $this->profile_photo_path 
+            ? asset('storage/' . $this->profile_photo_path)
+            : 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=random&color=fff';
+    }
 }

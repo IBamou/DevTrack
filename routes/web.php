@@ -19,13 +19,13 @@ Route::middleware('auth')->group(function () {
             Route::get('/', 'index')->name('projects.index');
             Route::get('/archives', 'archives')->name('projects.archives');
             Route::get('/create', 'create')->name('projects.create');
-            Route::post('/store', 'store')->name('projects.store');
+            Route::post('/', 'store')->name('projects.store');
             Route::get('/{project}', 'show')->name('projects.show');
-            Route::post('/{project}/edit', 'edit')->name('projects.edit');
-            Route::put('/{project}/update', 'update')->name('projects.update');
-            Route::patch('/{project}/archive', 'archive')->name('projects.archive');
+            Route::get('/{project}/edit', 'edit')->name('projects.edit');
+            Route::put('/{project}', 'update')->name('projects.update');
+            Route::delete('/{project}', 'archive')->name('projects.archive');
             Route::patch('/{project}/restore', 'restore')->name('projects.restore');
-            Route::delete('/{project}/forceDelete', 'forceDelete')->name('projects.forceDelete');
+            Route::delete('/{project}/force', 'forceDelete')->name('projects.forceDelete');
             Route::post('/{project}/collaborator/add', 'addCollaborator')->name('projects.collaborator.add');
             Route::delete('/{project}/collaborator/{user}/remove', 'removeCollaborator')->name('projects.collaborator.remove');
         });
@@ -33,12 +33,12 @@ Route::middleware('auth')->group(function () {
 
         Route::controller(TaskController::class)->group(function () {
             Route::get('/{project}/task/create', 'create')->name('projects.tasks.create');
-            Route::post('/{project}/task/store', 'store')->name('projects.tasks.store');
+            Route::post('/{project}/task', 'store')->name('projects.tasks.store');
             Route::get('/{project}/task/{task}/edit', 'edit')->name('projects.tasks.edit');
-            Route::patch('/{project}/task/{task}/update', 'update')->name('projects.tasks.update');
-            Route::patch('/{project}/task/{task}/archive', 'archive')->name('projects.tasks.archive');
+            Route::put('/{project}/task/{task}', 'update')->name('projects.tasks.update');
+            Route::delete('/{project}/task/{task}', 'archive')->name('projects.tasks.archive');
             Route::patch('/{project}/task/{task}/restore', 'restore')->name('projects.tasks.restore');
-            Route::delete('/{project}/task/{task}/forceDelete', 'forceDelete')->name('projects.tasks.forceDelete');
+            Route::delete('/{project}/task/{task}/force', 'forceDelete')->name('projects.tasks.forceDelete');
         });
     });
 });
