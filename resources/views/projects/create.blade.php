@@ -19,6 +19,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        html { font-size: 80%; }
+        body { min-height: 100vh; margin: 0; }
+        .h-screen { min-height: 100vh; height: auto; }
+    </style>
 </head>
 <body class="bg-slate-50 font-sans text-slate-900 antialiased">
 
@@ -77,16 +82,8 @@
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Top Header -->
             <header class="h-16 flex items-center justify-between bg-white border-b border-slate-200 px-4 sm:px-6">
-                <div class="relative w-full max-w-xs">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                    </div>
-                    <input type="text" class="block w-full bg-slate-100 border-transparent rounded-md pl-10 pr-3 py-2 text-sm placeholder-slate-500 focus:outline-none focus:bg-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500" placeholder="Search tasks or projects...">
-                </div>
-                <div class="flex items-center space-x-5">
-                    <button class="text-slate-500 hover:text-slate-700">
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-                    </button>
+                <div></div>
+                <div class="flex items-center space-x-2">
                     <button class="flex items-center space-x-2">
                         <img class="h-8 w-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="User avatar">
                         <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
@@ -122,7 +119,7 @@
                                 @csrf
                                 <div>
                                     <label for="title" class="text-sm font-medium text-slate-700">Project Name <span class="text-red-500">*</span></label>
-                                    <input type="text" name="title" id="title" value="{{ old('title') }}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" required>
+                                    <input type="text" name="title" id="title" value="{{ old('title') }}" placeholder="Enter project name" class="mt-1 block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-3 pr-4 pl-4" required>
                                     @error('title')
                                     <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
                                     @enderror
@@ -130,7 +127,7 @@
                                 </div>
                                 <div>
                                     <label for="description" class="text-sm font-medium text-slate-700">Description</label>
-                                    <textarea name="description" id="description" rows="4" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">{{ old('description') }}</textarea>
+                                    <textarea name="description" id="description" rows="5" placeholder="Describe your project goals and objectives" class="mt-1 block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-3 pr-4 pl-6">{{ old('description') }}</textarea>
                                     @error('description')
                                     <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
                                     @enderror
@@ -143,23 +140,20 @@
                                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                                 <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                             </div>
-                                            <input type="date" name="due_date" id="due_date" value="{{ old('due_date') }}" class="block w-full rounded-md border-slate-300 pl-10 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                                            <input type="date" name="due_date" id="due_date" value="{{ old('due_date') }}" class="block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-3 pl-10 pr-4">
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-lg shadow-sm">
-                            <div class="flex items-center justify-between">
-                                <p class="text-xs text-slate-500">* Required fields must be completed to launch.</p>
-                                <div class="flex items-center space-x-4">
-                                    <a href="{{ route('projects.index') }}" class="text-sm font-medium text-slate-600 hover:text-slate-800">Cancel</a>
-                                    <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                                        Create Project
-                                    </button>
+                                <div class="flex items-center justify-between">
+                                    <p class="text-xs text-slate-500">* Required fields must be completed to launch.</p>
+                                    <div class="flex items-center space-x-4">
+                                        <a href="{{ route('projects.index') }}" class="text-sm font-medium text-slate-600 hover:text-slate-800">Cancel</a>
+                                        <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                            Create Project
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
 
                         <div class="bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 rounded-lg flex items-start space-x-3">

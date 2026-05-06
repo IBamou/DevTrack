@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function () {
             Route::put('/{project}/task/{task}', 'update')->name('projects.tasks.update');
             Route::delete('/{project}/task/{task}', 'archive')->name('projects.tasks.archive');
             Route::patch('/{project}/task/{task}/restore', 'restore')->name('projects.tasks.restore');
-            Route::delete('/{project}/task/{task}/force', 'forceDelete')->name('projects.tasks.forceDelete');
+            Route::delete('/{project}/task/{task}/force', 'forceDelete')->name('projects.tasks.forceDelete')->can('can-acc');
         });
     });
 });

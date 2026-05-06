@@ -10,7 +10,11 @@
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
+    <style>
+        html { font-size: 80%; }
+        body { min-height: 100vh; }
+        .h-screen { min-height: 100vh; height: auto; }
+    </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -21,8 +25,8 @@
         <div class="flex-1 flex flex-col">
             @include('layouts.topbar')
 
-            <main class="flex-1 overflow-auto">
-                <div class="p-8">
+            <main class="flex-1 overflow-auto bg-gray-50">
+                <div class="max-w-7xl mx-auto px-6 py-6">
                     @yield('content')
                 </div>
             </main>

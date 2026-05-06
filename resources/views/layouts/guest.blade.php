@@ -10,7 +10,11 @@
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
+    <style>
+        html { font-size: 80%; }
+        body { min-height: 100vh; }
+        .h-screen { min-height: 100vh; height: auto; }
+    </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
