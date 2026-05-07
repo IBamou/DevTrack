@@ -241,7 +241,7 @@
 
                             <div class="flex items-center space-x-3 mt-4 sm:mt-0">
 
-                                <button
+                                <button id="teamBtn" onclick="toggleTeamPopup()"
                                     class="flex items-center px-3 py-1.5 text-sm font-medium bg-white border border-slate-300 rounded-md shadow-sm hover:bg-slate-50">
                                     <svg class="h-5 w-5 mr-2 text-slate-500" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20" fill="currentColor">
@@ -270,380 +270,255 @@
                     <!-- Kanban Board Columns -->
                     <div class="flex-1 overflow-x-auto">
                         <div class="inline-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-6 pb-6 min-w-max">
+
                             <!-- Todo Column -->
                             <div class="w-72">
                                 <div class="flex items-center justify-between mb-4">
-                                    <h3 class="font-bold text-lg">Todo <span
-                                            class="text-sm text-slate-500 font-medium">3</span></h3>
+                                    <h3 class="font-bold text-lg">Todo
+                                        <span class="text-sm text-slate-500 font-medium">{{ $tasks->where('status', 'todo')->count() }}</span>
+                                    </h3>
                                     <button class="text-slate-400 hover:text-slate-600">
-                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                            fill="currentColor">
-                                            <path
-                                                d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
                                         </svg>
                                     </button>
                                 </div>
 
                                 <div class="space-y-4">
-                                    <div class="bg-white rounded-lg shadow-sm p-4">
-                                        <span
-                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 mb-2">High</span>
-                                        <p class="font-semibold text-slate-800">Design System: Update Button primary
-                                            tokens</p>
-                                        <div class="flex items-center justify-between mt-4 text-sm text-slate-500">
-                                            <div class="flex items-center space-x-2">
-                                                <img class="h-6 w-6 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="Avatar">
-                                                <span class="flex items-center">
-                                                    <svg class="w-4 h-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd"
-                                                            d="M10 3c-4.34 0-8 3.03-8 6.75 0 2.22 1.34 4.22 3.4 5.37a.75.75 0 001.1-1.04A5.25 5.25 0 015.5 10a4.5 4.5 0 119 0 5.25 5.25 0 01-2 4.08.75.75 0 001.1 1.04C16.66 13.97 18 11.97 18 9.75 18 6.03 14.34 3 10 3z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>4
-                                                </span>
-                                                <span class="flex items-center">
-                                                    <svg class="w-4 h-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd"
-                                                            d="M15.986 3.014A1.828 1.828 0 0014.28 2H5.72a1.828 1.828 0 00-1.705 1.014L2.014 6.295A1.828 1.828 0 002 7.123v5.754a1.828 1.828 0 001.014 1.705l2.001 1.282A1.828 1.828 0 005.72 18h8.56a1.828 1.828 0 001.705-1.014l2.001-1.282a1.828 1.828 0 001.014-1.705V7.123a1.828 1.828 0 00-.014-.828L15.986 3.014zM12.5 9.5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>2
-                                                </span>
+                                    @foreach($tasks->where('status', 'todo') as $task)
+                                        <div class="bg-white rounded-lg shadow-sm p-4">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
+                                                {{ $task->priority === 'high' ? 'bg-red-100 text-red-700' :
+                                                   ($task->priority === 'medium' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-700') }}">
+                                                {{ ucfirst($task->priority) }}
+                                            </span>
+                                            <p class="font-semibold text-slate-800 mt-2">{{ $task->title }}</p>
+                                            <div class="flex items-center justify-between mt-4 text-sm text-slate-500">
+                                                <div class="flex items-center space-x-2">
+                                                    @if($task->assignee)
+                                                        <img class="h-6 w-6 rounded-full"
+                                                            src="{{ $task->assignee->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($task->assignee->name) }}"
+                                                            alt="Avatar">
+                                                    @endif
+                                                    <span class="font-mono text-xs font-medium">#DT-{{ $task->id }}</span>
+                                                </div>
                                             </div>
-                                            <span class="font-mono text-xs font-medium">#DT-102</span>
                                         </div>
-                                    </div>
-
-                                    <div class="bg-white rounded-lg shadow-sm p-4">
-                                        <span
-                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 mb-2">Medium</span>
-                                        <p class="font-semibold text-slate-800">User Research: Conduct interviews for
-                                            onboarding flow</p>
-                                        <div class="flex items-center justify-between mt-4 text-sm text-slate-500">
-                                            <div class="flex items-center space-x-2">
-                                                <img class="h-6 w-6 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="Avatar">
-                                                <span class="flex items-center">
-                                                    <svg class="w-4 h-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd"
-                                                            d="M10 3c-4.34 0-8 3.03-8 6.75 0 2.22 1.34 4.22 3.4 5.37a.75.75 0 001.1-1.04A5.25 5.25 0 015.5 10a4.5 4.5 0 119 0 5.25 5.25 0 01-2 4.08.75.75 0 001.1 1.04C16.66 13.97 18 11.97 18 9.75 18 6.03 14.34 3 10 3z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>12
-                                                </span>
-                                            </div>
-                                            <span class="font-mono text-xs font-medium">#DT-105</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="bg-white rounded-lg shadow-sm p-4">
-                                        <span
-                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 mb-2">Low</span>
-                                        <p class="font-semibold text-slate-800">Fix: Responsive issues on iPad Mini
-                                            navigation</p>
-                                        <div class="flex items-center justify-between mt-4 text-sm text-slate-500">
-                                            <div class="flex items-center space-x-2">
-                                                <img class="h-6 w-6 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="Avatar">
-                                                <span class="flex items-center">
-                                                    <svg class="w-4 h-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd"
-                                                            d="M10 3c-4.34 0-8 3.03-8 6.75 0 2.22 1.34 4.22 3.4 5.37a.75.75 0 001.1-1.04A5.25 5.25 0 015.5 10a4.5 4.5 0 119 0 5.25 5.25 0 01-2 4.08.75.75 0 001.1 1.04C16.66 13.97 18 11.97 18 9.75 18 6.03 14.34 3 10 3z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>1
-                                                </span>
-                                            </div>
-                                            <span class="font-mono text-xs font-medium">#DT-112</span>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
 
                             <!-- In Progress Column -->
                             <div class="w-72">
                                 <div class="flex items-center justify-between mb-4">
-                                    <h3 class="font-bold text-lg">In Progress <span
-                                            class="text-sm text-slate-500 font-medium">2</span></h3>
+                                    <h3 class="font-bold text-lg">In Progress
+                                        <span class="text-sm text-slate-500 font-medium">{{ $tasks->where('status', 'in_progress')->count() }}</span>
+                                    </h3>
                                     <button class="text-slate-400 hover:text-slate-600">
-                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                            fill="currentColor">
-                                            <path
-                                                d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
                                         </svg>
                                     </button>
                                 </div>
 
                                 <div class="space-y-4">
-                                    <div class="bg-white rounded-lg shadow-sm p-4">
-                                        <span
-                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 mb-2">High</span>
-                                        <p class="font-semibold text-slate-800">API Integration: Connect Auth providers
-                                        </p>
-                                        <div class="flex items-center justify-between mt-4 text-sm text-slate-500">
-                                            <div class="flex items-center space-x-2">
-                                                <img class="h-6 w-6 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="Avatar">
-                                                <span class="flex items-center">
-                                                    <svg class="w-4 h-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd"
-                                                            d="M10 3c-4.34 0-8 3.03-8 6.75 0 2.22 1.34 4.22 3.4 5.37a.75.75 0 001.1-1.04A5.25 5.25 0 015.5 10a4.5 4.5 0 119 0 5.25 5.25 0 01-2 4.08.75.75 0 001.1 1.04C16.66 13.97 18 11.97 18 9.75 18 6.03 14.34 3 10 3z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>8
-                                                </span>
-                                                <span class="flex items-center">
-                                                    <svg class="w-4 h-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd"
-                                                            d="M15.986 3.014A1.828 1.828 0 0014.28 2H5.72a1.828 1.828 0 00-1.705 1.014L2.014 6.295A1.828 1.828 0 002 7.123v5.754a1.828 1.828 0 001.014 1.705l2.001 1.282A1.828 1.828 0 005.72 18h8.56a1.828 1.828 0 001.705-1.014l2.001-1.282a1.828 1.828 0 001.014-1.705V7.123a1.828 1.828 0 00-.014-.828L15.986 3.014zM12.5 9.5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>5
-                                                </span>
+                                    @foreach($tasks->where('status', 'in_progress') as $task)
+                                        <div class="bg-white rounded-lg shadow-sm p-4">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
+                                                {{ $task->priority === 'high' ? 'bg-red-100 text-red-700' :
+                                                   ($task->priority === 'medium' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-700') }}">
+                                                {{ ucfirst($task->priority) }}
+                                            </span>
+                                            <p class="font-semibold text-slate-800 mt-2">{{ $task->title }}</p>
+                                            <div class="flex items-center justify-between mt-4 text-sm text-slate-500">
+                                                <div class="flex items-center space-x-2">
+                                                    @if($task->assignee)
+                                                        <img class="h-6 w-6 rounded-full"
+                                                            src="{{ $task->assignee->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($task->assignee->name) }}"
+                                                            alt="Avatar">
+                                                    @endif
+                                                    <span class="font-mono text-xs font-medium">#DT-{{ $task->id }}</span>
+                                                </div>
                                             </div>
-                                            <span class="font-mono text-xs font-medium">#DT-101</span>
                                         </div>
-                                    </div>
-
-                                    <div class="bg-white rounded-lg shadow-sm p-4">
-                                        <span
-                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 mb-2">Low</span>
-                                        <p class="font-semibold text-slate-800">Refactor: Clean up redundant CSS
-                                            variables</p>
-                                        <div class="flex items-center justify-between mt-4 text-sm text-slate-500">
-                                            <div class="flex items-center space-x-2">
-                                                <img class="h-6 w-6 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1550525811-e5869105332c?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="Avatar">
-                                                <span class="flex items-center">
-                                                    <svg class="w-4 h-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd"
-                                                            d="M10 3c-4.34 0-8 3.03-8 6.75 0 2.22 1.34 4.22 3.4 5.37a.75.75 0 001.1-1.04A5.25 5.25 0 015.5 10a4.5 4.5 0 119 0 5.25 5.25 0 01-2 4.08.75.75 0 001.1 1.04C16.66 13.97 18 11.97 18 9.75 18 6.03 14.34 3 10 3z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>2
-                                                </span>
-                                            </div>
-                                            <span class="font-mono text-xs font-medium">#DT-108</span>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
 
                             <!-- Review Column -->
                             <div class="w-72">
                                 <div class="flex items-center justify-between mb-4">
-                                    <h3 class="font-bold text-lg">Review <span
-                                            class="text-sm text-slate-500 font-medium">1</span></h3>
+                                    <h3 class="font-bold text-lg">Review
+                                        <span class="text-sm text-slate-500 font-medium">{{ $tasks->where('status', 'review')->count() }}</span>
+                                    </h3>
                                     <button class="text-slate-400 hover:text-slate-600">
-                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                            fill="currentColor">
-                                            <path
-                                                d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
                                         </svg>
                                     </button>
                                 </div>
 
                                 <div class="space-y-4">
-                                    <div class="relative bg-white rounded-lg shadow-sm p-4 border-2 border-blue-500">
-                                        <div
-                                            class="absolute -top-3 left-4 bg-blue-500 text-white text-xs font-bold uppercase px-2 py-1 rounded">
-                                            Testing Required</div>
-                                        <span
-                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 mb-2 mt-2">Medium</span>
-                                        <p class="font-semibold text-slate-800">Feature: Dark mode implementation</p>
-                                        <div class="flex items-center justify-between mt-4 text-sm text-slate-500">
-                                            <div class="flex items-center space-x-2">
-                                                <img class="h-6 w-6 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="Avatar">
-                                                <span class="flex items-center">
-                                                    <svg class="w-4 h-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd"
-                                                            d="M10 3c-4.34 0-8 3.03-8 6.75 0 2.22 1.34 4.22 3.4 5.37a.75.75 0 001.1-1.04A5.25 5.25 0 015.5 10a4.5 4.5 0 119 0 5.25 5.25 0 01-2 4.08.75.75 0 001.1 1.04C16.66 13.97 18 11.97 18 9.75 18 6.03 14.34 3 10 3z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>15
-                                                </span>
-                                                <span class="flex items-center">
-                                                    <svg class="w-4 h-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd"
-                                                            d="M15.986 3.014A1.828 1.828 0 0014.28 2H5.72a1.828 1.828 0 00-1.705 1.014L2.014 6.295A1.828 1.828 0 002 7.123v5.754a1.828 1.828 0 001.014 1.705l2.001 1.282A1.828 1.828 0 005.72 18h8.56a1.828 1.828 0 001.705-1.014l2.001-1.282a1.828 1.828 0 001.014-1.705V7.123a1.828 1.828 0 00-.014-.828L15.986 3.014zM12.5 9.5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>3
-                                                </span>
+                                    @foreach($tasks->where('status', 'review') as $task)
+                                        <div class="bg-white rounded-lg shadow-sm p-4">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
+                                                {{ $task->priority === 'high' ? 'bg-red-100 text-red-700' :
+                                                   ($task->priority === 'medium' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-700') }}">
+                                                {{ ucfirst($task->priority) }}
+                                            </span>
+                                            <p class="font-semibold text-slate-800 mt-2">{{ $task->title }}</p>
+                                            <div class="flex items-center justify-between mt-4 text-sm text-slate-500">
+                                                <div class="flex items-center space-x-2">
+                                                    @if($task->assignee)
+                                                        <img class="h-6 w-6 rounded-full"
+                                                            src="{{ $task->assignee->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($task->assignee->name) }}"
+                                                            alt="Avatar">
+                                                    @endif
+                                                    <span class="font-mono text-xs font-medium">#DT-{{ $task->id }}</span>
+                                                </div>
                                             </div>
-                                            <span class="font-mono text-xs font-medium">#DT-095</span>
                                         </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
 
                             <!-- Done Column -->
                             <div class="w-72">
                                 <div class="flex items-center justify-between mb-4">
-                                    <h3 class="font-bold text-lg">Done <span
-                                            class="text-sm text-slate-500 font-medium">2</span></h3>
+                                    <h3 class="font-bold text-lg">Done
+                                        <span class="text-sm text-slate-500 font-medium">{{ $tasks->where('status', 'done')->count() }}</span>
+                                    </h3>
                                     <button class="text-slate-400 hover:text-slate-600">
-                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                            fill="currentColor">
-                                            <path
-                                                d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
                                         </svg>
                                     </button>
                                 </div>
 
                                 <div class="space-y-4">
-                                    <div class="bg-white rounded-lg shadow-sm p-4 border border-green-200">
-                                        <span
-                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 mb-2">Completed</span>
-                                        <p class="font-semibold text-slate-800">Landing Page: Final responsive polish
-                                        </p>
-                                        <div class="flex items-center justify-between mt-4 text-sm text-slate-500">
-                                            <div class="flex items-center space-x-2">
-                                                <img class="h-6 w-6 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="Avatar">
-                                                <span class="flex items-center">
-                                                    <svg class="w-4 h-4 mr-1 text-green-600"
-                                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                                        fill="currentColor">
-                                                        <path fill-rule="evenodd"
-                                                            d="M16.704 5.29a1 1 0 010 1.42l-7.2 7.2a1 1 0 01-1.414 0l-3.2-3.2a1 1 0 111.414-1.42l2.493 2.49 6.493-6.49a1 1 0 011.414 0z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-                                                    Done
-                                                </span>
+                                    @foreach($tasks->where('status', 'done') as $task)
+                                        <div class="bg-white rounded-lg shadow-sm p-4 border border-green-200">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 mb-2">Completed</span>
+                                            <p class="font-semibold text-slate-800 mt-2">{{ $task->title }}</p>
+                                            <div class="flex items-center justify-between mt-4 text-sm text-slate-500">
+                                                <div class="flex items-center space-x-2">
+                                                    @if($task->assignee)
+                                                        <img class="h-6 w-6 rounded-full"
+                                                            src="{{ $task->assignee->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($task->assignee->name) }}"
+                                                            alt="Avatar">
+                                                    @endif
+                                                    <span class="font-mono text-xs font-medium">#DT-{{ $task->id }}</span>
+                                                </div>
                                             </div>
-                                            <span class="font-mono text-xs font-medium">#DT-089</span>
                                         </div>
-                                    </div>
-
-                                    <div class="bg-white rounded-lg shadow-sm p-4 border border-green-200">
-                                        <span
-                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 mb-2">Completed</span>
-                                        <p class="font-semibold text-slate-800">Authentication: Password reset flow
-                                            shipped</p>
-                                        <div class="flex items-center justify-between mt-4 text-sm text-slate-500">
-                                            <div class="flex items-center space-x-2">
-                                                <img class="h-6 w-6 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="Avatar">
-                                                <span class="flex items-center">
-                                                    <svg class="w-4 h-4 mr-1 text-green-600"
-                                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                                        fill="currentColor">
-                                                        <path fill-rule="evenodd"
-                                                            d="M16.704 5.29a1 1 0 010 1.42l-7.2 7.2a1 1 0 01-1.414 0l-3.2-3.2a1 1 0 111.414-1.42l2.493 2.49 6.493-6.49a1 1 0 011.414 0z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-                                                    Done
-                                                </span>
-                                            </div>
-                                            <span class="font-mono text-xs font-medium">#DT-084</span>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </main>
-
-                <!-- Right Sidebar -->
-                <aside class="hidden xl:flex w-80 flex-shrink-0 bg-white border-l border-slate-200 flex-col">
-                    <div class="p-6 h-full flex flex-col">
-                        <div>
-                            <h3 class="text-sm uppercase font-semibold text-slate-500 tracking-wider">Project Members
-                            </h3>
-                            <p class="text-sm text-slate-500 mt-1">Collaborators in this workspace</p>
-                        </div>
-
-                        <ul class="mt-4 space-y-4">
-                            <li class="flex items-center">
-                                <img class="h-10 w-10 rounded-full object-cover"
-                                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                    alt="Alex Rivera">
-                                <div class="ml-3">
-                                    <p class="font-semibold">Alex Rivera</p>
-                                    <p class="text-sm text-slate-500">Team Lead</p>
-                                </div>
-                            </li>
-
-                            <li class="flex items-center">
-                                <div class="relative">
-                                    <img class="h-10 w-10 rounded-full object-cover"
-                                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                        alt="Sarah Chen">
-                                    <span
-                                        class="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-400 ring-2 ring-white"></span>
-                                </div>
-                                <div class="ml-3">
-                                    <p class="font-semibold">Sarah Chen</p>
-                                    <p class="text-sm text-slate-500">UI Designer</p>
-                                </div>
-                            </li>
-
-                            <li class="flex items-center">
-                                <img class="h-10 w-10 rounded-full object-cover"
-                                    src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                    alt="Marcus Miller">
-                                <div class="ml-3">
-                                    <p class="font-semibold">Marcus Miller</p>
-                                    <p class="text-sm text-slate-500">Backend Dev</p>
-                                </div>
-                            </li>
-
-                            <li class="flex items-center">
-                                <div class="relative">
-                                    <img class="h-10 w-10 rounded-full object-cover"
-                                        src="https://images.unsplash.com/photo-1550525811-e5869105332c?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                        alt="Elena Rodriguez">
-                                    <span
-                                        class="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-400 ring-2 ring-white"></span>
-                                </div>
-                                <div class="ml-3">
-                                    <p class="font-semibold">Elena Rodriguez</p>
-                                    <p class="text-sm text-slate-500">Frontend Dev</p>
-                                </div>
-                            </li>
-
-                            <li class="flex items-center">
-                                <img class="h-10 w-10 rounded-full object-cover"
-                                    src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                    alt="John Doe">
-                                <div class="ml-3">
-                                    <p class="font-semibold">John Doe</p>
-                                    <p class="text-sm text-slate-500">QA Engineer</p>
-                                </div>
-                            </li>
-                        </ul>
-
-                        <button
-                            class="w-full flex items-center justify-center py-2.5 mt-6 border border-dashed border-slate-300 rounded-lg text-sm text-slate-600 hover:border-slate-400 hover:text-slate-800">
-                            <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                fill="currentColor">
-                                <path
-                                    d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-                            </svg>
-                            Invite Member
-                        </button>
-
-                        <div class="mt-auto pt-6 border-t border-slate-200">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-sm text-slate-600">Storage used</span>
-                                <span class="text-sm font-medium text-slate-600">2.4 GB / 5 GB</span>
-                            </div>
-                            <div class="w-full bg-slate-200 rounded-full h-1.5">
-                                <div class="bg-blue-600 h-1.5 rounded-full" style="width: 48%"></div>
-                            </div>
-                            <a href="#"
-                                class="block text-center mt-4 text-sm text-blue-600 font-medium hover:underline">Upgrade
-                                for more storage</a>
-                        </div>
-                    </div>
-                </aside>
             </div>
         </div>
-        <!-- ==== Main Content End ==== -->
     </div>
 
-</body>
+    <!-- Team Members Popup Modal -->
+    <div id="teamPopup" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/50 transition-opacity" onclick="toggleTeamPopup()"></div>
 
+        <!-- Popup Panel -->
+        <div class="absolute right-0 top-0 h-full w-80 bg-white border-l border-slate-200 flex flex-col shadow-xl transform transition-transform duration-300 ease-in-out translate-x-full"
+            id="teamPanel">
+            <div class="p-6 h-full flex flex-col">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-sm uppercase font-semibold text-slate-500 tracking-wider">Project Members</h3>
+                        <p class="text-sm text-slate-500 mt-1">Collaborators in this workspace</p>
+                    </div>
+                    <button onclick="toggleTeamPopup()" class="text-slate-400 hover:text-slate-600 p-1 rounded hover:bg-slate-100">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Dynamic Members List -->
+                <ul class="mt-4 space-y-4 flex-1 overflow-y-auto">
+                    @foreach($project->collaborators as $member)
+                        <li class="flex items-center">
+                            <img class="h-10 w-10 rounded-full object-cover"
+                                src="{{ $member->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($member->name) }}"
+                                alt="{{ $member->name }}">
+                            <div class="ml-3">
+                                <p class="font-semibold">{{ $member->name }}</p>
+                                <p class="text-sm text-slate-500">{{ $member->email }}</p>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+
+                <!-- Invite Form -->
+                <form action="{{ route('projects.collaborator.add', $project) }}" method="POST" class="mt-6">
+                    @csrf
+                    <div class="mb-3">
+                        <label class="block text-sm text-slate-600 mb-1">Invite by Email</label>
+                        <input type="email" name="email" required
+                               class="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                               placeholder="member@example.com">
+                    </div>
+                    <button type="submit"
+                            class="w-full flex items-center justify-center py-2.5 border border-dashed border-slate-300 rounded-lg text-sm text-slate-600 hover:border-slate-400 hover:text-slate-800">
+                        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                        </svg>
+                        Invite Member
+                    </button>
+                </form>
+
+                <div class="mt-auto pt-6 border-t border-slate-200">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm text-slate-600">Storage used</span>
+                        <span class="text-sm font-medium text-slate-600">2.4 GB / 5 GB</span>
+                    </div>
+                    <div class="w-full bg-slate-200 rounded-full h-1.5">
+                        <div class="bg-blue-600 h-1.5 rounded-full" style="width: 48%"></div>
+                    </div>
+                    <a href="#" class="block text-center mt-4 text-sm text-blue-600 font-medium hover:underline">Upgrade for more storage</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTeamPopup() {
+            const popup = document.getElementById('teamPopup');
+            const panel = document.getElementById('teamPanel');
+
+            popup.classList.toggle('hidden');
+
+            if (popup.classList.contains('hidden')) {
+                panel.classList.add('translate-x-full');
+                panel.classList.remove('translate-x-0');
+            } else {
+                setTimeout(() => {
+                    panel.classList.remove('translate-x-full');
+                    panel.classList.add('translate-x-0');
+                }, 10);
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const popup = document.getElementById('teamPopup');
+                if (!popup.classList.contains('hidden')) {
+                    toggleTeamPopup();
+                }
+            }
+        });
+    </script>
+
+</body>
 </html>
