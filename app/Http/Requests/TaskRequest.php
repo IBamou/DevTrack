@@ -28,7 +28,7 @@ class TaskRequest extends FormRequest
             'status' => 'required|in:todo,in_progress,review,done',
             'priority' => 'required|in:low,medium,high',
             'due_date' => 'nullable|date',
-            'project_id' => 'nullable|exists:projects,id',
+            // 'project_id' => 'nullable|exists:projects,id',
             'collaborator_id' => 'nullable',
         ];
     }
