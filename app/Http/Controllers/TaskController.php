@@ -28,7 +28,7 @@ class TaskController extends Controller
         $this->authorize('create', Task::class);
 
         $data = $request->validated();
-        $task =[
+        $task = [
             ...$data,
             'created_by' => $project->createdBy->id,
             'project_id' => $project->id
@@ -87,24 +87,34 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('success', 'Task restored successfully.');
     }
 
-    public function forcedelete(Task $task){
+    public function forceDelete(Task $task){
         $this->authorize('forceDelete', $task);
         $task->forceDelete();
         return redirect()->route('tasks.index')->with('success', 'Task deleted permanently.');
     }
 
-    public function viewArchived(){
+    public function archives(){
         $this->authorize('viewArchived', Task::class);
         $archivedTasks = Task::onlyTrashed()->get();
         return view('tasks.archived', compact('archivedTasks'));
     }
 
-    public function assignedTo(Request $request, Task $task){
+    public function assignedTo(Request $request, Task $task, Project $project){
         $this->authorize('update',$task);
-        $assignedUser = $request->validate([
+        $data = $request->validate([
             'collaborator_id' => 'required|exists:collaborators,id'
         ]);
-        $task->update($assignedUser);
+
+        
+        if (!$project->collaborators()->where('user_id', $data['collaborator_id'])->exists()) {
+            return back()->with('error', 'This user is not a collaborator.');
+        }
+
+        if ($task->assignedTo()->exists()) {
+            return back()->with('error', 'This task is already assigned to a user.');
+        }
+
+        $task->update($data);
         return redirect()->route('tasks.index')->with('success', 'Task assigned successfully.');
     } 
 
