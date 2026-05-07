@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddCollaboratorRequest;
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
 use App\Models\Project;
@@ -18,30 +19,39 @@ class ProjectController extends Controller
     {
         $this->authorize('viewAny', Project::class);
 
-        $projects = Project::where('created_by', Auth::id())
-            ->orWhereHas('collaborators', function ($query) {
-                $query->where('user_id', Auth::id());
+        $query = Project::query()
+            ->where(function ($q) {
+                $q->where('created_by', Auth::id())
+                  ->orWhereHas('collaborators', function ($sub) {
+                      $sub->where('user_id', Auth::id());
+                  });
             });
 
-        if ($request->has('search') && ! empty($request->search)) {
-            $projects = $projects->where('title', 'LIKE', "%{$request->search}%");
+        if ($request->filter === 'archived') {
+            $query->onlyTrashed();
+        } elseif ($request->filter === 'active') {
+            $query->withoutTrashed();
         }
 
-        if ($request->has('filter') && $request->filter === 'archived') {
-            $projects = $projects->onlyTrashed();
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where(function ($q) use ($request) {
+                $q->where('title', 'LIKE', "%{$request->search}%")
+                  ->orWhere('description', 'LIKE', "%{$request->search}%");
+            });
         }
 
-        if ($request->has('sort') && $request->sort === 'oldest') {
-            $projects = $projects->orderBy('created_at');
+        if ($request->sort === 'oldest') {
+            $projects = $query->orderBy('created_at')->paginate(6);
         } else {
-            $projects = $projects->orderByDesc('created_at');
+            $projects = $query->orderByDesc('created_at')->paginate(6);
         }
-
-        $projects = $projects->paginate(6);
 
         return view('projects.index', compact('projects'));
     }
 
+    /**
+     * Display archived projects.
+     */
     public function archives(Request $request)
     {
         $this->authorize('viewAnyArchived', Project::class);
@@ -58,6 +68,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
+
         $this->authorize('create', Project::class);
 
         return view('projects.create');
@@ -85,14 +96,34 @@ class ProjectController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Project $project)
+    public function show(Request $request, Project $project)
     {
         $this->authorize('view', $project);
 
-        return view('projects.show', compact('project'));
+        $filter = $request->query('filter', 'all');
+        $tasks = $project->tasks();
+
+        switch ($filter) {
+            case 'my':
+                $tasks = $tasks->where('assignee_id', auth()->id());
+                break;
+            case 'todo':
+                $tasks = $tasks->where('status', 'todo');
+                break;
+            case 'in_progress':
+                $tasks = $tasks->where('status', 'in_progress');
+                break;
+            case 'done':
+                $tasks = $tasks->where('status', 'done');
+                break;
+        }
+
+        $tasks = $tasks->get();
+
+        return view('projects.show', compact('project', 'tasks', 'filter'));
     }
 
-    /**
+/**
      * Show the form for editing the specified resource.
      */
     public function edit(Project $project)
@@ -113,58 +144,35 @@ class ProjectController extends Controller
 
         $project->update($data);
 
-        return redirect()->route('projects.index');
-    }
-
-    /**
-     * SoftDelete the specified resource from storage.
-     */
-    public function archive(Project $project)
-    {
-        $this->authorize('delete', $project);
-
-        $project->delete();
-
-        return redirect()->route('projects.index');
-    }
-
-    /**
-     * Restore the specified resource from storage.
-     */
-    public function restore(Project $project)
-    {
-        $this->authorize('restore', $project);
-
-        $project->restore();
-        return redirect()->route('projects.index');
-    }
-
-    /**
-     * ForceDelete the specified resource from storage.
-     */
-    public function forceDelete(Project $project)
-    {
-        $this->authorize('forceDelete', $project);
-
-        $project->forceDelete();
-        return redirect()->route('projects.index');
+        return redirect()->route('projects.show', $project)->with('success', 'Project updated successfully.');
     }
 
     /**
      * Add a collaborator to the project.
      */
-    public function addCollaborator(Request $request, Project $project)
+    public function addCollaborator(AddCollaboratorRequest $request, Project $project)
     {
         $this->authorize('update', $project);
 
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'role' => 'required|string',
-        ]);
+        $email = trim($request->user_id);
 
-        $project->collaborators()->attach($request->user_id, ['role' => $request->role]);
+        $user = User::where('email', $email)->first();
 
-        return back();
+        if (!$user) {
+            return back()->with('error', 'User not found. Please enter a valid email address.');
+        }
+
+        if ($user->id === $project->created_by) {
+            return back()->with('error', 'This user is already the project owner.');
+        }
+
+        if ($project->collaborators()->where('user_id', $user->id)->exists()) {
+            return back()->with('error', 'This user is already a collaborator.');
+        }
+
+        $project->collaborators()->attach($user->id, ['role' => 'Member']);
+
+        return back()->with('success', 'User added successfully.');
     }
 
     public function removeCollaborator(Project $project, User $user)

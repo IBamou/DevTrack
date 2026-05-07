@@ -19,7 +19,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
+        html { font-size: 80%; }
+        body { min-height: 100vh; margin: 0; }
+        .h-screen { min-height: 100vh; height: auto; }
         .avatar-group > * {
             border: 2px solid white;
         }
@@ -119,21 +123,22 @@
                 <!-- Filters -->
                 <form method="GET" action="{{ route('projects.index') }}" class="flex flex-col sm:flex-row items-center justify-between mb-6 space-y-3 sm:space-y-0">
                     <div class="flex items-center space-x-1 bg-slate-200 p-1 rounded-lg">
-                        <button type="submit" name="filter" value="" class="px-3 py-1 text-sm font-medium bg-white rounded-md shadow">All</button>
-                        <button type="submit" name="filter" value="active" class="px-3 py-1 text-sm font-medium text-slate-600 hover:text-slate-800">Active</button>
-                        <button type="submit" name="filter" value="archived" class="px-3 py-1 text-sm font-medium text-slate-600 hover:text-slate-800">Archived</button>
+                        <button type="submit" name="filter" value="" class="px-3 py-1 text-sm font-medium rounded-md {{ !request('filter') || request('filter') === '' ? 'bg-white shadow text-slate-900' : 'text-slate-600 hover:text-slate-800' }}">All</button>
+                        <button type="submit" name="filter" value="active" class="px-3 py-1 text-sm font-medium rounded-md {{ request('filter') === 'active' ? 'bg-white shadow text-slate-900' : 'text-slate-600 hover:text-slate-800' }}">Active</button>
+                        <button type="submit" name="filter" value="archived" class="px-3 py-1 text-sm font-medium rounded-md {{ request('filter') === 'archived' ? 'bg-white shadow text-slate-900' : 'text-slate-600 hover:text-slate-800' }}">Archived</button>
                     </div>
                     <div class="flex items-center space-x-3">
                         <div class="relative w-48">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                             </div>
-                            <input type="text" name="search" value="{{ request('search') }}" class="block w-full bg-white border-slate-300 rounded-md pl-10 pr-3 py-2 text-sm placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" placeholder="Search projects...">
+                            <input type="text" name="search" value="{{ request('search') }}" class="block w-full bg-white border-slate-300 rounded-md pl-10 pr-10 py-2 text-sm placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" placeholder="Search projects...">
                         </div>
                         <select name="sort" onchange="this.form.submit()" class="flex items-center px-3 py-2 text-sm font-medium bg-white border border-slate-300 rounded-md shadow-sm hover:bg-slate-50">
                             <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest</option>
                             <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest</option>
                         </select>
+                        <button type="submit" class="px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700">Search</button>
                     </div>
                 </form>
 
@@ -142,14 +147,22 @@
                     @forelse($projects as $project)
                     <div class="bg-white rounded-lg shadow p-5 flex flex-col">
                         <div class="flex justify-between items-start">
-                            <div class="flex items-center">
-                                <input type="checkbox" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
-                                <div class="ml-3">
-                                    <p class="text-xs uppercase font-semibold text-slate-500">{{ $project->tasks->first()?->priority ?? 'General' }}</p>
-                                    <a href="{{ route('projects.show', $project) }}" class="text-lg font-semibold text-slate-800 hover:text-blue-600">{{ $project->title }}</a>
+                            <div>
+                                <a href="{{ route('projects.show', $project) }}" class="text-lg font-semibold text-slate-800 hover:text-blue-600">{{ $project->title }}</a>
+                            </div>
+                            <div x-data="{ open: false }" @click.outside="open = false" class="relative">
+                                <button @click.prevent="open = !open" class="text-slate-400 hover:text-slate-600">
+                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" /></svg>
+                                </button>
+                                <div x-show="open" class="absolute right-0 mt-1 w-32 bg-white rounded-md shadow-lg border z-10">
+                                    <a href="{{ route('projects.show', $project) }}" class="block px-3 py-2 text-sm hover:bg-slate-100">View</a>
+                                    <a href="{{ route('projects.edit', $project) }}" class="block px-3 py-2 text-sm hover:bg-slate-100">Edit</a>
+                                    <form action="{{ route('projects.archive', $project) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="w-full text-left px-3 py-2 text-sm hover:bg-slate-100">Archive</button>
+                                    </form>
                                 </div>
                             </div>
-                            <button class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" /></svg></button>
                         </div>
                         <p class="mt-2 text-sm text-slate-600">{{ Str::limit($project->description, 80) }}</p>
                         <div class="mt-4">
@@ -183,8 +196,16 @@
                     @empty
                     <div class="col-span-full flex flex-col items-center justify-center py-12 text-center">
                         <svg class="h-12 w-12 text-slate-400 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
+                        @if(request('search'))
+                        <h3 class="text-lg font-medium text-slate-900 mb-1">No projects found</h3>
+                        <p class="text-slate-500 mb-4">Try adjusting your search</p>
+                        <a href="{{ route('projects.index') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Clear Search</a>
+                        @elseif(request('filter') === 'archived')
+                        <h3 class="text-lg font-medium text-slate-900 mb-1">No archived projects</h3>
+                        <p class="text-slate-500">Archived projects will appear here</p>
+                        @else
                         <h3 class="text-lg font-medium text-slate-900 mb-1">No projects yet</h3>
                         <p class="text-slate-500 mb-4">Create your first project to get started</p>
                         <a href="{{ route('projects.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
@@ -193,6 +214,7 @@
                             </svg>
                             New Project
                         </a>
+                        @endif
                     </div>
                     @endforelse
                 {{ $projects->links() }}
@@ -234,44 +256,6 @@
                         <div class="ml-4">
                             <p class="text-sm text-slate-500">Delayed</p>
                             <p class="text-2xl font-bold">-</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <div class="bg-slate-50 rounded-lg p-4 flex items-center">
-                        <div class="p-3 rounded-full bg-blue-100 text-blue-600">
-                           <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm text-slate-500">Total Projects</p>
-                            <p class="text-2xl font-bold">12</p>
-                        </div>
-                    </div>
-                     <div class="bg-slate-50 rounded-lg p-4 flex items-center">
-                        <div class="p-3 rounded-full bg-green-100 text-green-600">
-                           <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm text-slate-500">Completed</p>
-                            <p class="text-2xl font-bold">5</p>
-                        </div>
-                    </div>
-                     <div class="bg-slate-50 rounded-lg p-4 flex items-center">
-                        <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
-                           <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm text-slate-500">In Progress</p>
-                            <p class="text-2xl font-bold">6</p>
-                        </div>
-                    </div>
-                     <div class="bg-slate-50 rounded-lg p-4 flex items-center">
-                        <div class="p-3 rounded-full bg-red-100 text-red-600">
-                           <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm text-slate-500">Delayed</p>
-                            <p class="text-2xl font-bold">1</p>
                         </div>
                     </div>
                 </div>

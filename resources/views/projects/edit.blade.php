@@ -19,6 +19,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        html { font-size: 80%; }
+        body { min-height: 100vh; margin: 0; }
+        .h-screen { min-height: 100vh; height: auto; }
+    </style>
 </head>
 <body class="bg-slate-50 font-sans text-slate-900 antialiased">
 
@@ -77,16 +82,8 @@
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Top Header -->
             <header class="h-16 flex items-center justify-between bg-white border-b border-slate-200 px-4 sm:px-6">
-                <div class="relative w-full max-w-xs">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                    </div>
-                    <input type="text" class="block w-full bg-slate-100 border-transparent rounded-md pl-10 pr-3 py-2 text-sm placeholder-slate-500 focus:outline-none focus:bg-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500" placeholder="Search tasks or projects...">
-                </div>
-                <div class="flex items-center space-x-5">
-                    <button class="text-slate-500 hover:text-slate-700">
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-                    </button>
+                <div></div>
+                <div class="flex items-center space-x-2">
                     <button class="flex items-center space-x-2">
                         <img class="h-8 w-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="User avatar">
                         <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
@@ -96,7 +93,7 @@
 
             <!-- Main area -->
             <main class="flex-1 overflow-y-auto p-6 lg:p-8">
-                <!-- Page Header -->
+<!-- Page Header -->
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
                     <div>
                         <p class="text-sm font-medium text-slate-500">
@@ -104,138 +101,67 @@
                         </p>
                         <h1 class="text-3xl font-bold text-slate-800 mt-2">Project Settings</h1>
                     </div>
-                    <div class="flex items-center space-x-3 mt-4 sm:mt-0">
-                        <a href="{{ route('projects.show', $project) }}" class="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none">
-                            <svg class="w-5 h-5 mr-2 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-                            Cancel
-                        </a>
-                        <button type="submit" class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none">
-                            <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 3.75V16.5m-13.5-3.75h13.5" /></svg>
-                            Save Changes
-                        </button>
-                    </div>
                 </div>
 
                 <!-- Main grid -->
+                <form method="POST" action="{{ route('projects.update', $project) }}">
+                @csrf
+                @method('PUT')
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                     <!-- Left Column (Form) -->
                     <div class="lg:col-span-2 space-y-6">
                         <!-- General Settings Card -->
                         <div class="bg-white p-6 rounded-lg shadow-sm">
-                            <form method="POST" action="{{ route('projects.update', $project) }}">
-                                @csrf
-                                @method('PUT')
-                                <div class="flex items-start space-x-4">
-                                    <div class="flex-shrink-0 h-12 w-12 flex items-center justify-center bg-blue-50 rounded-lg text-blue-500">
-                                        <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-1.007 1.11-1.226m-2.22 2.452a11.95 11.95 0 00-6.868 6.868c-1.226.55-2.22 1.66-2.452 2.9m11.532-9.32a11.95 11.95 0 00-9.32 11.532c.542.09 1.007.56 1.226 1.11m9.32-2.452a11.95 11.95 0 00-6.868-6.868c-1.226-.55-2.22-1.66-2.452-2.9M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" /></svg>
-                                    </div>
-                                    <div>
-                                        <h2 class="text-lg font-semibold">General Settings</h2>
-                                        <p class="text-sm text-slate-500">Update your project information and visibility settings.</p>
-                                    </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 h-12 w-12 flex items-center justify-center bg-blue-50 rounded-lg text-blue-500">
+                                    <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-1.007 1.11-1.226m-2.22 2.452a11.95 11.95 0 00-6.868 6.868c-1.226.55-2.22 1.66-2.452 2.9m11.532-9.32a11.95 11.95 0 00-9.32 11.532c.542.09 1.007.56 1.226 1.11m9.32-2.452a11.95 11.95 0 00-6.868-6.868c-1.226-.55-2.22-1.66-2.452-2.9M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" /></svg>
                                 </div>
-                                <div class="mt-6 space-y-6">
+                                <div>
+                                    <h2 class="text-lg font-semibold">General Settings</h2>
+                                    <p class="text-sm text-slate-500">Update your project information and visibility settings.</p>
+                                </div>
+                            </div>
+                            <div class="mt-6 space-y-6">
+                                <div>
+                                    <label for="title" class="text-sm font-medium text-slate-700">Project Name</label>
+                                    <input type="text" name="title" id="title" value="{{ old('title', $project->title) }}" placeholder="Enter project name" class="mt-1 block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-3 pr-4 pl-4">
+                                    @error('title')
+                                    <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label for="description" class="text-sm font-medium text-slate-700">Project Description</label>
+                                    <textarea name="description" id="description" rows="5" placeholder="Describe your project goals and objectives" class="mt-0.5 block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2 pr-4 pl-4">{{ old('description', $project->description) }}</textarea>
+                                    <p class="mt-2 text-xs text-slate-500">Keep it concise and clear for the developers.</p>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                     <div>
-                                        <label for="title" class="text-sm font-medium text-slate-700">Project Name</label>
-                                        <input type="text" name="title" id="title" value="{{ old('title', $project->title) }}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                                        @error('title')
-                                        <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div>
-                                        <label for="description" class="text-sm font-medium text-slate-700">Project Description</label>
-                                        <textarea name="description" id="description" rows="4" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">{{ old('description', $project->description) }}</textarea>
-                                        <p class="mt-2 text-xs text-slate-500">Keep it concise and clear for the developers.</p>
-                                    </div>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                        <div>
-                                            <label for="due_date" class="text-sm font-medium text-slate-700">Deadline</label>
-                                            <div class="relative mt-1">
-                                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                                    <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                                </div>
-                                                <input type="date" name="due_date" id="due_date" value="{{ old('due_date', $project->due_date) }}" class="block w-full rounded-md border-slate-300 pl-10 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                                        <label for="due_date" class="text-sm font-medium text-slate-700">Deadline</label>
+                                        <div class="relative mt-1">
+                                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                                <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                             </div>
+                                            <input type="date" name="due_date" id="due_date" value="{{ old('due_date', $project->due_date) }}" class="block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-3 pl-10 pr-4">
                                         </div>
-                                        
                                     </div>
-
-
-
-                        <!-- Danger Zone Card -->
-                        <div class="bg-red-50/50 border border-red-200 p-6 rounded-lg">
-                            <div class="flex items-start space-x-4">
-                                <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center text-red-500">
-                                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126z" /></svg>
-                                </div>
-                                <div>
-                                    <h2 class="text-lg font-semibold text-red-800">Danger Zone</h2>
-                                    <p class="text-sm text-red-700">Irreversible actions for this project.</p>
                                 </div>
                             </div>
-                            <div class="mt-4 pt-4 border-t border-red-200 space-y-4">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="font-medium text-slate-800">Archive Project</p>
-                                        <p class="text-sm text-slate-500">Move this project to archives. It can be restored later.</p>
-                                    </div>
-                                    <form action="{{ route('projects.archive', $project) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50" onclick="return confirm('Archive this project?')">Archive Project</button>
-                                    </form>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="font-medium text-slate-800">Delete Permanently</p>
-                                        <p class="text-sm text-slate-500">All tasks, files, and activity will be permanently erased.</p>
-                                    </div>
-                                    <form action="{{ route('projects.forceDelete', $project) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="rounded-md border border-transparent bg-red-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-red-700" onclick="return confirm('Are you sure? This cannot be undone!')">Delete Project</button>
-                                    </form>
-                                </div>
+                            <div class="mt-6 flex items-center justify-end space-x-3">
+                                <a href="{{ route('projects.show', $project) }}" class="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">
+                                    Cancel
+                                </a>
+                                <button type="submit" class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                    Save Changes
+                                </button>
                             </div>
                         </div>
                     </div>
-                            </form>
-                        </div>
-
-                        <!-- Danger Zone Card -->
-                        <div class="bg-red-50/50 border border-red-200 p-6 rounded-lg">
-                            <div class="flex items-start space-x-4">
-                                <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center text-red-500">
-                                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126z" /></svg>
-                                </div>
-                                <div>
-                                    <h2 class="text-lg font-semibold text-red-800">Danger Zone</h2>
-                                    <p class="text-sm text-red-700">Irreversible actions for this project.</p>
-                                </div>
-                            </div>
-                            <div class="mt-4 pt-4 border-t border-red-200 space-y-4">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="font-medium text-slate-800">Archive Project</p>
-                                        <p class="text-sm text-slate-500">Move this project to archives. It can be restored later.</p>
-                                    </div>
-                                    <button class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">Archive Project</button>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="font-medium text-slate-800">Delete Permanently</p>
-                                        <p class="text-sm text-slate-500">All tasks, files, and activity will be permanently erased.</p>
-                                    </div>
-                                    <button class="rounded-md border border-transparent bg-red-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-red-700">Delete Project</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right Column (Members) -->
+                    </form>
+                    
+                    <!-- Right Column (Members) - Separate form for adding members -->
                     <div class="lg:col-span-1">
                         <div class="bg-white p-6 rounded-lg shadow-sm space-y-6 sticky top-8">
-                           <div class="flex items-start space-x-4">
+                            <div class="flex items-start space-x-4">
                                 <div class="flex-shrink-0 h-12 w-12 flex items-center justify-center bg-blue-50 rounded-lg text-blue-500">
                                     <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m-7.518 2.72a3 3 0 01-4.682-2.72 9.094 9.094 0 013.741-.479m7.518 2.72c.873.115 1.77.22 2.69.22a8.962 8.962 0 008.962-8.962c0-4.939-4.023-8.962-8.962-8.962s-8.962 4.023-8.962 8.962c0 1.171.223 2.292.637 3.345m12.139.973c.545.283 1.145.426 1.763.426a3.375 3.375 0 003.375-3.375c0-1.862-1.513-3.375-3.375-3.375s-3.375 1.513-3.375 3.375c0 .618.143 1.218.426 1.763m-12.139-.973c-.545.283-1.145.426-1.763.426a3.375 3.375 0 01-3.375-3.375c0-1.862 1.513-3.375 3.375-3.375s3.375 1.513 3.375 3.375c0 .618-.143 1.218-.426 1.763" /></svg>
                                 </div>
@@ -244,65 +170,77 @@
                                     <p class="text-sm text-slate-500">Manage who has access to this project.</p>
                                 </div>
                             </div>
-                           <div>
-                               <p class="text-xs font-semibold uppercase text-slate-500 tracking-wider">Invite team members</p>
-                               <div class="flex items-center space-x-2 mt-2">
-                                   <div class="relative flex-grow">
-                                       <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                            <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10 8a3 3 0 100-6 3 3 0 000 6zM3.465 14.493a1.23 1.23 0 00.41 1.412A9.877 9.877 0 0010 18c2.296 0 4.47-1.07 6.125-2.095a1.23 1.23 0 00.41-1.412A9.87 9.87 0 0010 12.5c-2.295 0-4.47 1.07-6.125 1.993z" /></svg>
-                                       </div>
-                                       <input type="text" placeholder="Search by name or email..." class="block w-full rounded-md border-slate-300 pl-10 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                                   </div>
-                                   <button class="flex-shrink-0 h-9 w-9 flex items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-700">
-                                       <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-                                   </button>
-                               </div>
-                           </div>
-                           <div>
-                               <p class="text-xs font-semibold uppercase text-slate-500 tracking-wider">Active members (4)</p>
-                               <ul class="mt-3 space-y-3">
-                                   <li class="flex items-center justify-between">
-                                       <div class="flex items-center">
-                                           <img class="h-8 w-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Alex Rivera">
-                                           <div class="ml-3">
-                                               <p class="text-sm font-semibold">Alex Rivera</p>
-                                               <p class="text-xs text-slate-500">Project Lead</p>
-                                           </div>
-                                       </div>
-                                       <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Owner</span>
-                                   </li>
-                                   <li class="flex items-center">
-                                       <img class="h-8 w-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Sarah Chen">
-                                       <div class="ml-3">
-                                           <p class="text-sm font-semibold">Sarah Chen</p>
-                                           <p class="text-xs text-slate-500">Lead UI Designer</p>
-                                       </div>
-                                   </li>
-                                   <li class="flex items-center">
-                                       <img class="h-8 w-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1531384441138-2736e62e0919?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Marcus Thorne">
-                                       <div class="ml-3">
-                                           <p class="text-sm font-semibold">Marcus Thorne</p>
-                                           <p class="text-xs text-slate-500">Senior Backend Developer</p>
-                                       </div>
-                                   </li>
-                                   <li class="flex items-center">
-                                       <img class="h-8 w-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1550525811-e5869105332c?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Elena Rodriguez">
-                                       <div class="ml-3">
-                                           <p class="text-sm font-semibold">Elena Rodriguez</p>
-                                           <p class="text-xs text-slate-500">QA Engineer</p>
-                                       </div>
-                                   </li>
-                               </ul>
-                           </div>
-                           <div class="bg-slate-50 p-3 rounded-lg flex items-start space-x-3">
-                               <svg class="h-5 w-5 flex-shrink-0 mt-0.5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                               <p class="text-xs text-slate-600">Members can view and contribute to all tasks within this project.</p>
-                           </div>
+                            <div>
+                                <p class="text-xs font-semibold uppercase text-slate-500 tracking-wider">Invite team members</p>
+                                <form method="POST" action="{{ route('projects.collaborator.add', $project) }}" class="mt-2">
+                                    @csrf
+                                    <div class="flex items-center space-x-2">
+                                        <div class="relative flex-grow">
+                                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                                <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10 8a3 3 0 100-6 3 3 0 000 6zM3.465 14.493a1.23 1.23 0 00.41 1.412A9.877 9.877 0 0010 18c2.296 0 4.47-1.07 6.125-2.095a1.23 1.23 0 00.41-1.412A9.87 9.87 0 0010 12.5c-2.295 0-4.47 1.07-6.125 1.993z" /></svg>
+                                            </div>
+                                            <input type="text" name="user_id" placeholder="Enter email to invite..." class="block w-full rounded-md border border-slate-300 pl-10 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2" autocomplete="off">
+                                        </div>
+                                        <button type="submit" class="flex-shrink-0 h-9 w-9 flex items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-700">
+                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                                        </button>
+                                    </div>
+                                    @error('user_id')
+                                            <p class="mt-2 text-sm text-red-600 font-medium text-left">{{ $message }}</p>
+                                            @enderror
+                                    @if(session()->has('error'))
+                                    <p class="mt-2 text-sm text-red-600 font-medium text-left">{{ session('error') }}</p>
+                                    @endif
+                                    @if(session()->has('success'))
+                                    <p class="mt-2 text-sm text-green-600 font-medium text-left">{{ session('success') }}</p>
+                                    @endif
+                                </form>
+                            </div>
+                            <div>
+                                <p class="text-xs font-semibold uppercase text-slate-500 tracking-wider">Active members</p>
+                                @if($project->createdBy || $project->collaborators->count() > 0)
+                                <ul class="mt-3 space-y-3 max-h-48 overflow-y-auto">
+                                    @if($project->createdBy)
+                                    <li class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <img class="h-8 w-8 rounded-full object-cover" src="{{ $project->createdBy->profile_photo_url }}" alt="{{ $project->createdBy->name }}">
+                                            <div class="ml-3">
+                                                <p class="text-sm font-semibold">{{ $project->createdBy->name }}</p>
+                                                <p class="text-xs text-slate-500">Owner</p>
+                                            </div>
+                                        </div>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Owner</span>
+                                    </li>
+                                    @endif
+                                    @foreach($project->collaborators as $collaborator)
+                                    <li class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <img class="h-8 w-8 rounded-full object-cover" src="{{ $collaborator->profile_photo_url }}" alt="{{ $collaborator->name }}">
+                                            <div class="ml-3">
+                                                <p class="text-sm font-semibold">{{ $collaborator->name }}</p>
+                                                <p class="text-xs text-slate-500">{{ $collaborator->pivot->role ?? 'Member' }}</p>
+                                            </div>
+                                        </div>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">{{ $collaborator->pivot->role ?? 'Member' }}</span>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                                @else
+                                <div class="mt-3 flex flex-col items-center justify-center py-4 text-center">
+                                    <svg class="h-8 w-8 text-slate-400 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                                    <p class="text-sm text-slate-500">No members yet</p>
+                                    <p class="text-xs text-slate-400">Invite team members to collaborate</p>
+                                </div>
+                                @endif
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-lg flex items-start space-x-3">
+                                <svg class="h-5 w-5 flex-shrink-0 mt-0.5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <p class="text-xs text-slate-600">Members can view and contribute to all tasks within this project.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Footer -->
+                </form>
                 <footer class="mt-12">
                     <div class="py-6 border-t border-slate-200 flex items-center justify-between">
                          <p class="text-sm text-slate-500">
@@ -318,7 +256,6 @@
                 </footer>
             </main>
         </div>
-        <!-- ==== Main Content End ==== -->
     </div>
 </body>
 </html>
