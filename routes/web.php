@@ -21,8 +21,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/{project}/edit', 'edit')->name('projects.edit');
             Route::put('/{project}', 'update')->name('projects.update');
             Route::delete('/{project}', 'archive')->name('projects.archive');
-            Route::patch('/{project}/restore', 'restore')->name('projects.restore');
-            Route::delete('/{project}/force', 'forceDelete')->name('projects.forceDelete');
+            // Route::patch('/{project}/restore', 'restore')->name('projects.restore');
+            Route::patch('/{project}/restore', 'restore')->withTrashed()->name('projects.restore');
+            // Route::delete('/{project}/force', 'forceDelete')->name('projects.forceDelete');
+                Route::delete('/{project}/force', 'forceDelete')->withTrashed()->name('projects.forceDelete');
             Route::post('/{project}/collaborator/add', 'addCollaborator')->name('projects.collaborator.add');
             Route::delete('/{project}/collaborator/{user}/remove', 'removeCollaborator')->name('projects.collaborator.remove');
         });
@@ -34,8 +36,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/{project}/task/{task}/edit', 'edit')->name('projects.tasks.edit');
             Route::put('/{project}/task/{task}', 'update')->name('projects.tasks.update');
             Route::delete('/{project}/task/{task}', 'archive')->name('projects.tasks.archive');
-            Route::patch('/{project}/task/{task}/restore', 'restore')->name('projects.tasks.restore');
-            Route::delete('/{project}/task/{task}/force', 'forceDelete')->name('projects.tasks.forceDelete');
+            Route::patch('/{project}/task/{task}/restore', 'restore')->withTrashed()->name('projects.tasks.restore');
+            Route::delete('/{project}/task/{task}/force', 'forceDelete')->withTrashed()->name('projects.tasks.forceDelete');
             Route::post('/{project}/task/{task}/assign', 'assignedTo')->name('projects.tasks.assign');
             Route::patch('/{project}/task/{task}/status', 'updateStatus')->name('projects.tasks.updateStatus');
             Route::get('/{project}/task/archives', 'archives')->name('projects.tasks.archives');
