@@ -6,107 +6,143 @@ use App\Http\Requests\TaskRequest;
 use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Http\Request;
-use function Laravel\Prompts\task;
 
 class TaskController extends Controller
 {
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new task.
      */
-    public function create()
+    public function create(Project $project)
     {
-        $this->authorize('create', Task::class);
-        return view('tasks.create');
+        $this->authorize('create', [Task::class, $project]);
+        return view('tasks.create', compact('project'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created task.
      */
     public function store(TaskRequest $request, Project $project)
     {
-        $this->authorize('create', Task::class);
+        $this->authorize('create', [Task::class, $project]);
 
         $data = $request->validated();
-        $task =[
+        Task::create([
             ...$data,
             'created_by' => $project->createdBy->id,
             'project_id' => $project->id
-        ];
-        Task::create($task);
-        return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
-    }
-
-    public function show(Task $task)
-    {
-        $this->authorize('view', $task);
-        return view('tasks.show', compact('task'));
-    }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Task $task)
-    {
-        $this->authorize('update', $task);
-        return view('tasks.edit', compact('task'));
-    }
-
-
-    public function update(TaskRequest $request, Task $task)
-    {
-        $this->authorize('update', $task);
-        $data = $request->validated();
-        $task->update($data);
-        return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
-    }
-
-    public function updateStatus(Request $request, Task $task){
-        $this->authorize('updateStatus', $task);
-        $data = $request->validate([
-            'status' => 'required|in:pending,in_progress,completed'
         ]);
-        $task->update($data);
-        return redirect()->route('tasks.index')->with('success', 'Task status updated successfully.');
+
+        return redirect()->route('projects.show', $project)->with('success', 'Task created successfully.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Show a single task.
      */
-    public function archive(Task $task)
+    public function show(Project $project, Task $task_record)
     {
-        $this->authorize('delete', $task);
-        $task->delete();
-        return redirect()->route('tasks.index')->with('success', 'Task archived successfully.');
+        $this->authorize('view', $task_record);
+        return view('tasks.show', compact('task_record'));
     }
 
-    public function restore(Task $task){
+    /**
+     * Show the form for editing a task.
+     */
+    public function edit(Project $project, Task $task_record)
+    {
+        $this->authorize('update', $task_record);
+        return view('tasks.edit', compact('task_record'));
+    }
+
+    /**
+     * Update a task.
+     */
+    public function update(TaskRequest $request, Project $project, Task $task_record)
+    {
+        $this->authorize('update', $task_record);
+        
+        $data = $request->validated();
+        $task_record->update($data);
+
+        return redirect()->route('projects.show', $task_record->project)->with('success', 'Task updated successfully.');
+    }
+
+    /**
+     * Update task status only.
+     */
+    public function updateStatus(Request $request, Project $project, Task $task_record)
+    {
+        $this->authorize('updateStatus', $task_record);
+        
+        $data = $request->validate([
+            'status' => 'required|in:todo,in_progress,review,done'
+        ]);
+        
+        $task_record->update($data);
+
+        return redirect()->route('projects.show', $task_record->project)->with('success', 'Task status updated successfully.');
+    }
+
+    /**
+     * Archive (soft delete) a task.
+     */
+    public function archive(Project $project, Task $task_record)
+    {
+        $this->authorize('delete', $task_record);
+        $task_record->delete();
+
+        return redirect()->route('projects.show', $task_record->project)->with('success', 'Task archived successfully.');
+    }
+
+    /**
+     * Restore a soft-deleted task.
+     */
+    public function restore(Project $project, Task $task_record)
+    {
+        $task = Task::withTrashed()->findOrFail($task_record->id);
         $this->authorize('restore', $task);
         $task->restore();
-        return redirect()->route('tasks.index')->with('success', 'Task restored successfully.');
+
+        return redirect()->back()->with('success', 'Task restored successfully.');
     }
 
-    public function forcedelete(Task $task){
+    /**
+     * Permanently delete a task.
+     */
+    public function forcedelete(Project $project, Task $task_record)
+    {
+        $task = Task::withTrashed()->findOrFail($task_record->id);
         $this->authorize('forceDelete', $task);
         $task->forceDelete();
-        return redirect()->route('tasks.index')->with('success', 'Task deleted permanently.');
+
+        return redirect()->back()->with('success', 'Task permanently deleted.');
     }
 
-    public function viewArchived(){
+    /**
+     * View all archived (deleted) tasks.
+     */
+    public function viewArchived()
+    {
         $this->authorize('viewArchived', Task::class);
         $archivedTasks = Task::onlyTrashed()->get();
-        return view('tasks.archived', compact('archivedTasks'));
+        
+        return view('tasks.archives', compact('archivedTasks'));
     }
 
-    public function assignedTo(Request $request, Task $task){
-        $this->authorize('update',$task);
-        $assignedUser = $request->validate([
+    /**
+     * Assign a task to a collaborator.
+     */
+    public function assignedTo(Request $request, Project $project, Task $task_record)
+    {
+        $this->authorize('update', $task_record);
+        
+        $data = $request->validate([
             'collaborator_id' => 'required|exists:collaborators,id'
         ]);
-        $task->update($assignedUser);
-        return redirect()->route('tasks.index')->with('success', 'Task assigned successfully.');
-    } 
+        
+        $task_record->update($data);
 
+        return redirect()->route('projects.show', $task_record->project)->with('success', 'Task assigned successfully.');
+    }
 
 }
