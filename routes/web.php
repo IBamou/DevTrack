@@ -3,7 +3,13 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
+use App\Models\Project;
+use App\Models\Task;
 use Illuminate\Support\Facades\Route;
+
+Route::bind('task_record', function ($value) {
+    return Task::findOrFail($value);
+});
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
@@ -31,6 +37,7 @@ Route::middleware('auth')->group(function () {
 
 
         Route::controller(TaskController::class)->group(function () {
+            Route::get('/tasks/archives', 'viewArchived')->name('tasks.archives');
             Route::get('/{project}/task/create', 'create')->name('projects.tasks.create');
             Route::post('/{project}/task', 'store')->name('projects.tasks.store');
             Route::get('/{project}/task/{task}/edit', 'edit')->name('projects.tasks.edit');

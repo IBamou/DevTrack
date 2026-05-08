@@ -24,7 +24,7 @@ class TaskPolicy
     {
         return $user->is($project->createdBy);
     }
-    
+
     /*
      * Determine whether the user can update the model.
      */

@@ -105,7 +105,7 @@ class ProjectController extends Controller
 
         switch ($filter) {
             case 'my':
-                $tasks = $tasks->where('collaborator_id', Auth::id());
+                $tasks = $tasks->where('collaborator_id', auth()->id());
                 break;
             case 'todo':
                 $tasks = $tasks->where('status', 'todo');
@@ -153,7 +153,7 @@ class ProjectController extends Controller
     public function addCollaborator(AddCollaboratorRequest $request, Project $project)
     {
         $this->authorize('addCollaborator', $project);
-        
+
         $data = $request->validated();
 
         $user = User::where('email', $data['email'])->first();
