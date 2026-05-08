@@ -38,11 +38,11 @@ Route::middleware('auth')->group(function () {
             Route::get('/tasks/archives', 'viewArchived')->name('tasks.archives');
             Route::get('/{project}/task/create', 'create')->name('projects.tasks.create');
             Route::post('/{project}/task', 'store')->name('projects.tasks.store');
-            Route::get('/{project}/task/{task}/edit', 'edit')->name('projects.tasks.edit');
-            Route::put('/{project}/task/{task}', 'update')->name('projects.tasks.update');
-            Route::delete('/{project}/task/{task}', 'archive')->name('projects.tasks.archive');
-            Route::patch('/{project}/task/{task}/restore', 'restore')->name('projects.tasks.restore');
-            Route::delete('/{project}/task/{task}/force', 'forceDelete')->name('projects.tasks.forceDelete')->can('can-acc');
+            Route::get('/{project}/task/{task_record}/edit', 'edit')->name('projects.tasks.edit');
+            Route::put('/{project}/task/{task_record}', 'update')->name('projects.tasks.update');
+            Route::delete('/{project}/task/{task_record}', 'archive')->name('projects.tasks.archive');
+            Route::patch('/{project}/task/{task_record}/restore', 'restore')->name('projects.tasks.restore');
+            Route::delete('/{project}/task/{task_record}/force', 'forceDelete')->name('projects.tasks.forceDelete');
         });
     });
 });
