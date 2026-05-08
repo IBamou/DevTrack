@@ -14,15 +14,16 @@ class AddCollaboratorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|email',
+            'email' => 'required|email|exists:users,email',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'user_id.required' => 'Please enter an email address.',
-            'user_id.email' => 'Please enter a valid email address.',
+            'email.required' => 'Please enter an email address.',
+            'email.email' => 'Please enter a valid email address.',
+            'email.exists' => 'The selected user does not exist.',
         ];
     }
 }

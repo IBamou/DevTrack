@@ -51,4 +51,9 @@ class ProjectPolicy
     {
         return $user->is($project->createdBy);
     }
+
+    public function addCollaborator(User $user, Project $project): bool
+    {
+        return $user->is($project->createdBy);
+    }
 }

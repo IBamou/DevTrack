@@ -52,7 +52,7 @@ class ProjectController extends Controller
     /**
      * Display archived projects.
      */
-    public function archives(Request $request)
+    public function archives()
     {
         $this->authorize('viewAnyArchived', Project::class);
 
@@ -105,7 +105,7 @@ class ProjectController extends Controller
 
         switch ($filter) {
             case 'my':
-                $tasks = $tasks->where('collaborator_id', auth()->id());
+                $tasks = $tasks->where('assignee_id', auth()->id());
                 break;
             case 'todo':
                 $tasks = $tasks->where('status', 'todo');
@@ -152,18 +152,14 @@ class ProjectController extends Controller
      */
     public function addCollaborator(AddCollaboratorRequest $request, Project $project)
     {
-        $this->authorize('update', $project);
+        $this->authorize('addCollaborator', $project);
 
-        $email = trim($request->user_id);
+        $data = $request->validated();
 
-        $user = User::where('email', $email)->first();
+        $user = User::where('email', $data['email'])->first();
 
         if (!$user) {
             return back()->with('error', 'User not found. Please enter a valid email address.');
-        }
-
-        if ($user->id === $project->created_by) {
-            return back()->with('error', 'This user is already the project owner.');
         }
 
         if ($project->collaborators()->where('user_id', $user->id)->exists()) {
@@ -177,10 +173,29 @@ class ProjectController extends Controller
 
     public function removeCollaborator(Project $project, User $user)
     {
-        $this->authorize('update', $project);
+        $this->authorize('addCollaborator', $project);
 
         $project->collaborators()->detach($user->id);
 
         return back();
+    }
+
+    public function archive(Project $project)
+    {
+        $this->authorize('delete', $project);
+        $project->delete();
+        return redirect()->route('projects.index')->with('success', 'Project archived successfully.');
+    }
+
+    public function restore(Project $project){
+        $this->authorize('restore', $project);
+        $project->restore();
+        return redirect()->route('projects.index')->with('success', 'Project restored successfully.');
+    }
+
+    public function forceDelete(Project $project){
+        $this->authorize('forceDelete', $project);
+        $project->forceDelete();
+        return redirect()->route('projects.index')->with('success', 'Project deleted permanently.');
     }
 }
