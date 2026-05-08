@@ -288,7 +288,7 @@
 
                                 <div class="space-y-4">
                                     @foreach($tasks->where('status', 'todo') as $task)
-                                        <a href="{{ route('projects.tasks.edit', ['project' => $project->id, 'task_record' => $task->id]) }}" class="block bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
+                                        <a href="{{ route('projects.tasks.edit', ['project' => $project->id, 'task' => $task->id]) }}" class="block bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
                                             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
                                                 {{ $task->priority === 'high' ? 'bg-red-100 text-red-700' :
                                                    ($task->priority === 'medium' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-700') }}">
@@ -325,7 +325,7 @@
 
                                 <div class="space-y-4">
                                     @foreach($tasks->where('status', 'in_progress') as $task)
-                                        <a href="{{ route('projects.tasks.edit', ['project' => $project->id, 'task_record' => $task->id]) }}" class="block bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
+                                        <a href="{{ route('projects.tasks.edit', ['project' => $project->id, 'task' => $task->id]) }}" class="block bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
                                             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
                                                 {{ $task->priority === 'high' ? 'bg-red-100 text-red-700' :
                                                    ($task->priority === 'medium' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-700') }}">
@@ -362,7 +362,7 @@
 
                                 <div class="space-y-4">
                                     @foreach($tasks->where('status', 'review') as $task)
-                                        <a href="{{ route('projects.tasks.edit', ['project' => $project->id, 'task_record' => $task->id]) }}" class="block bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
+                                        <a href="{{ route('projects.tasks.edit', ['project' => $project->id, 'task' => $task->id]) }}" class="block bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
                                             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
                                                 {{ $task->priority === 'high' ? 'bg-red-100 text-red-700' :
                                                    ($task->priority === 'medium' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-700') }}">
@@ -399,7 +399,7 @@
 
                                 <div class="space-y-4">
                                     @foreach($tasks->where('status', 'done') as $task)
-                                        <a href="{{ route('projects.tasks.edit', ['project' => $project->id, 'task_record' => $task->id]) }}" class="block bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
+                                        <a href="{{ route('projects.tasks.edit', ['project' => $project->id, 'task' => $task->id]) }}" class="block bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
                                             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 mb-2">Completed</span>
                                             <p class="font-semibold text-slate-800 mt-2">{{ $task->title }}</p>
                                             <div class="flex items-center justify-between mt-4 text-sm text-slate-500">
