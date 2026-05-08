@@ -13,6 +13,11 @@ class Project extends Model
     use SoftDeletes, HasFactory;
     protected $fillable = ['title', 'description', 'created_by', 'due_date'];
 
+    public function setTitleAttribute($value): void
+    {
+        $this->attributes['title'] = ucfirst($value);
+    }
+
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -33,11 +38,11 @@ class Project extends Model
 
     public function getProgressAttribute(): int
     {
-        $total = $this->tasks->count();
+        $total = $this->tasks()->count();
         if ($total === 0) {
             return 0;
         }
-        $completed = $this->tasks->where('status', 'done')->count();
+        $completed = $this->tasks()->where('status', 'done')->count();
 
         return (int) round(($completed / $total) * 100);
     }
