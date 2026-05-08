@@ -105,7 +105,7 @@ class ProjectController extends Controller
 
         switch ($filter) {
             case 'my':
-                $tasks = $tasks->where('assignee_id', auth()->id());
+                $tasks = $tasks->where('collaborator_id', auth()->id());
                 break;
             case 'todo':
                 $tasks = $tasks->where('status', 'todo');

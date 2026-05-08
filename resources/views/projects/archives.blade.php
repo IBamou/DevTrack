@@ -178,7 +178,7 @@
                         </div>
                         <div class="ml-4">
                             <p class="text-sm text-slate-500">Storage Saved</p>
-                            <p class="text-2xl font-bold">-</p>
+                            <p class="text-2xl font-bold">{{ $projects->sum('storage_used') }} GB</p>
                         </div>
                     </div>
                     <div class="bg-white rounded-lg shadow-sm p-5 flex items-center">

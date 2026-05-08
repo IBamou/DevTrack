@@ -196,9 +196,9 @@
                             <div>
                                 <p class="text-xs uppercase font-semibold text-slate-500">
                                     PROJECTS <span class="mx-1">›</span>
-                                    {{ strtoupper($project->tasks->first()?->priority ?? 'GENERAL') }}
+                                    {{ strtoupper($project->title) }}
                                 </p>
-                                <h1 class="text-3xl font-bold text-slate-800 mt-1">{{ $project->title }}</h1>
+                                <h1 class="text-3xl font-bold text-slate-800 mt-1">{{ ucfirst($project->title) }}</h1>
                                 <p class="flex items-center text-sm text-slate-500 mt-2">
                                     <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -210,6 +210,7 @@
                                 </p>
                             </div>
 
+                            @can('create', [App\Models\Task::class, $project])
                             <div class="flex items-center space-x-2 mt-4 sm:mt-0">
                                 <a href="{{ route('projects.tasks.create', $project) }}"
                                     class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
@@ -221,6 +222,7 @@
                                     Add Task
                                 </a>
                             </div>
+                            @endcan
                         </div>
 
                         <!-- Progress & Filters -->
