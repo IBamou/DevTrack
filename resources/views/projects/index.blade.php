@@ -148,7 +148,7 @@
                     <div class="bg-white rounded-lg shadow p-5 flex flex-col">
                         <div class="flex justify-between items-start">
                             <div>
-                                <a href="{{ route('projects.show', $project) }}" class="text-lg font-semibold text-slate-800 hover:text-blue-600">{{ $project->title }}</a>
+                                <a href="{{ route('projects.show', $project) }}" class="text-lg font-semibold text-slate-800 hover:text-blue-600">{{ ucfirst($project->title)}}</a>
                             </div>
                             <div x-data="{ open: false }" @click.outside="open = false" class="relative">
                                 <button @click.prevent="open = !open" class="text-slate-400 hover:text-slate-600">
@@ -182,7 +182,7 @@
                                 @endif
                             </div>
                             <div class="text-right">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                                     @if($project->status === 'healthy') bg-green-100 text-green-800
                                     @elseif($project->status === 'at_risk') bg-yellow-100 text-yellow-800
                                     @else bg-red-100 text-red-800
