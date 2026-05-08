@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevTrack - The All-In-One Platform for Software Teams</title>
+    <title>DevTrack - Project Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -18,179 +18,210 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        html { font-size: 80%; }
+    </style>
 </head>
-<body class="bg-white font-sans text-slate-800 antialiased">
-
-    <div class="relative overflow-hidden">
+<body class="bg-slate-100 font-sans text-slate-900 antialiased">
+    <div class="min-h-screen flex flex-col">
         <!-- Header -->
-        <header class="absolute inset-x-0 top-0 z-50">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="flex h-16 items-center justify-between">
-                    <!-- Logo -->
-                    <div class="flex items-center">
-                        <a href="{{ url('/') }}" class="flex-shrink-0 flex items-center space-x-2">
-                            <svg class="h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M11.917 15.242 6.023 9.478l.083-.083L12 3l5.977 6.395-.083.083-5.894 5.764Z" fill="currentColor"/>
-                                <path d="m6.023 15.325 5.894 5.761 5.894-5.761-.083.083-5.811 5.681-5.811-5.681.083-.083Z" fill="currentColor"/>
-                            </svg>
-                            <span class="text-2xl font-bold text-slate-800">DevTrack</span>
-                        </a>
-                    </div>
-                    <!-- Navigation -->
-                    <div class="flex items-center space-x-4">
-                        @auth
-                            <a href="{{ route('dashboard') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">Dashboard</a>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="text-sm font-medium text-slate-600 hover:text-slate-900">Logout</button>
-                            </form>
-                        @else
-                            <a href="{{ route('login') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">Login</a>
-                            <a href="{{ route('register') }}" class="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                                Sign Up
-                            </a>
-                        @endauth
-                    </div>
+        <header class="bg-white border-b border-slate-200">
+            <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+                <a href="{{ route('welcome') }}" class="flex items-center space-x-2">
+                    <svg class="h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11.917 15.242 6.023 9.478l.083-.083L12 3l5.977 6.395-.083.083-5.894 5.764Z" fill="currentColor"/>
+                        <path d="m6.023 15.325 5.894 5.761 5.894-5.761-.083.083-5.811 5.681-5.811-5.681.083-.083Z" fill="currentColor"/>
+                    </svg>
+                    <span class="text-2xl font-bold text-slate-800">DevTrack</span>
+                </a>
+                <div class="flex items-center gap-6">
+                    <a href="#features" class="text-sm text-slate-600 hover:text-slate-900">Features</a>
+                    @auth
+                        <a href="{{ route('dashboard') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">Dashboard</a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="text-sm font-medium text-slate-600 hover:text-slate-900">Logout</button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">Login</a>
+                        <a href="{{ route('register') }}" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700">Sign Up</a>
+                    @endauth
                 </div>
             </div>
         </header>
 
         <!-- Hero Section -->
-        <main>
-            <div class="relative pt-16 sm:pt-24 lg:pt-32">
-                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div class="text-center">
-                        <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl md:text-6xl">
-                            <span class="block">Streamline Your Software</span>
-                            <span class="block text-blue-600">Development Workflow</span>
-                        </h1>
-                        <p class="mt-3 mx-auto max-w-md text-lg text-slate-600 sm:text-xl md:mt-5 md:max-w-3xl">
-                            DevTrack is the all-in-one platform for modern software teams. Plan, track, and ship great products with less friction and more focus.
-                        </p>
-                        <div class="mt-8 flex justify-center gap-3">
-                            @auth
-                                <a href="{{ route('dashboard') }}" class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-700">Go to Dashboard</a>
-                            @else
-                                <a href="{{ route('register') }}" class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-700">Get Started Free</a>
-                                <a href="#" class="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-6 py-3 text-base font-medium text-slate-700 shadow-sm hover:bg-slate-50">Request a Demo</a>
-                            @endauth
+        <main class="flex-1">
+            <div class="max-w-6xl mx-auto px-4 py-16">
+                <div class="text-center mb-16">
+                    <div class="inline-flex items-center px-4 py-1.5 bg-blue-50 rounded-full border border-blue-100 mb-6">
+                        <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                        <span class="text-sm text-blue-700">Now in Public Beta</span>
+                    </div>
+                    <h1 class="text-5xl font-extrabold text-slate-900 mb-4">
+                        Streamline Your <span class="text-blue-600">Project Workflow</span>
+                    </h1>
+                    <p class="text-xl text-slate-600 max-w-2xl mx-auto mb-8">
+                        DevTrack brings your planning, task management, and team collaboration into one seamless workspace.
+                    </p>
+                    <div class="flex justify-center gap-4">
+                        @auth
+                            <a href="{{ route('dashboard') }}" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700">
+                                Go to Dashboard
+                            </a>
+                        @else
+                            <a href="{{ route('register') }}" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700">
+                                Get Started Free
+                            </a>
+                            <a href="{{ route('login') }}" class="px-6 py-3 border border-slate-300 text-slate-700 font-medium rounded-lg hover:bg-slate-50">
+                                Login
+                            </a>
+                        @endauth
+                    </div>
+                </div>
+
+                <!-- Dashboard Preview -->
+                <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden mb-16">
+                    <div class="bg-slate-50 border-b border-slate-200 px-4 py-3 flex items-center gap-2">
+                        <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                        <span class="ml-4 text-sm text-slate-500">Dashboard Preview</span>
+                    </div>
+                    <div class="grid grid-cols-12" style="min-height: 300px;">
+                        <!-- Sidebar -->
+                        <div class="col-span-2 bg-slate-800 p-4 space-y-2">
+                            <div class="h-6 bg-slate-700 rounded w-3/4"></div>
+                            <div class="h-6 bg-slate-700/50 rounded w-1/2 mt-8"></div>
+                            <div class="h-6 bg-slate-700/50 rounded w-1/2"></div>
+                            <div class="h-6 bg-slate-700/50 rounded w-1/2"></div>
+                        </div>
+                        <!-- Main Content -->
+                        <div class="col-span-10 p-6">
+                            <div class="flex gap-3 mb-6">
+                                <div class="h-8 bg-blue-600 rounded w-20"></div>
+                                <div class="h-8 bg-slate-200 rounded w-20"></div>
+                                <div class="h-8 bg-slate-200 rounded w-20"></div>
+                            </div>
+                            <div class="grid grid-cols-4 gap-4">
+                                <!-- Todo -->
+                                <div>
+                                    <div class="font-semibold text-slate-600 text-sm mb-3">To Do</div>
+                                    <div class="bg-slate-50 rounded-lg p-3 border border-slate-200 mb-2">
+                                        <div class="h-4 bg-slate-300 rounded w-3/4 mb-2"></div>
+                                        <div class="h-3 bg-slate-200 rounded w-1/2"></div>
+                                    </div>
+                                    <div class="bg-slate-50 rounded-lg p-3 border border-slate-200">
+                                        <div class="h-4 bg-slate-300 rounded w-1/2 mb-2"></div>
+                                    </div>
+                                </div>
+                                <!-- In Progress -->
+                                <div>
+                                    <div class="font-semibold text-blue-600 text-sm mb-3">In Progress</div>
+                                    <div class="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                                        <div class="h-4 bg-blue-300 rounded w-2/3 mb-2"></div>
+                                        <div class="h-3 bg-blue-200 rounded w-3/4"></div>
+                                    </div>
+                                </div>
+                                <!-- Review -->
+                                <div>
+                                    <div class="font-semibold text-purple-600 text-sm mb-3">Review</div>
+                                    <div class="bg-purple-50 rounded-lg p-3 border border-purple-200 mb-2">
+                                        <div class="h-4 bg-purple-300 rounded w-1/2"></div>
+                                    </div>
+                                </div>
+                                <!-- Done -->
+                                <div>
+                                    <div class="font-semibold text-green-600 text-sm mb-3">Done</div>
+                                    <div class="bg-green-50 rounded-lg p-3 border border-green-200">
+                                        <div class="h-4 bg-green-300 rounded w-3/4"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="relative mt-12 sm:mt-16 lg:mt-24">
-                    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <div class="relative rounded-xl shadow-2xl overflow-hidden bg-slate-800 border border-slate-700">
-                           <img class="w-full" src="https://placehold.co/1200x600/1e293b/3b82f6?text=DevTrack+Dashboard" alt="DevTrack App Screenshot">
+                <!-- Features -->
+                <div id="features" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                    <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2m0-10a2 2 0 012-2h2a2 2 0 012 2"/>
+                            </svg>
                         </div>
+                        <h3 class="text-lg font-semibold text-slate-900 mb-2">Kanban Boards</h3>
+                        <p class="text-slate-600">Visualize your workflow with drag-and-drop boards.</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-900 mb-2">Team Collaboration</h3>
+                        <p class="text-slate-600">Work together seamlessly with real-time updates.</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2m0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-900 mb-2">Progress Tracking</h3>
+                        <p class="text-slate-600">Track velocity and gain insights with analytics.</p>
+                    </div>
+                </div>
+
+                <!-- Pricing -->
+                <div id="pricing" class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                    <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+                        <h3 class="font-semibold text-slate-900">Starter</h3>
+                        <p class="text-3xl font-bold text-slate-900 mt-2">$0</p>
+                        <p class="text-sm text-slate-500 mt-1">Free forever</p>
+                        <ul class="mt-4 space-y-2 text-sm text-slate-600">
+                            <li>✓ Up to 5 projects</li>
+                            <li>✓ 3 team members</li>
+                            <li>✓ Unlimited tasks</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg border-2 border-blue-500 p-6 relative">
+                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium">Popular</div>
+                        <h3 class="font-semibold text-slate-900">Pro</h3>
+                        <p class="text-3xl font-bold text-slate-900 mt-2">$12</p>
+                        <p class="text-sm text-slate-500 mt-1">per user/month</p>
+                        <ul class="mt-4 space-y-2 text-sm text-slate-600">
+                            <li>✓ Unlimited projects</li>
+                            <li>✓ Unlimited members</li>
+                            <li>✓ Analytics</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+                        <h3 class="font-semibold text-slate-900">Enterprise</h3>
+                        <p class="text-3xl font-bold text-slate-900 mt-2">Custom</p>
+                        <p class="text-sm text-slate-500 mt-1">Contact for pricing</p>
+                        <ul class="mt-4 space-y-2 text-sm text-slate-600">
+                            <li>✓ Everything in Pro</li>
+                            <li>✓ SSO & SAML</li>
+                            <li>✓ Priority support</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </main>
-    </div>
 
-    <!-- Trusted By Section -->
-    <div class="bg-slate-50 py-16 sm:py-24">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <p class="text-center text-sm font-semibold uppercase text-slate-500 tracking-wider">Trusted by the world's most innovative teams</p>
-            <div class="mt-8 grid grid-cols-2 gap-8 md:grid-cols-6 lg:grid-cols-5">
-                <div class="col-span-1 flex justify-center md:col-span-2 lg:col-span-1"><span class="text-2xl font-bold text-slate-400">ACME</span></div>
-                <div class="col-span-1 flex justify-center md:col-span-2 lg:col-span-1"><span class="text-2xl font-bold text-slate-400">TechCorp</span></div>
-                <div class="col-span-1 flex justify-center md:col-span-2 lg:col-span-1"><span class="text-2xl font-bold text-slate-400">StartupX</span></div>
-                <div class="col-span-1 flex justify-center md:col-span-3 lg:col-span-1"><span class="text-2xl font-bold text-slate-400">DevCo</span></div>
-                <div class="col-span-2 flex justify-center md:col-span-3 lg:col-span-1"><span class="text-2xl font-bold text-slate-400">BuildLab</span></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Features Section -->
-    <div class="bg-white py-16 sm:py-24">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-base font-semibold text-blue-600 uppercase tracking-wide">Everything you need</h2>
-                <p class="mt-2 text-3xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">All-in-one development platform</p>
-                <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-500">Stop juggling tools. DevTrack brings your team's entire workflow into one collaborative space.</p>
-            </div>
-            <div class="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-                <div class="pt-6">
-                    <div class="flow-root bg-slate-50 rounded-lg px-6 pb-8">
-                        <div class="-mt-6">
-                            <div><span class="inline-flex items-center justify-center p-3 bg-blue-500 rounded-md shadow-lg"><svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></span></div>
-                            <h3 class="mt-8 text-lg font-medium text-slate-900 tracking-tight">Visual Kanban Boards</h3>
-                            <p class="mt-5 text-base text-slate-500">Easily visualize your workflow from start to finish. Drag-and-drop tasks, set priorities, and keep everyone on the same page.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="pt-6">
-                    <div class="flow-root bg-slate-50 rounded-lg px-6 pb-8">
-                        <div class="-mt-6">
-                            <div><span class="inline-flex items-center justify-center p-3 bg-blue-500 rounded-md shadow-lg"><svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></span></div>
-                            <h3 class="mt-8 text-lg font-medium text-slate-900 tracking-tight">Seamless Collaboration</h3>
-                            <p class="mt-5 text-base text-slate-500">Mention teammates, share files, and keep all task-related conversations in one place. Say goodbye to scattered information.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="pt-6">
-                    <div class="flow-root bg-slate-50 rounded-lg px-6 pb-8">
-                        <div class="-mt-6">
-                            <div><span class="inline-flex items-center justify-center p-3 bg-blue-500 rounded-md shadow-lg"><svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg></span></div>
-                            <h3 class="mt-8 text-lg font-medium text-slate-900 tracking-tight">Insightful Analytics</h3>
-                            <p class="mt-5 text-base text-slate-500">Track team velocity, identify bottlenecks, and make data-driven decisions with built-in reporting and project dashboards.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Testimonial Section -->
-    <section class="bg-slate-50 py-16 sm:py-24">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <img class="mx-auto h-12 w-12 rounded-full" src="https://ui-avatars.com/api/?name=Alex+Rivera&background=3b82f6&color=fff" alt="Testimonial author">
-                <blockquote class="mt-6 max-w-3xl mx-auto">
-                    <p class="text-xl font-medium text-slate-900">"DevTrack has revolutionized our workflow. We're shipping features 30% faster and our team has never been more aligned. It's the command center for our entire engineering department."</p>
-                </blockquote>
-                <footer class="mt-6">
-                    <div class="text-base font-medium text-slate-900">Alex Rivera</div>
-                    <div class="text-base text-slate-600">Head of Engineering, Startup OS Inc.</div>
-                </footer>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <div class="bg-white">
-        <div class="mx-auto max-w-7xl py-16 px-4 sm:px-6 lg:py-24 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Ready to supercharge your team?</h2>
-                <p class="mt-4 text-lg text-slate-500">Start building better software today. No credit card required.</p>
-                @auth
-                <a href="{{ route('dashboard') }}" class="mt-8 inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-700">Go to Dashboard</a>
-                @else
-                <a href="{{ route('register') }}" class="mt-8 inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-700">Create your free account</a>
-                @endauth
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200">
-        <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col sm:flex-row items-center justify-between">
-                 <p class="text-sm text-slate-500 order-2 sm:order-1 mt-4 sm:mt-0">
-                    &copy; 2024 Startup OS Inc. All rights reserved.
-                </p>
-                <div class="flex items-center space-x-6 order-1 sm:order-2">
-                    <a href="{{ route('register') }}" class="text-sm text-slate-500 hover:text-slate-700">Privacy</a>
+        <!-- Footer -->
+        <footer class="bg-white border-t border-slate-200">
+            <div class="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
+                <p class="text-sm text-slate-500">&copy; 2024 Startup OS Inc.</p>
+                <div class="flex items-center gap-6">
+                    <a href="#" class="text-sm text-slate-500 hover:text-slate-700">Privacy</a>
                     <a href="#" class="text-sm text-slate-500 hover:text-slate-700">Terms</a>
                     <a href="#" class="text-sm text-slate-500 hover:text-slate-700">Support</a>
-                    <a href="#" class="text-sm text-slate-500 hover:text-slate-700">API Docs</a>
                 </div>
             </div>
-        </div>
-    </footer>
-
+        </footer>
+    </div>
 </body>
 </html>

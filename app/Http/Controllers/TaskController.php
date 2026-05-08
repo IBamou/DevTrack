@@ -41,6 +41,7 @@ class TaskController extends Controller
     public function show(Project $project, Task $task)
     {
         $this->authorize('view', $task);
+        $task->load(['project', 'assignedTo', 'creator']);
         return view('tasks.show', compact('task'));
     }
 
@@ -50,6 +51,7 @@ class TaskController extends Controller
     public function edit(Project $project, Task $task)
     {
         $this->authorize('update', $task);
+        $task->load(['project', 'assignedTo', 'creator']);
         return view('tasks.edit', compact('task'));
     }
 
@@ -100,8 +102,8 @@ class TaskController extends Controller
     {
         $task = Task::withTrashed()->findOrFail($task->id);
         $this->authorize('restore', $task);
+        
         $task->restore();
-
         return redirect()->back()->with('success', 'Task restored successfully.');
     }
 
@@ -112,8 +114,8 @@ class TaskController extends Controller
     {
         $task = Task::withTrashed()->findOrFail($task->id);
         $this->authorize('forceDelete', $task);
+        
         $task->forceDelete();
-
         return redirect()->back()->with('success', 'Task permanently deleted.');
     }
 
@@ -123,15 +125,33 @@ class TaskController extends Controller
     public function viewArchived()
     {
         $this->authorize('viewArchived', Task::class);
-        $archivedTasks = Task::onlyTrashed()->get();
+        
+        $tasks = Task::onlyTrashed()
+            ->with(['project', 'creator', 'assignedTo'])
+            ->get();
 
-        return view('tasks.archives', compact('archivedTasks'));
+        return view('tasks.archives', compact('tasks'));
+    }
+
+    /**
+     * View archived tasks for a specific project.
+     */
+    public function viewProjectArchived(Project $project)
+    {
+        $this->authorize('viewArchived', Task::class);
+        
+        $tasks = Task::onlyTrashed()
+            ->where('project_id', $project->id)
+            ->with(['project', 'creator', 'assignedTo'])
+            ->get();
+
+        return view('tasks.archives', compact('tasks', 'project'));
     }
 
     /**
      * Assign a task to a collaborator.
      */
-    public function assignedTo(Request $request, Project $project, Task $task)
+    public function assignTo(Request $request, Project $project, Task $task)
     {
         $this->authorize('update', $task);
 

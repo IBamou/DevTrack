@@ -41,9 +41,9 @@ class ProjectController extends Controller
         }
 
         if ($request->sort === 'oldest') {
-            $projects = $query->orderBy('created_at')->paginate(6);
+            $projects = $query->with(['collaborators', 'tasks'])->orderBy('created_at')->paginate(6);
         } else {
-            $projects = $query->orderByDesc('created_at')->paginate(6);
+            $projects = $query->with(['collaborators', 'tasks'])->orderByDesc('created_at')->paginate(6);
         }
 
         return view('projects.index', compact('projects'));
@@ -58,6 +58,7 @@ class ProjectController extends Controller
 
         $projects = Project::onlyTrashed()
             ->where('created_by', Auth::id())
+            ->with(['collaborators', 'tasks'])
             ->paginate(6);
 
         return view('projects.archives', compact('projects'));
@@ -101,7 +102,7 @@ class ProjectController extends Controller
         $this->authorize('view', $project);
 
         $filter = $request->query('filter', 'all');
-        $tasks = $project->tasks();
+        $tasks = $project->tasks()->with(['assignedTo', 'creator']);
 
         switch ($filter) {
             case 'my':

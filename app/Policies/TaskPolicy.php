@@ -5,7 +5,6 @@ namespace App\Policies;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class TaskPolicy
 {
@@ -35,20 +34,21 @@ class TaskPolicy
 
     public function updateStatus(User $user, Task $task): bool
     {
-        return $user->is($task->creator) || $user->is($task->assignedTo);
+        return $user->is($task->creator) ||  $user->id === ($task->assignedTo->user_id ?? null) ;
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can delete (archive) the model.
      */
     public function delete(User $user, Task $task): bool
     {
         return $user->is($task->creator);
     }
 
-    public function viewArchived(User $user, Task $task): bool
+    public function viewArchived(User $user, ?Task $task = null): bool
     {
-        return $user->is($task->creator);
+        // Allow if user has any projects they created
+        return $user->createdProjects()->exists();
     }
 
     /**
@@ -56,13 +56,29 @@ class TaskPolicy
      */
     public function restore(User $user, Task $task): bool
     {
-        return $user->is($task->creator);
+        return $user->is($task->creator) || $user->is($task->project->createdBy);
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
     public function forceDelete(User $user, Task $task): bool
+    {
+        return $user->is($task->creator) || $user->is($task->project->createdBy);
+    }
+
+    /**
+     * Determine if user is project admin (owner).
+     */
+    public function isAdmin(User $user, Task $task): bool
+    {
+        return $user->is($task->project->createdBy);
+    }
+
+    /**
+     * Determine if user can assign the task.
+     */
+    public function assign(User $user, Task $task): bool
     {
         return $user->is($task->creator);
     }
