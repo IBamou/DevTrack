@@ -72,9 +72,9 @@
 
             <main class="flex-1 overflow-y-auto p-6 lg:p-8">
                 <div>
-                    <p class="text-sm font-medium text-slate-500">{{ $task_record->project->title }} <span class="mx-1 text-slate-400">›</span> Edit Task</p>
+                    <p class="text-sm font-medium text-slate-500">{{ $task->project->title }} <span class="mx-1 text-slate-400">›</span> Edit Task</p>
                     <h1 class="text-3xl font-bold text-slate-800 mt-2">Edit Task</h1>
-                    <p class="mt-1 text-slate-600">Update task details for #DT-{{ $task_record->id }}</p>
+                    <p class="mt-1 text-slate-600">Update task details for #DT-{{ $task->id }}</p>
                 </div>
 
                 <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -92,19 +92,19 @@
                                 </div>
                             </div>
 
-                            <form method="POST" action="{{ route('projects.tasks.update', ['project' => $task_record->project->id, 'task_record' => $task_record->id]) }}" class="mt-6 space-y-6">
+                            <form method="POST" action="{{ route('projects.tasks.update', ['project' => $task->project->id, 'task' => $task->id]) }}" class="mt-6 space-y-6">
                                 @csrf
                                 @method('PUT')
                                 <div>
                                     <label for="title" class="text-sm font-medium text-slate-700">Task Title <span class="text-red-500">*</span></label>
-                                    <input type="text" name="title" id="title" value="{{ old('title', $task_record->title) }}" placeholder="Enter task title" class="mt-1 block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-3 pr-4 pl-4" required>
+                                    <input type="text" name="title" id="title" value="{{ old('title', $task->title) }}" placeholder="Enter task title" class="mt-1 block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-3 pr-4 pl-4" required>
                                     @error('title')
                                     <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
                                 <div>
                                     <label for="description" class="text-sm font-medium text-slate-700">Description</label>
-                                    <textarea name="description" id="description" rows="5" placeholder="Describe the task details" class="mt-1 block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-3 pr-4 pl-6">{{ old('description', $task_record->description) }}</textarea>
+                                    <textarea name="description" id="description" rows="5" placeholder="Describe the task details" class="mt-1 block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-3 pr-4 pl-6">{{ old('description', $task->description) }}</textarea>
                                     @error('description')
                                     <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
                                     @enderror
@@ -113,18 +113,18 @@
                                     <div>
                                         <label for="status" class="text-sm font-medium text-slate-700">Status</label>
                                         <select name="status" id="status" class="mt-1 block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-3 pr-4 pl-4">
-                                            <option value="todo" {{ $task_record->status == 'todo' ? 'selected' : '' }}>To Do</option>
-                                            <option value="in_progress" {{ $task_record->status == 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                                            <option value="review" {{ $task_record->status == 'review' ? 'selected' : '' }}>Review</option>
-                                            <option value="done" {{ $task_record->status == 'done' ? 'selected' : '' }}>Done</option>
+                                            <option value="todo" {{ $task->status == 'todo' ? 'selected' : '' }}>To Do</option>
+                                            <option value="in_progress" {{ $task->status == 'in_progress' ? 'selected' : '' }}>In Progress</option>
+                                            <option value="review" {{ $task->status == 'review' ? 'selected' : '' }}>Review</option>
+                                            <option value="done" {{ $task->status == 'done' ? 'selected' : '' }}>Done</option>
                                         </select>
                                     </div>
                                     <div>
                                         <label for="priority" class="text-sm font-medium text-slate-700">Priority</label>
                                         <select name="priority" id="priority" class="mt-1 block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-3 pr-4 pl-4">
-                                            <option value="low" {{ $task_record->priority == 'low' ? 'selected' : '' }}>Low</option>
-                                            <option value="medium" {{ $task_record->priority == 'medium' ? 'selected' : '' }}>Medium</option>
-                                            <option value="high" {{ $task_record->priority == 'high' ? 'selected' : '' }}>High</option>
+                                            <option value="low" {{ $task->priority == 'low' ? 'selected' : '' }}>Low</option>
+                                            <option value="medium" {{ $task->priority == 'medium' ? 'selected' : '' }}>Medium</option>
+                                            <option value="high" {{ $task->priority == 'high' ? 'selected' : '' }}>High</option>
                                         </select>
                                     </div>
                                     <div>
@@ -133,14 +133,14 @@
                                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                                 <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                             </div>
-                                            <input type="date" name="due_date" id="due_date" value="{{ $task_record->due_date }}" class="block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-3 pl-10 pr-4">
+                                            <input type="date" name="due_date" id="due_date" value="{{ $task->due_date }}" class="block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-3 pl-10 pr-4">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="flex items-center justify-between pt-6 border-t border-slate-200">
                                     <button type="button" onclick="document.getElementById('deleteForm').submit()" class="rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2">Delete Task</button>
                                     <div class="flex items-center space-x-4">
-                                        <a href="{{ route('projects.show', $task_record->project->id) }}" class="text-sm font-medium text-slate-600 hover:text-slate-800">Cancel</a>
+                                        <a href="{{ route('projects.show', $task->project->id) }}" class="text-sm font-medium text-slate-600 hover:text-slate-800">Cancel</a>
                                         <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                                             Save Changes
                                         </button>
@@ -148,7 +148,7 @@
                                 </div>
                             </form>
 
-                            <form id="deleteForm" method="POST" action="{{ route('projects.tasks.archive', ['project' => $task_record->project->id, 'task_record' => $task_record->id]) }}" class="hidden">
+                            <form id="deleteForm" method="POST" action="{{ route('projects.tasks.archive', ['project' => $task->project->id, 'task' => $task->id]) }}" class="hidden">
                                 @csrf
                                 @method('DELETE')
                             </form>
@@ -161,16 +161,16 @@
                             <div class="mt-4 space-y-3">
                                 <div class="flex justify-between items-center">
                                     <span class="text-sm text-slate-500">Task ID</span>
-                                    <span class="text-sm font-medium text-slate-800">#DT-{{ $task_record->id }}</span>
+                                    <span class="text-sm font-medium text-slate-800">#DT-{{ $task->id }}</span>
                                 </div>
                                 <div class="flex justify-between items-center">
                                     <span class="text-sm text-slate-500">Created</span>
-                                    <span class="text-sm font-medium text-slate-800">{{ $task_record->created_at->format('M d, Y') }}</span>
+                                    <span class="text-sm font-medium text-slate-800">{{ $task->created_at->format('M d, Y') }}</span>
                                 </div>
-                                @if($task_record->updated_at)
+                                @if($task->updated_at)
                                 <div class="flex justify-between items-center">
                                     <span class="text-sm text-slate-500">Updated</span>
-                                    <span class="text-sm font-medium text-slate-800">{{ $task_record->updated_at->format('M d, Y') }}</span>
+                                    <span class="text-sm font-medium text-slate-800">{{ $task->updated_at->format('M d, Y') }}</span>
                                 </div>
                                 @endif
                             </div>

@@ -130,12 +130,12 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-slate-500">{{ $task->deleted_at ? $task->deleted_at->format('M d, Y') : 'N/A' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right space-x-4">
-                                        <form method="POST" action="{{ route('projects.tasks.restore', ['project' => $task->project->id, 'task_record' => $task->id]) }}" class="inline">
+                                        <form method="POST" action="{{ route('projects.tasks.restore', ['project' => $task->project->id, 'task' => $task->id]) }}" class="inline">
                                             @csrf
                                             @method('PATCH')
                                             <button type="submit" class="font-medium text-blue-600 hover:text-blue-800">Restore</button>
                                         </form>
-                                        <form method="POST" action="{{ route('projects.tasks.forceDelete', ['project' => $task->project->id, 'task_record' => $task->id]) }}" class="inline">
+                                        <form method="POST" action="{{ route('projects.tasks.forceDelete', ['project' => $task->project->id, 'task' => $task->id]) }}" class="inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="font-medium text-red-600 hover:text-red-800" onclick="return confirm('Are you sure you want to delete this task permanently?')">Delete</button>
