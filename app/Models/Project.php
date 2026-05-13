@@ -38,13 +38,13 @@ class Project extends Model
 
     public function getProgressAttribute(): int
     {
-        $total = $this->tasks()->count();
-        if ($total === 0) {
+        $stats = $this->tasks()->toBase()->selectRaw('count(*) as total, sum(case when status = ? then 1 else 0 end) as done', ['done'])->first();
+
+        if ($stats->total === 0) {
             return 0;
         }
-        $completed = $this->tasks()->where('status', 'done')->count();
 
-        return (int) round(($completed / $total) * 100);
+        return (int) round(($stats->done / $stats->total) * 100);
     }
 
     public function getStatusAttribute(): string

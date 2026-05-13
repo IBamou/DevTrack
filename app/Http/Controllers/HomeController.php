@@ -28,11 +28,11 @@ class HomeController extends Controller
         ->withCount('tasks')
         ->get();
 
-        $collaborator = Collaborator::where('user_id', $user->id)->first();
+        $collaboratorIds = Collaborator::where('user_id', $user->id)->pluck('id');
         
         $myTasks = [];
-        if ($collaborator) {
-            $myTasks = Task::where('collaborator_id', $collaborator->id)
+        if ($collaboratorIds->isNotEmpty()) {
+            $myTasks = Task::whereIn('collaborator_id', $collaboratorIds)
                 ->with('project:id,title')
                 ->get();
         }
@@ -45,8 +45,8 @@ class HomeController extends Controller
         ];
 
         $upcomingDeadlines = 0;
-        if ($collaborator) {
-            $upcomingDeadlines = Task::where('collaborator_id', $collaborator->id)
+        if ($collaboratorIds->isNotEmpty()) {
+            $upcomingDeadlines = Task::whereIn('collaborator_id', $collaboratorIds)
                 ->whereNotNull('due_date')
                 ->whereNotIn('status', ['done'])
                 ->count();

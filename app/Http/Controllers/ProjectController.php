@@ -29,8 +29,10 @@ class ProjectController extends Controller
 
         if ($request->filter === 'archived') {
             $query->onlyTrashed();
-        } elseif ($request->filter === 'active') {
+        } elseif ($request->filter === 'active' || !$request->filled('filter')) {
             $query->withoutTrashed();
+        } else {
+            $query->withTrashed();
         }
 
         if ($request->has('search') && !empty($request->search)) {
@@ -102,11 +104,13 @@ class ProjectController extends Controller
         $this->authorize('view', $project);
 
         $filter = $request->query('filter', 'all');
-        $tasks = $project->tasks()->with(['assignedTo', 'creator']);
+        $tasks = $project->tasks()->with(['assignedTo.user', 'creator']);
 
         switch ($filter) {
             case 'my':
-                $tasks = $tasks->where('collaborator_id', auth()->id());
+                $tasks = $tasks->whereHas('assignedTo', function ($q) {
+                    $q->where('user_id', auth()->id());
+                });
                 break;
             case 'todo':
                 $tasks = $tasks->where('status', 'todo');
@@ -167,7 +171,7 @@ class ProjectController extends Controller
             return back()->with('error', 'This user is already a collaborator.');
         }
 
-        $project->collaborators()->attach($user->id, ['role' => 'Member']);
+        $project->collaborators()->attach($user->id, ['role' => 'member']);
 
         return back()->with('success', 'User added successfully.');
     }

@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Collaborator;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
@@ -22,14 +21,14 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->sentence(1),
+            'title' => fake()->sentence(3),
             'description' => fake()->paragraph(1),
             'status' => fake()->randomElement(['todo', 'in_progress', 'review', 'done']),
             'priority' => fake()->randomElement(['low', 'medium', 'high']),
             'due_date' => fake()->boolean(70) ? fake()->dateTimeBetween('now', '+1 month') : null,
-            'project_id' => Project::inRandomOrder()->first()->id,
+            'project_id' => Project::factory(),
             'collaborator_id' => null,
-            'created_by' => User::inRandomOrder()->first()->id,
+            'created_by' => fn(array $attrs) => Project::find($attrs['project_id'])?->created_by ?? User::factory(),
         ];
     }
 }

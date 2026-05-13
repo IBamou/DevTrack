@@ -35,7 +35,7 @@
                 <div class="mt-4 flex justify-between items-center">
                     <div class="flex -space-x-2">
                         @foreach($project->collaborators->take(3) as $collaborator)
-                        <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white" src="{{ $collaborator->profile_photo_url }}" alt="{{ $collaborator->name }}">
+                        <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white" src="{{ $collaborator->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($collaborator->name) }}" alt="{{ $collaborator->name }}">
                         @endforeach
                     </div>
                     <span class="text-sm text-slate-500">{{ $project->tasks_count }} Tasks</span>
@@ -79,7 +79,15 @@
                     </div>
                     <div>{{ $task->project->title }}</div>
                     <div>
-                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-{{ $task->status === 'done' ? 'green' : ($task->status === 'in_progress' ? 'blue' : 'slate') }}-100 text-{{ $task->status === 'done' ? 'green' : ($task->status === 'in_progress' ? 'blue' : 'slate') }}-700">
+                        @php
+                        $statusClass = match($task->status) {
+                            'done' => 'bg-green-100 text-green-700',
+                            'in_progress' => 'bg-blue-100 text-blue-700',
+                            'review' => 'bg-yellow-100 text-yellow-700',
+                            default => 'bg-slate-100 text-slate-700',
+                        };
+                    @endphp
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium {{ $statusClass }}">
                             {{ ucfirst($task->status) }}
                         </span>
                     </div>

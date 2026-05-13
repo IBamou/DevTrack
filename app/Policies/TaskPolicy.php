@@ -34,7 +34,7 @@ class TaskPolicy
 
     public function updateStatus(User $user, Task $task): bool
     {
-        return $user->is($task->creator) ||  $user->id === ($task->assignedTo->user_id ?? null) ;
+        return $user->is($task->creator) || $user->id === ($task->assignedTo?->user_id ?? null);
     }
 
     /**
@@ -47,8 +47,7 @@ class TaskPolicy
 
     public function viewArchived(User $user, ?Task $task = null): bool
     {
-        // Allow if user has any projects they created
-        return $user->createdProjects()->exists();
+        return Project::where('created_by', $user->id)->exists();
     }
 
     /**

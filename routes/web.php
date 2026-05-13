@@ -5,12 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Models\Project;
-use App\Models\Task;
 use Illuminate\Support\Facades\Route;
-
-Route::bind('task', function ($value) {
-    return Task::withTrashed()->findOrFail($value);
-});
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
@@ -49,8 +44,8 @@ Route::controller(TaskController::class)->group(function () {
             Route::get('/{project}/task/{task}/edit', 'edit')->name('projects.tasks.edit');
             Route::put('/{project}/task/{task}', 'update')->name('projects.tasks.update');
             Route::delete('/{project}/task/{task}', 'archive')->name('projects.tasks.archive');
-            Route::patch('/{project}/task/{task}/restore', 'restore')->name('projects.tasks.restore');
-            Route::delete('/{project}/task/{task}/force', 'forceDelete')->name('projects.tasks.forceDelete');
+            Route::patch('/{project}/task/{task}/restore', 'restore')->withTrashed()->name('projects.tasks.restore');
+            Route::delete('/{project}/task/{task}/force', 'forceDelete')->withTrashed()->name('projects.tasks.forceDelete');
             Route::post('/{project}/task/{task}/assign', 'assignTo')->name('projects.tasks.assign');
             Route::patch('/{project}/task/{task}/status', 'updateStatus')->name('projects.tasks.updateStatus');
         });

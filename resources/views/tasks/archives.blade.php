@@ -33,16 +33,18 @@
             <h3 class="text-lg font-semibold text-slate-800 mt-3">{{ $task->title }}</h3>
             <p class="text-sm text-slate-600 mt-1 line-clamp-2">{{ $task->description }}</p>
             <div class="mt-4 flex items-center justify-between text-sm text-slate-500">
-                <span>{{ $task->project->title }}</span>
+                <span>{{ $task->project?->title ?? 'Deleted Project' }}</span>
                 <span>{{ $task->deleted_at->format('M d, Y') }}</span>
             </div>
             <div class="mt-4 flex divide-x divide-slate-200 border-t border-slate-200 pt-4">
-                <form action="{{ route('projects.tasks.restore', ['project' => $task->project->id, 'task' => $task->id]) }}" method="POST" class="flex-1">
+                @if($task->project)
+                <form action="{{ route('projects.tasks.restore', ['project' => $task->project, 'task' => $task]) }}" method="POST" class="flex-1">
                     @csrf
                     @method('PATCH')
                     <button type="submit" class="w-full text-sm font-medium text-slate-600 hover:text-slate-800">Restore</button>
                 </form>
                 <button type="button" class="flex-1 text-sm font-medium text-red-600 hover:text-red-700" onclick="document.getElementById('delete-task-modal-{{ $task->id }}').classList.remove('hidden')">Delete</button>
+                @endif
             </div>
         </div>
 
@@ -59,7 +61,7 @@
                     </div>
                     <h3 class="text-lg font-semibold text-slate-800 text-center mb-2">Delete Task?</h3>
                     <p class="text-sm text-slate-600 text-center mb-6">This will permanently delete <strong>{{ $task->title }}</strong>. This action cannot be undone.</p>
-                    <form action="{{ route('projects.tasks.forceDelete', ['project' => $task->project->id, 'task' => $task->id]) }}" method="POST">
+                    <form action="{{ route('projects.tasks.forceDelete', ['project' => $task->project, 'task' => $task]) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <div class="flex space-x-3">

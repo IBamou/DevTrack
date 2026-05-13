@@ -218,7 +218,7 @@
                                 class="w-full rounded-md border border-slate-300 bg-white py-2 px-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
                                 <option value="">Select a team member</option>
                                 @foreach($task->project->collaborators as $member)
-                                    <option value="{{ $member->id }}">{{ $member->name }}</option>
+                                    <option value="{{ $member->pivot->id }}">{{ $member->name }}</option>
                                 @endforeach
                             </select>
                         </div>

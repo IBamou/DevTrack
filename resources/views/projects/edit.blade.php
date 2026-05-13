@@ -50,7 +50,7 @@
                                 <img class="h-8 w-8 rounded-full" src="{{ $member->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($member->name) }}" alt="{{ $member->name }}">
                                 <span class="text-sm font-medium text-slate-700">{{ $member->name }}</span>
                             </div>
-                            @if($member->role === 'owner')
+                            @if($member->pivot->role === 'admin')
                             <span class="text-xs text-slate-500">Owner</span>
                             @endif
                         </li>
