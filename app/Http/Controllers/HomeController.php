@@ -30,7 +30,7 @@ class HomeController extends Controller
 
         $collaboratorIds = Collaborator::where('user_id', $user->id)->pluck('id');
         
-        $myTasks = [];
+        $myTasks = collect();
         if ($collaboratorIds->isNotEmpty()) {
             $myTasks = Task::whereIn('collaborator_id', $collaboratorIds)
                 ->with('project:id,title')

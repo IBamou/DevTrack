@@ -32,7 +32,7 @@ class Project extends Model
     {
         return $this->belongsToMany(User::class, 'collaborators')
             ->using(Collaborator::class)
-            ->withPivot('role')
+            ->withPivot('id', 'role')
             ->withTimestamps();
     }
 

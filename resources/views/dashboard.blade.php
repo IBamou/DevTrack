@@ -73,11 +73,11 @@
                 @foreach($myTasks->take(5) as $task)
                 <div class="grid grid-cols-5 gap-4 px-6 py-4 items-center text-sm">
                     <div class="col-span-2 font-medium">
-                        <a href="{{ route('projects.tasks.show', ['project' => $task->project, 'task' => $task]) }}" class="hover:text-blue-600">
+                        <a href="{{ route('projects.tasks.show', ['project' => $task->project ?? 0, 'task' => $task]) }}" class="hover:text-blue-600">
                             {{ $task->title }}
                         </a>
                     </div>
-                    <div>{{ $task->project->title }}</div>
+                    <div>{{ $task->project?->title ?? 'Deleted Project' }}</div>
                     <div>
                         @php
                         $statusClass = match($task->status) {

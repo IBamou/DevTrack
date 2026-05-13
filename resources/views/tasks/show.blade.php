@@ -156,7 +156,7 @@
                             <span class="text-sm text-slate-500">Created by</span>
                             <span class="text-sm font-medium text-slate-800">{{ $task->creator->name }}</span>
                         </div>
-                        @if($task->assignedTo)
+                        @if($task->assignedTo && $task->assignedTo->user)
                             <div class="flex justify-between items-center">
                                 <span class="text-sm text-slate-500">Assigned to</span>
                                 <span class="text-sm font-medium text-slate-800">{{ $task->assignedTo->user->name }}</span>
