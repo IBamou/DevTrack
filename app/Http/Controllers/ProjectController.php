@@ -32,7 +32,7 @@ class ProjectController extends Controller
         } elseif ($request->filter === 'active' || !$request->filled('filter')) {
             $query->withoutTrashed();
         } else {
-            $query->withTrashed();
+            $query->withoutTrashed();
         }
 
         if ($request->has('search') && !empty($request->search)) {

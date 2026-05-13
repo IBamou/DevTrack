@@ -13,7 +13,7 @@ class TaskPolicy
      */
     public function view(User $user, Task $task): bool
     {
-        return $user->is($task->creator) || $task->project->collaborators->contains($user);
+        return $user->is($task->creator) || $task->project?->collaborators->contains($user);
     }
 
     /**
@@ -55,7 +55,7 @@ class TaskPolicy
      */
     public function restore(User $user, Task $task): bool
     {
-        return $user->is($task->creator) || $user->is($task->project->createdBy);
+        return $user->is($task->creator) || $user->is($task->project?->createdBy);
     }
 
     /**
@@ -63,7 +63,7 @@ class TaskPolicy
      */
     public function forceDelete(User $user, Task $task): bool
     {
-        return $user->is($task->creator) || $user->is($task->project->createdBy);
+        return $user->is($task->creator) || $user->is($task->project?->createdBy);
     }
 
     /**
