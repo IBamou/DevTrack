@@ -28,7 +28,7 @@ class TaskController extends Controller
 
         $data = $request->validated();
         Task::create($data + [
-            'created_by' => $project->createdBy->id,
+            'created_by' => auth()->id(),
             'project_id' => $project->id
         ]);
 
@@ -41,7 +41,8 @@ class TaskController extends Controller
     public function show(Project $project, Task $task)
     {
         $this->authorize('view', $task);
-        $task->load(['project', 'assignedTo', 'creator']);
+        $task->load(['project', 'assignedTo.user', 'creator']);
+
         return view('tasks.show', compact('task'));
     }
 
@@ -51,7 +52,8 @@ class TaskController extends Controller
     public function edit(Project $project, Task $task)
     {
         $this->authorize('update', $task);
-        $task->load(['project', 'assignedTo', 'creator']);
+        $task->load(['project', 'assignedTo.user', 'creator']);
+
         return view('tasks.edit', compact('task'));
     }
 
@@ -65,7 +67,7 @@ class TaskController extends Controller
         $data = $request->validated();
         $task->update($data);
 
-        return redirect()->route('projects.show', $task->project)->with('success', 'Task updated successfully.');
+        return redirect()->route('projects.show', $task->project ?? $project)->with('success', 'Task updated successfully.');
     }
 
     /**
@@ -81,7 +83,7 @@ class TaskController extends Controller
 
         $task->update($data);
 
-        return redirect()->route('projects.show', $task->project)->with('success', 'Task status updated successfully.');
+        return redirect()->route('projects.show', $task->project ?? $project)->with('success', 'Task status updated successfully.');
     }
 
     /**
@@ -92,7 +94,7 @@ class TaskController extends Controller
         $this->authorize('delete', $task);
         $task->delete();
 
-        return redirect()->route('projects.show', $task->project)->with('success', 'Task archived successfully.');
+        return redirect()->route('projects.show', $task->project ?? $project)->with('success', 'Task archived successfully.');
     }
 
     /**
@@ -127,7 +129,7 @@ class TaskController extends Controller
         $this->authorize('viewArchived', Task::class);
         
         $tasks = Task::onlyTrashed()
-            ->with(['project', 'creator', 'assignedTo'])
+            ->with(['project', 'creator', 'assignedTo.user'])
             ->get();
 
         return view('tasks.archives', compact('tasks'));
@@ -142,7 +144,7 @@ class TaskController extends Controller
         
         $tasks = Task::onlyTrashed()
             ->where('project_id', $project->id)
-            ->with(['project', 'creator', 'assignedTo'])
+            ->with(['project', 'creator', 'assignedTo.user'])
             ->get();
 
         return view('tasks.archives', compact('tasks', 'project'));
@@ -161,7 +163,7 @@ class TaskController extends Controller
 
         $task->update($data);
 
-        return redirect()->route('projects.show', $task->project)->with('success', 'Task assigned successfully.');
+        return redirect()->route('projects.show', $task->project ?? $project)->with('success', 'Task assigned successfully.');
     }
 
 }

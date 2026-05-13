@@ -19,10 +19,17 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->sentence(0.5),
-            'description' => fake()->paragraph(0.5),
-            'created_by' => User::inRandomOrder()->first()->id,
+            'title' => fake()->sentence(3),
+            'description' => fake()->paragraph(1),
+            'created_by' => User::factory(),
             'due_date' => fake()->boolean(70) ? fake()->dateTimeBetween('now', '+1 month') : null,
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Project $project) {
+            $project->collaborators()->attach($project->created_by, ['role' => 'admin']);
+        });
     }
 }

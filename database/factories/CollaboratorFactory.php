@@ -20,9 +20,9 @@ class CollaboratorFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::inRandomOrder()->first()->id,
-            'project_id' => Project::inRandomOrder()->first()->id,
-            'role' => fake()->randomElement(['admin', 'member']), // du kannst das <source media="(min-width: )" srcset="" sizes=""> 'role' => 'member' schreiben,
+            'user_id' => User::factory(),
+            'project_id' => Project::factory(),
+            'role' => fake()->randomElement(['admin', 'member']),
         ];
     }
 }
