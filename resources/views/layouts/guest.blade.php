@@ -20,7 +20,7 @@
 
 <body class="font-sans text-gray-900 antialiased">
     <div
-        class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
+        class="relative min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
         <!-- Background Decorative Elements -->
         <div
             class="absolute top-0 left-0 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20">

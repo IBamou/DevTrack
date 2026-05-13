@@ -47,7 +47,7 @@
 
             <footer class="py-4 border-t border-slate-200 flex items-center justify-between px-6">
                 <p class="text-sm text-slate-500">
-                    <strong>DevTrack</strong> &copy; 2024 Startup OS Inc.
+                    <strong>DevTrack</strong> &copy; {{ date('Y') }} Startup OS Inc.
                 </p>
                 <div class="flex items-center space-x-6">
                     <a href="#" class="text-sm text-slate-500 hover:text-slate-700">Privacy</a>
