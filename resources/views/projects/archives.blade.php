@@ -93,7 +93,7 @@
             <svg class="h-12 w-12 text-slate-400 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
             </svg>
-            <h3 class="text-lg font-medium text-slate-900 mb-1">No archived projects</h3>
+            <h2 class="text-lg font-medium text-slate-900 mb-1">No archived projects</h2>
             <p class="text-slate-500">Archived projects will appear here</p>
         </div>
         @endforelse

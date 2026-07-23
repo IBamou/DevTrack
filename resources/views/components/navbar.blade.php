@@ -2,7 +2,7 @@
     'breadcrumbs' => [],
 ])
 
-<header class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white/80 backdrop-blur-xl px-4 lg:px-6">
+<header class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white/80 backdrop-blur-xl px-4 lg:px-6 min-w-0">
     <!-- Left: Mobile menu button + Breadcrumbs -->
     <div class="flex items-center gap-4">
         <!-- Sidebar toggle (mobile + desktop) -->
@@ -24,9 +24,9 @@
     </div>
 
     <!-- Right: Search + Notifications + Profile -->
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-3 min-w-0 shrink">
         <!-- Search -->
-        <div class="hidden sm:block" x-data="{ open: false }">
+        <div class="hidden md:block shrink" x-data="{ open: false }">
             <div class="relative">
                 <svg class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
@@ -36,7 +36,7 @@
                     name="search"
                     autocomplete="off"
                     placeholder="Search tasks..."
-                    class="h-9 w-64 rounded-lg border border-slate-200 bg-slate-50 pl-9 pr-4 text-sm text-slate-900 placeholder-slate-400 transition-colors focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    class="h-9 w-48 lg:w-64 rounded-lg border border-slate-200 bg-slate-50 pl-9 pr-4 text-sm text-slate-900 placeholder-slate-400 transition-colors focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
                 >
                 <kbd class="absolute right-3 top-1/2 -translate-y-1/2 rounded border border-slate-200 bg-white px-1.5 py-0.5 text-2xs font-medium text-slate-400">/</kbd>
             </div>
