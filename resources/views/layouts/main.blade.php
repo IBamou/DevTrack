@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DevTrack - Streamline your project workflow with Kanban boards, task management, and team collaboration.">
     <title>@yield('title', 'DevTrack')</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,7 +30,7 @@
             <x-navbar :breadcrumbs="$breadcrumbs ?? []" />
 
             <main class="flex-1 overflow-y-auto p-4 lg:p-6">
-                <div class="min-h-full">
+                <div class="min-h-full mx-auto @yield('container-class', 'max-w-7xl')">
                     @yield('content')
                 </div>
             </main>

@@ -70,13 +70,15 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         @forelse($projects as $project)
             @php
-                $progress = $project->tasks_count > 0 ? round(($project->completed_tasks_count / $project->tasks_count) * 100) : 0;
+                $totalTasks = $project->tasks->count();
+                $completedTasks = $project->tasks->where('status', 'done')->count();
+                $progress = $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100) : 0;
                 $isOverdue = $project->due_date && \Carbon\Carbon::parse($project->due_date)->isPast();
-                $statusConfig = match($project->status ?? 'active') {
-                    'active' => ['class' => 'bg-emerald-50 text-emerald-700', 'label' => 'Active'],
-                    'completed' => ['class' => 'bg-blue-50 text-blue-700', 'label' => 'Completed'],
-                    'archived' => ['class' => 'bg-slate-100 text-slate-600', 'label' => 'Archived'],
-                    default => ['class' => 'bg-slate-100 text-slate-600', 'label' => ucfirst($project->status ?? 'unknown')],
+                $statusConfig = match($project->status) {
+                    'healthy' => ['class' => 'bg-emerald-50 text-emerald-700', 'label' => 'Healthy'],
+                    'at_risk' => ['class' => 'bg-amber-50 text-amber-700', 'label' => 'At Risk'],
+                    'delayed' => ['class' => 'bg-red-50 text-red-700', 'label' => 'Delayed'],
+                    default => ['class' => 'bg-slate-100 text-slate-600', 'label' => ucfirst($project->status)],
                 };
             @endphp
 
@@ -84,7 +86,7 @@
                 <div class="flex items-start justify-between gap-3">
                     <div class="min-w-0 flex-1">
                         <div class="flex items-center gap-2">
-                            <h3 class="text-base font-semibold text-slate-900 group-hover:text-blue-600 transition-colors truncate">{{ $project->title }}</h3>
+                            <h2 class="text-base font-semibold text-slate-900 group-hover:text-blue-600 transition-colors truncate">{{ $project->title }}</h2>
                         </div>
                         @if($project->description)
                             <p class="mt-1 text-sm text-slate-500 line-clamp-2">{{ $project->description }}</p>
@@ -100,7 +102,7 @@
                 <div class="mt-4">
                     <div class="flex items-center justify-between text-sm mb-1.5">
                         <span class="text-slate-500">{{ $progress }}% complete</span>
-                        <span class="text-slate-500">{{ $project->completed_tasks_count ?? 0 }}/{{ $project->tasks_count }}</span>
+                        <span class="text-slate-500">{{ $completedTasks }}/{{ $totalTasks }}</span>
                     </div>
                     <div class="h-1.5 w-full rounded-full bg-slate-100">
                         <div

@@ -30,6 +30,7 @@
             <button
                 x-on:click="showMenu = !showMenu"
                 class="rounded p-0.5 text-slate-400 opacity-0 transition-opacity hover:bg-slate-100 hover:text-slate-600 group-hover:opacity-100"
+                aria-label="Task actions"
             >
                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
@@ -59,7 +60,7 @@
         </div>
     </div>
 
-    <h4 class="mt-2.5 text-sm font-medium leading-snug text-slate-900 line-clamp-2">{{ $task->title }}</h4>
+    <h3 class="mt-2.5 text-sm font-medium leading-snug text-slate-900 line-clamp-2">{{ $task->title }}</h3>
 
     <div class="mt-3 flex items-center justify-between text-2xs text-slate-500">
         <span class="font-mono">{{ $task->task_code }}</span>

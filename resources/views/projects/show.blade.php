@@ -90,7 +90,7 @@
 
     <!-- Kanban Board -->
     <div class="flex-1 overflow-x-auto pb-4">
-        <div class="flex gap-4 min-h-[calc(100vh-300px)]">
+        <div class="flex gap-4 items-start">
             <x-task.column status="todo" :tasks="$tasks->where('status', 'todo')" :project="$project" />
             <x-task.column status="in_progress" :tasks="$tasks->where('status', 'in_progress')" :project="$project" />
             <x-task.column status="review" :tasks="$tasks->where('status', 'review')" :project="$project" />
@@ -123,7 +123,7 @@
 
         @if($project->created_by === auth()->id())
             <div class="mt-6 pt-6 border-t border-slate-200">
-                <h4 class="text-sm font-medium text-slate-900 mb-3">Invite member</h4>
+                <h2 class="text-sm font-medium text-slate-900 mb-3">Invite member</h2>
                 <form action="{{ route('projects.collaborator.add', $project) }}" method="POST" class="flex gap-2">
                     @csrf
                     <input

@@ -48,7 +48,7 @@
     <div class="flex items-center justify-between rounded-t-2xl border border-b-0 {{ $statusConfig['border'] }} {{ $statusConfig['headerBg'] }} px-4 py-2.5">
         <div class="flex items-center gap-2">
             <span class="h-2.5 w-2.5 rounded-full {{ $statusConfig['dot'] }}"></span>
-            <h3 class="text-sm font-semibold text-slate-700">{{ $statusConfig['label'] }}</h3>
+            <h2 class="text-sm font-semibold text-slate-700">{{ $statusConfig['label'] }}</h2>
             <span class="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-white px-1.5 text-2xs font-medium text-slate-600 shadow-sm">
                 {{ $tasks->count() }}
             </span>
@@ -58,6 +58,7 @@
             <button
                 x-on:click="window.dispatchEvent(new CustomEvent('open-create-task', { detail: { status: '{{ $status }}' } }))"
                 class="rounded-md p-1 text-slate-400 hover:bg-white hover:text-slate-600"
+                aria-label="Add task to {{ $statusConfig['label'] }}"
             >
                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />

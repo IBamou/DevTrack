@@ -27,6 +27,7 @@ class HomeController extends Controller
             $query->select('id', 'project_id', 'status');
         }])
         ->withCount('tasks')
+        ->withCount(['tasks as completed_tasks_count' => fn ($query) => $query->where('status', 'done')])
         ->get();
 
         $collaboratorIds = Collaborator::where('user_id', $user->id)->pluck('id');

@@ -135,7 +135,7 @@
                                 <option value="review" {{ $task->status == 'review' ? 'selected' : '' }}>Review</option>
                                 <option value="done" {{ $task->status == 'done' ? 'selected' : '' }}>Done</option>
                             </select>
-                            <button></button>
+                            <button aria-hidden="true"></button>
                         </form>
                     </div>
                     @endcannot

@@ -63,7 +63,7 @@
 
         <div class="space-y-6">
             <div class="bg-white rounded-lg border border-slate-200 p-6">
-                <h3 class="text-lg font-semibold text-slate-800 mb-4">Task Info</h3>
+                <h2 class="text-lg font-semibold text-slate-800 mb-4">Task Info</h2>
                 <div class="space-y-4">
                     <div class="flex justify-between items-center">
                         <span class="text-sm text-slate-500">Task ID</span>

@@ -23,7 +23,7 @@
                     <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">Archived</span>
                     <div class="flex -space-x-2">
                         @foreach($project->collaborators->take(2) as $collaborator)
-                        <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white" src="{{ $collaborator->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($collaborator->name) }}" alt="">
+                        <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white" src="{{ $collaborator->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($collaborator->name) }}" alt="{{ $collaborator->name }}">
                         @endforeach
                     </div>
                 </div>

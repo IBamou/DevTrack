@@ -1,13 +1,15 @@
 @props(['project'])
 
 @php
-    $progress = $project->tasks_count > 0 ? round(($project->completed_tasks_count / $project->tasks_count) * 100) : 0;
+    $totalTasks = $project->tasks->count();
+    $completedTasks = $project->tasks->where('status', 'done')->count();
+    $progress = $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100) : 0;
     $isOverdue = $project->due_date && \Carbon\Carbon::parse($project->due_date)->isPast();
-    $statusConfig = match($project->status ?? 'active') {
-        'active' => ['class' => 'bg-emerald-50 text-emerald-700', 'label' => 'Active'],
-        'completed' => ['class' => 'bg-blue-50 text-blue-700', 'label' => 'Completed'],
-        'archived' => ['class' => 'bg-slate-100 text-slate-600', 'label' => 'Archived'],
-        default => ['class' => 'bg-slate-100 text-slate-600', 'label' => ucfirst($project->status ?? 'unknown')],
+    $statusConfig = match($project->status) {
+        'healthy' => ['class' => 'bg-emerald-50 text-emerald-700', 'label' => 'Healthy'],
+        'at_risk' => ['class' => 'bg-amber-50 text-amber-700', 'label' => 'At Risk'],
+        'delayed' => ['class' => 'bg-red-50 text-red-700', 'label' => 'Delayed'],
+        default => ['class' => 'bg-slate-100 text-slate-600', 'label' => ucfirst($project->status)],
     };
 @endphp
 
@@ -26,6 +28,7 @@
                 <button
                     x-on:click="showMenu = !showMenu"
                     class="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+                    aria-label="Project actions"
                 >
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
@@ -68,7 +71,7 @@
     </div>
 
     @if($project->description)
-        <a href="{{ route('projects.show', $project) }}">
+        <a href="{{ route('projects.show', $project) }}" aria-label="View project: {{ $project->title }}">
             <p class="mt-2 text-sm text-slate-500 line-clamp-2">{{ $project->description }}</p>
         </a>
     @endif
@@ -77,7 +80,7 @@
     <div class="mt-4">
         <div class="flex items-center justify-between text-sm mb-1.5">
             <span class="text-slate-500">{{ $progress }}% complete</span>
-            <span class="text-slate-500">{{ $project->completed_tasks_count ?? 0 }}/{{ $project->tasks_count }}</span>
+            <span class="text-slate-500">{{ $completedTasks }}/{{ $totalTasks }}</span>
         </div>
         <div class="h-1.5 w-full rounded-full bg-slate-100">
             <div

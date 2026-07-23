@@ -30,7 +30,7 @@
                 <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">Archived</span>
                 <span class="text-xs text-slate-500 font-mono">{{ $task->task_code }}</span>
             </div>
-            <h3 class="text-lg font-semibold text-slate-800 mt-3">{{ $task->title }}</h3>
+            <h2 class="text-lg font-semibold text-slate-800 mt-3">{{ $task->title }}</h2>
             <p class="text-sm text-slate-600 mt-1 line-clamp-2">{{ $task->description }}</p>
             <div class="mt-4 flex items-center justify-between text-sm text-slate-500">
                 <span>{{ $task->project?->title ?? 'Deleted Project' }}</span>
@@ -59,7 +59,7 @@
                             </svg>
                         </div>
                     </div>
-                    <h3 class="text-lg font-semibold text-slate-800 text-center mb-2">Delete Task?</h3>
+                    <h2 class="text-lg font-semibold text-slate-800 text-center mb-2">Delete Task?</h2>
                     <p class="text-sm text-slate-600 text-center mb-6">This will permanently delete <strong>{{ $task->title }}</strong>. This action cannot be undone.</p>
                     <form action="{{ route('projects.tasks.forceDelete', ['project' => $task->project, 'task' => $task]) }}" method="POST">
                         @csrf
@@ -77,7 +77,7 @@
             <svg class="h-12 w-12 text-slate-400 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
             </svg>
-            <h3 class="text-lg font-medium text-slate-900 mb-1">No archived tasks</h3>
+            <h2 class="text-lg font-medium text-slate-900 mb-1">No archived tasks</h2>
             <p class="text-slate-500">Archived tasks will appear here</p>
         </div>
         @endforelse
