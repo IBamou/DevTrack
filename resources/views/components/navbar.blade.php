@@ -5,11 +5,11 @@
 <header class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white/80 backdrop-blur-xl px-4 lg:px-6">
     <!-- Left: Mobile menu button + Breadcrumbs -->
     <div class="flex items-center gap-4">
-        <!-- Mobile sidebar toggle -->
+        <!-- Sidebar toggle (mobile + desktop) -->
         <button
             x-data
             @click="$dispatch('toggle-sidebar')"
-            class="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 lg:hidden"
+            class="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-700"
         >
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
