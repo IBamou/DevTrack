@@ -51,6 +51,10 @@ class TaskController extends Controller
         $this->authorize('view', $task);
         $task->load(['project', 'assignedTo.user', 'creator']);
 
+        if (request()->ajax()) {
+            return view('tasks.drawer', compact('task'));
+        }
+
         return view('tasks.show', compact('task'));
     }
 

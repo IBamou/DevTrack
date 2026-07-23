@@ -159,7 +159,9 @@
         window.dispatchEvent(new CustomEvent('open-drawer', { detail: 'task-detail' }));
 
         try {
-            const response = await fetch(`/projects/${projectId}/task/${taskId}`);
+            const response = await fetch(`/projects/${projectId}/task/${taskId}`, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            });
             const html = await response.text();
             document.getElementById('task-drawer-content').innerHTML = html;
         } catch (error) {

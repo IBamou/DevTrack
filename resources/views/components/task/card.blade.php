@@ -19,7 +19,7 @@
 <div
     x-data="{ showMenu: false }"
     class="group rounded-xl border border-slate-200 bg-white p-4 transition-all duration-150 hover:border-slate-300 hover:shadow-card cursor-pointer"
-    x-on:click="window.dispatchEvent(new CustomEvent('open-task-drawer', { detail: { taskId: {{ $task->id }}, projectId: {{ $project->id }} } }))"
+    x-on:click.prevent="window.dispatchEvent(new CustomEvent('open-task-drawer', { detail: { taskId: {{ $task->id }}, projectId: {{ $project->id }} } }))"
 >
     <div class="flex items-start justify-between gap-2">
         <span class="inline-flex items-center rounded-md px-1.5 py-0.5 text-2xs font-semibold {{ $priorityConfig['class'] }}">
