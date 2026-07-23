@@ -11,11 +11,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Project extends Model
 {
     use SoftDeletes, HasFactory;
-    protected $fillable = ['title', 'description', 'created_by', 'due_date'];
+    protected $fillable = ['title', 'prefix', 'description', 'created_by', 'due_date'];
 
     public function setTitleAttribute($value): void
     {
         $this->attributes['title'] = ucfirst($value);
+    }
+
+    public function setPrefixAttribute($value): void
+    {
+        $this->attributes['prefix'] = strtoupper($value);
     }
 
     public function createdBy()

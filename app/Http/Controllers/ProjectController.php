@@ -180,9 +180,13 @@ class ProjectController extends Controller
     {
         $this->authorize('addCollaborator', $project);
 
+        if ($project->created_by === $user->id) {
+            return back()->with('error', 'Cannot remove the project owner.');
+        }
+
         $project->collaborators()->detach($user->id);
 
-        return back();
+        return back()->with('success', 'Collaborator removed successfully.');
     }
 
     public function archive(Project $project)

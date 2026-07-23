@@ -24,6 +24,7 @@ class ProjectUpdateRequest extends FormRequest
     {
         return [
             'title' => 'sometimes|required|string|max:255',
+            'prefix' => 'sometimes|required|string|max:10|alpha:ascii|unique:projects,prefix,' . $this->route('project')->id,
             'description' => 'nullable|string',
             'due_date' => 'nullable|date',
         ];

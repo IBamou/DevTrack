@@ -6,6 +6,7 @@ use App\Http\Requests\TaskRequest;
 use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
 {
@@ -27,9 +28,16 @@ class TaskController extends Controller
         $this->authorize('create', [Task::class, $project]);
 
         $data = $request->validated();
+
+        $taskNumber = DB::transaction(function () use ($project) {
+            $max = $project->tasks()->withTrashed()->max('task_number');
+            return ($max ?? 0) + 1;
+        });
+
         Task::create($data + [
             'created_by' => auth()->id(),
-            'project_id' => $project->id
+            'project_id' => $project->id,
+            'task_number' => $taskNumber,
         ]);
 
         return redirect()->route('projects.show', $project)->with('success', 'Task created successfully.');
@@ -106,7 +114,7 @@ class TaskController extends Controller
         $this->authorize('restore', $task);
         
         $task->restore();
-        return redirect()->back()->with('success', 'Task restored successfully.');
+        return redirect()->route('projects.show', $task->project ?? $project)->with('success', 'Task restored successfully.');
     }
 
     /**
@@ -118,7 +126,7 @@ class TaskController extends Controller
         $this->authorize('forceDelete', $task);
         
         $task->forceDelete();
-        return redirect()->back()->with('success', 'Task permanently deleted.');
+        return redirect()->route('projects.show', $task->project ?? $project)->with('success', 'Task permanently deleted.');
     }
 
     /**
@@ -158,7 +166,7 @@ class TaskController extends Controller
         $this->authorize('update', $task);
 
         $data = $request->validate([
-            'collaborator_id' => 'required|exists:collaborators,id'
+            'collaborator_id' => 'required|exists:collaborators,id,project_id,' . $project->id
         ]);
 
         $task->update($data);

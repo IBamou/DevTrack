@@ -7,7 +7,7 @@
     <div class="mb-6">
         <p class="text-sm font-medium text-slate-500">{{ $task->project->title }} <span class="mx-1 text-slate-400">&rsaquo;</span> Edit</p>
         <h1 class="text-3xl font-bold text-slate-800 mt-2">Edit Task</h1>
-        <p class="mt-1 text-slate-600">Update task details for #DT-{{ $task->id }}</p>
+        <p class="mt-1 text-slate-600">Update task details for {{ $task->task_code }}</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -67,7 +67,7 @@
                 <div class="space-y-4">
                     <div class="flex justify-between items-center">
                         <span class="text-sm text-slate-500">Task ID</span>
-                        <span class="text-sm font-mono font-medium text-slate-800">#DT-{{ $task->id }}</span>
+                        <span class="text-sm font-mono font-medium text-slate-800">{{ $task->task_code }}</span>
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-sm text-slate-500">Project</span>

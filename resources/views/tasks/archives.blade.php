@@ -28,7 +28,7 @@
         <div class="bg-white rounded-lg border border-slate-200 p-5">
             <div class="flex justify-between items-start">
                 <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">Archived</span>
-                <span class="text-xs text-slate-500 font-mono">#DT-{{ $task->id }}</span>
+                <span class="text-xs text-slate-500 font-mono">{{ $task->task_code }}</span>
             </div>
             <h3 class="text-lg font-semibold text-slate-800 mt-3">{{ $task->title }}</h3>
             <p class="text-sm text-slate-600 mt-1 line-clamp-2">{{ $task->description }}</p>

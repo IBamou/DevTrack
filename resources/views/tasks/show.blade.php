@@ -146,7 +146,7 @@
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-slate-500">Task ID</span>
-                            <span class="text-sm font-mono font-medium text-slate-800">#DT-{{ $task->id }}</span>
+                            <span class="text-sm font-mono font-medium text-slate-800">{{ $task->task_code }}</span>
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-slate-500">Project</span>
@@ -156,13 +156,14 @@
                             <span class="text-sm text-slate-500">Created by</span>
                             <span class="text-sm font-medium text-slate-800">{{ $task->creator->name }}</span>
                         </div>
-                        @if($task->assignedTo && $task->assignedTo->user)
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-slate-500">Assigned to</span>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-slate-500">Assigned to</span>
+                            @if($task->assignedTo && $task->assignedTo->user)
                                 <span class="text-sm font-medium text-slate-800">{{ $task->assignedTo->user->name }}</span>
-                            </div>
-
-                        @endif
+                            @else
+                                <span class="text-sm font-medium text-slate-400 italic">Unassigned</span>
+                            @endif
+                        </div>
                     </div>
                 </div>
 
@@ -193,6 +194,17 @@
                                     <p class="text-sm text-slate-800">
                                         <span class="font-medium">{{ $task->assignedTo->user->name }}</span> assigned to
                                     </p>
+                                </div>
+                            </div>
+                        @else
+                            <div class="flex items-start space-x-3">
+                                <div class="flex-shrink-0">
+                                    <span class="flex items-center justify-center h-8 w-8 rounded-full bg-slate-200">
+                                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7"/></svg>
+                                    </span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm text-slate-500 italic">Not yet assigned</p>
                                 </div>
                             </div>
                         @endif

@@ -19,7 +19,13 @@ class Task extends Model
         'created_by',
         'collaborator_id',
         'project_id',
+        'task_number',
     ];
+
+    public function getTaskCodeAttribute(): string
+    {
+        return $this->project->prefix . '-' . $this->task_number;
+    }
 
     public function project(): BelongsTo{
         return $this->belongsTo(Project::class);

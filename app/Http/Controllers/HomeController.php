@@ -19,8 +19,9 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         
-        $activeProjects = Project::whereHas('collaborators', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
+        $activeProjects = Project::where(function ($q) use ($user) {
+            $q->where('created_by', $user->id)
+              ->orWhereHas('collaborators', fn ($query) => $query->where('user_id', $user->id));
         })
         ->with(['tasks' => function ($query) {
             $query->select('id', 'project_id', 'status');
@@ -49,6 +50,7 @@ class HomeController extends Controller
             $upcomingDeadlines = Task::whereIn('collaborator_id', $collaboratorIds)
                 ->whereNotNull('due_date')
                 ->whereNotIn('status', ['done'])
+                ->whereDate('due_date', '>=', now())
                 ->count();
         }
 

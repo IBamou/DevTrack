@@ -1,114 +1,110 @@
+@props(['project'])
+
 @php
-    $showUrl = route('projects.show', $project);
-    $progress = max(0, min(100, (int) ($project->progress ?? 0)));
-    $status = $project->status ?? 'healthy';
+    $progress = $project->tasks_count > 0 ? round(($project->completed_tasks_count / $project->tasks_count) * 100) : 0;
+    $isOverdue = $project->due_date && \Carbon\Carbon::parse($project->due_date)->isPast();
+    $statusConfig = match($project->status ?? 'active') {
+        'active' => ['class' => 'bg-emerald-50 text-emerald-700', 'label' => 'Active'],
+        'completed' => ['class' => 'bg-blue-50 text-blue-700', 'label' => 'Completed'],
+        'archived' => ['class' => 'bg-slate-100 text-slate-600', 'label' => 'Archived'],
+        default => ['class' => 'bg-slate-100 text-slate-600', 'label' => ucfirst($project->status ?? 'unknown')],
+    };
 @endphp
 
-<div
-    class="relative bg-white rounded-lg border border-slate-200 p-5 block hover:border-blue-300 hover:shadow-md transition-all">
-    {{-- Full card clickable link without breaking nested menu links/buttons --}}
-    <a href="{{ $showUrl }}"
-        class="absolute inset-0 z-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        aria-labelledby="project-title-{{ $project->id }}"></a>
+<div class="group card p-5 hover:shadow-card-hover transition-all duration-150" x-data="{ showMenu: false }">
+    <div class="flex items-start justify-between gap-3">
+        <a href="{{ route('projects.show', $project) }}" class="min-w-0 flex-1">
+            <h3 class="text-base font-semibold text-slate-900 group-hover:text-blue-600 transition-colors truncate">{{ $project->title }}</h3>
+        </a>
 
-    <div class="relative z-10 pointer-events-none">
-        <div class="flex justify-between items-start">
-            {{-- <span
-                class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
-                {{ $project->category ?? 'Development' }}
-            </span> --}}
-            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
-                    @if($status === 'healthy') bg-green-100 text-green-700
-                    @elseif($status === 'at_risk') bg-yellow-100 text-yellow-800
-                    @else bg-red-100 text-red-700
-                    @endif
-                ">
-                {{ ucfirst(str_replace('_', ' ', $status)) }}
-            </span>
-            <div x-data="{ open: false }" @click.outside="open = false" class="relative z-20 pointer-events-auto">
-                <button type="button" @click.stop.prevent="open = !open" class="text-slate-400 hover:text-slate-600"
-                    aria-label="Project actions">
-                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+        <div class="relative flex-shrink-0" x-on:click.stop>
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center rounded-full px-2 py-0.5 text-2xs font-medium {{ $statusConfig['class'] }}">
+                    {{ $statusConfig['label'] }}
+                </span>
+
+                <button
+                    x-on:click="showMenu = !showMenu"
+                    class="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+                >
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
                     </svg>
                 </button>
+            </div>
 
-                <div x-show="open" x-transition x-cloak @click.stop
-                    class="absolute right-0 mt-1 w-32 bg-white rounded-md shadow-lg border border-slate-200 z-30 overflow-hidden">
-                    <a href="{{ $showUrl }}" class="block px-3 py-2 text-sm text-slate-700 hover:bg-slate-100">
-                        View
+            <div
+                x-show="showMenu"
+                x-cloak
+                x-on:click.away="showMenu = false"
+                x-transition:enter="transition ease-out duration-100"
+                x-transition:enter-start="opacity-0 scale-95"
+                x-transition:enter-end="opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-75"
+                x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-95"
+                class="absolute right-0 top-full z-10 mt-1 w-36 rounded-lg border border-slate-200 bg-white py-1 shadow-card"
+                style="display: none;"
+            >
+                <a href="{{ route('projects.show', $project) }}" class="flex items-center gap-2 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50">
+                    View
+                </a>
+                @can('update', $project)
+                    <a href="{{ route('projects.edit', $project) }}" class="flex items-center gap-2 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50">
+                        Edit
                     </a>
-
-                    @can('update', $project)
-                        <a href="{{ route('projects.edit', $project) }}"
-                            class="block px-3 py-2 text-sm text-slate-700 hover:bg-slate-100">
-                            Edit
-                        </a>
-                    @endcan
-
-                    @can('delete', $project)
-                        <form action="{{ route('projects.archive', $project) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-
-                            <button type="submit"
-                                class="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-100">
-                                Archive
-                            </button>
-                        </form>
-                    @endcan
-                </div>
+                @endcan
+                @can('delete', $project)
+                    <form action="{{ route('projects.archive', $project) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="flex w-full items-center gap-2 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50">
+                            Archive
+                        </button>
+                    </form>
+                @endcan
             </div>
         </div>
+    </div>
 
-        <h3 id="project-title-{{ $project->id }}" class="text-lg font-semibold text-slate-800 mt-3">
-            {{ $project->title }}
-        </h3>
+    @if($project->description)
+        <a href="{{ route('projects.show', $project) }}">
+            <p class="mt-2 text-sm text-slate-500 line-clamp-2">{{ $project->description }}</p>
+        </a>
+    @endif
 
-        <p class="text-sm text-slate-600 mt-1 line-clamp-2">
-            {{ $project->description }}
-        </p>
+    <!-- Progress -->
+    <div class="mt-4">
+        <div class="flex items-center justify-between text-sm mb-1.5">
+            <span class="text-slate-500">{{ $progress }}% complete</span>
+            <span class="text-slate-500">{{ $project->completed_tasks_count ?? 0 }}/{{ $project->tasks_count }}</span>
+        </div>
+        <div class="h-1.5 w-full rounded-full bg-slate-100">
+            <div
+                class="h-1.5 rounded-full {{ $progress == 100 ? 'bg-emerald-500' : ($isOverdue ? 'bg-red-500' : 'bg-blue-500') }}"
+                style="width: {{ $progress }}%"
+            ></div>
+        </div>
+    </div>
 
-        <div class="mt-4">
-            <div class="flex justify-between text-sm mb-1">
-                <span class="font-medium text-slate-600">Progress</span>
-                <span class="font-semibold">{{ $progress }}%</span>
-            </div>
-
-            <div class="w-full bg-slate-200 rounded-full h-2">
-                <div class="bg-blue-600 h-2 rounded-full" style="width: {{ $progress }}%"></div>
-            </div>
+    <!-- Footer -->
+    <div class="mt-4 flex items-center justify-between">
+        <div class="flex -space-x-2">
+            @foreach($project->collaborators->take(3) as $collaborator)
+                <x-ui.avatar :name="$collaborator->name" size="xs" class="ring-2 ring-white" />
+            @endforeach
+            @if($project->collaborators->count() > 3)
+                <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 text-2xs font-medium text-slate-600 ring-2 ring-white">+{{ $project->collaborators->count() - 3 }}</span>
+            @endif
         </div>
 
-        <div class="mt-4 flex justify-between items-center">
-            <div class="flex -space-x-2">
-                @foreach($project->collaborators->take(3) as $collaborator)
-                    <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white"
-                        src="{{ $collaborator->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($collaborator->name) }}"
-                        alt="{{ $collaborator->name }}">
-                @endforeach
-
-                @if($project->collaborators->count() > 3)
-                    <span
-                        class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-xs font-medium text-slate-600">
-                        +{{ $project->collaborators->count() - 3 }}
-                    </span>
-                @endif
+        @if($project->due_date)
+            <div class="flex items-center gap-1 text-xs {{ $isOverdue ? 'text-red-600' : 'text-slate-500' }}">
+                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                </svg>
+                {{ \Carbon\Carbon::parse($project->due_date)->format('M d') }}
             </div>
-
-            <div class="text-right">
-                <p class="text-xs text-slate-500 mt-1 flex items-center">
-                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                        </path>
-                    </svg>
-
-                    {{ $project->due_date ? \Carbon\Carbon::parse($project->due_date)->format('M d, Y') : 'No due date' }}
-                </p>
-            </div>
-        </div>
+        @endif
     </div>
 </div>
