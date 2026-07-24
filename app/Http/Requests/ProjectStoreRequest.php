@@ -24,6 +24,7 @@ class ProjectStoreRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
+            'prefix' => 'required|string|max:10|alpha:ascii|unique:projects,prefix',
             'description' => 'nullable|string',
             'due_date' => 'nullable|date',
         ];

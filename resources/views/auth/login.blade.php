@@ -19,6 +19,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         html { font-size: 80%; }
         body { min-height: 100vh; }
@@ -80,7 +81,7 @@
                                             <path d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
                                         </svg>
                                     </div>
-                                    <input id="email" name="email" type="email" value="{{ old('email') }}" placeholder="name@startup.com" class="block w-full rounded-md border-slate-300 py-2 pl-10 pr-3 text-sm placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                    <input id="email" name="email" type="email" value="{{ old('email') }}" placeholder="name@startup.com" class="block w-full rounded-md border border-slate-300 py-2 pl-10 pr-3 text-sm placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
                                 </div>
                                 @error('email')
                                 <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -101,7 +102,7 @@
                                             <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd" />
                                         </svg>
                                     </div>
-                                    <input id="password" name="password" type="password" placeholder="••••••••" class="block w-full rounded-md border-slate-300 py-2 pl-10 pr-3 text-sm placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                    <input id="password" name="password" type="password" placeholder="••••••••" class="block w-full rounded-md border border-slate-300 py-2 pl-10 pr-3 text-sm placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
                                 </div>
                                 @error('password')
                                 <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -123,6 +124,7 @@
                         <p class="mt-8 text-center text-sm text-slate-600">
                             Don't have an account? <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:underline">Sign up now</a>
                         </p>
+                </div>
                 </div>
 
                 <!-- Right Side: Promo -->
@@ -189,5 +191,6 @@
 
     </div>
 
+    <x-toast />
 </body>
 </html>

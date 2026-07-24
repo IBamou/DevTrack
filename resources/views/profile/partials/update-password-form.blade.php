@@ -3,35 +3,34 @@
         @csrf
         @method('put')
 
-        <div>
-            <label class="block text-sm font-medium text-slate-700">Current Password</label>
-            <input type="password" name="current_password" required
-                class="w-full mt-1 px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
-            @error('current_password')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
+        <x-ui.input
+            label="Current Password"
+            name="current_password"
+            type="password"
+            required
+            :error="$errors->first('current_password')"
+        />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <x-ui.input
+                label="New Password"
+                name="password"
+                type="password"
+                required
+                :error="$errors->first('password')"
+            />
+
+            <x-ui.input
+                label="Confirm Password"
+                name="password_confirmation"
+                type="password"
+                required
+                :error="$errors->first('password_confirmation')"
+            />
         </div>
 
-        <div>
-            <label class="block text-sm font-medium text-slate-700">New Password</label>
-            <input type="password" name="password" required
-                class="w-full mt-1 px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
-            @error('password')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
+        <div class="pt-2">
+            <x-ui.button type="submit">Update Password</x-ui.button>
         </div>
-
-        <div>
-            <label class="block text-sm font-medium text-slate-700">Confirm Password</label>
-            <input type="password" name="password_confirmation" required
-                class="w-full mt-1 px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
-            @error('password_confirmation')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700">
-            Update Password
-        </button>
     </form>
 </section>

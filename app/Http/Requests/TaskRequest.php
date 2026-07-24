@@ -29,7 +29,7 @@ class TaskRequest extends FormRequest
             'priority' => 'required|in:low,medium,high',
             'due_date' => 'nullable|date',
             // 'project_id' => 'nullable|exists:projects,id',
-            'collaborator_id' => 'nullable|exists:collaborators,id',
+            'collaborator_id' => 'nullable|exists:collaborators,id,project_id,' . $this->route('project')->id,
         ];
     }
 }

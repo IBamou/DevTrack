@@ -4,15 +4,17 @@
 
 @section('content')
 <div class="p-6 lg:p-8">
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <p class="text-sm font-medium text-slate-500">Workspace <span class="mx-1 text-slate-400">&rsaquo;</span> <span class="text-slate-700 font-semibold">Archives</span></p>
-            <h1 class="text-3xl font-bold text-slate-800 mt-2">Project Archives</h1>
-            <p class="mt-1 text-slate-600">View, restore, or permanently remove retired projects.</p>
+    <div class="overflow-hidden mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div class="min-w-0">
+                <p class="text-sm font-medium text-slate-500">Workspace <span class="mx-1 text-slate-400">&rsaquo;</span> <span class="text-slate-700 font-semibold">Archives</span></p>
+                <h1 class="text-3xl font-bold text-slate-800 mt-2">Project Archives</h1>
+                <p class="mt-1 text-slate-600">View, restore, or permanently remove retired projects.</p>
+            </div>
+            <a href="{{ route('projects.index') }}" class="shrink-0 inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">
+                Active Projects
+            </a>
         </div>
-        <a href="{{ route('projects.index') }}" class="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">
-            Active Projects
-        </a>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -23,7 +25,7 @@
                     <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">Archived</span>
                     <div class="flex -space-x-2">
                         @foreach($project->collaborators->take(2) as $collaborator)
-                        <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white" src="{{ $collaborator->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($collaborator->name) }}" alt="">
+                        <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white" src="{{ $collaborator->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($collaborator->name) }}" alt="{{ $collaborator->name }}">
                         @endforeach
                     </div>
                 </div>
@@ -93,7 +95,7 @@
             <svg class="h-12 w-12 text-slate-400 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
             </svg>
-            <h3 class="text-lg font-medium text-slate-900 mb-1">No archived projects</h3>
+            <h2 class="text-lg font-medium text-slate-900 mb-1">No archived projects</h2>
             <p class="text-slate-500">Archived projects will appear here</p>
         </div>
         @endforelse

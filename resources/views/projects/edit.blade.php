@@ -25,6 +25,14 @@
                             @enderror
                         </div>
                         <div>
+                            <label for="prefix" class="text-sm font-medium text-slate-700">Prefix</label>
+                            <input type="text" name="prefix" id="prefix" value="{{ old('prefix', $project->prefix) }}" maxlength="10" class="mt-1 block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-3 px-4 uppercase" required>
+                            @error('prefix')
+                            <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
+                            @enderror
+                            <p class="mt-2 text-xs text-slate-500">Used in task IDs (e.g. {{ $project->prefix }}-1)</p>
+                        </div>
+                        <div>
                             <label for="description" class="text-sm font-medium text-slate-700">Description</label>
                             <textarea name="description" id="description" rows="5" class="mt-1 block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-3 px-4">{{ old('description', $project->description) }}</textarea>
                         </div>

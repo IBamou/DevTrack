@@ -18,7 +18,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased bg-gray-50">
+<body class="font-sans antialiased bg-gray-50" x-data="{ sidebarCollapsed: false }">
     <div class="min-h-screen flex">
         @include('layouts.sidebar')
 
@@ -32,6 +32,8 @@
             </main>
         </div>
     </div>
+
+    <x-toast />
 </body>
 
 </html>

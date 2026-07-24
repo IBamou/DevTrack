@@ -5,21 +5,23 @@
 @section('content')
     <div class="p-6 lg:p-8">
         <div class="mb-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm font-medium text-slate-500">{{ $task->project->title }}</p>
-                    <h1 class="text-3xl font-bold text-slate-800 mt-1">{{ $task->title }}</h1>
-                </div>
-                <div class="flex items-center space-x-3">
-                    <a href="{{ route('projects.show', $task->project) }}"
-                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50">
-                        <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                        </svg>
-                        Back to Project
-                    </a>
+            <div class="overflow-hidden">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div class="min-w-0">
+                        <p class="text-sm font-medium text-slate-500">{{ $task->project->title }}</p>
+                        <h1 class="text-3xl font-bold text-slate-800 mt-1">{{ $task->title }}</h1>
+                    </div>
+                    <div class="shrink-0">
+                        <a href="{{ route('projects.show', $task->project) }}"
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50">
+                            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                            Back to Project
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -135,7 +137,7 @@
                                 <option value="review" {{ $task->status == 'review' ? 'selected' : '' }}>Review</option>
                                 <option value="done" {{ $task->status == 'done' ? 'selected' : '' }}>Done</option>
                             </select>
-                            <button></button>
+                            <button aria-hidden="true"></button>
                         </form>
                     </div>
                     @endcannot
@@ -146,7 +148,7 @@
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-slate-500">Task ID</span>
-                            <span class="text-sm font-mono font-medium text-slate-800">#DT-{{ $task->id }}</span>
+                            <span class="text-sm font-mono font-medium text-slate-800">{{ $task->task_code }}</span>
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-slate-500">Project</span>
@@ -156,13 +158,14 @@
                             <span class="text-sm text-slate-500">Created by</span>
                             <span class="text-sm font-medium text-slate-800">{{ $task->creator->name }}</span>
                         </div>
-                        @if($task->assignedTo && $task->assignedTo->user)
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-slate-500">Assigned to</span>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-slate-500">Assigned to</span>
+                            @if($task->assignedTo && $task->assignedTo->user)
                                 <span class="text-sm font-medium text-slate-800">{{ $task->assignedTo->user->name }}</span>
-                            </div>
-
-                        @endif
+                            @else
+                                <span class="text-sm font-medium text-slate-400 italic">Unassigned</span>
+                            @endif
+                        </div>
                     </div>
                 </div>
 
@@ -193,6 +196,17 @@
                                     <p class="text-sm text-slate-800">
                                         <span class="font-medium">{{ $task->assignedTo->user->name }}</span> assigned to
                                     </p>
+                                </div>
+                            </div>
+                        @else
+                            <div class="flex items-start space-x-3">
+                                <div class="flex-shrink-0">
+                                    <span class="flex items-center justify-center h-8 w-8 rounded-full bg-slate-200">
+                                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7"/></svg>
+                                    </span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm text-slate-500 italic">Not yet assigned</p>
                                 </div>
                             </div>
                         @endif

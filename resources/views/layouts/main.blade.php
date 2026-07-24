@@ -1,64 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="font-size: 13px;">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DevTrack - Streamline your project workflow with Kanban boards, task management, and team collaboration.">
     <title>@yield('title', 'DevTrack')</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                },
-            },
-        };
-    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
-        html { font-size: 80%; }
-        body { min-height: 100vh; margin: 0; }
-        .h-screen { min-height: 100vh; height: auto; }
-        .avatar-group > * { border: 2px solid white; }
+        * { scrollbar-width: thin; scrollbar-color: #CBD5E1 transparent; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
     </style>
 </head>
 
-<body class="bg-slate-100 font-sans text-slate-900 antialiased">
-    <div class="flex h-screen bg-slate-100">
+<body class="bg-slate-50 font-sans text-slate-900 antialiased">
+    <div class="flex h-screen overflow-clip">
         <x-sidebar />
 
-        <div class="flex-1 flex flex-col overflow-hidden">
-            <x-navbar />
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+            <x-navbar :breadcrumbs="$breadcrumbs ?? []" />
 
-            <main class="flex-1 overflow-y-auto">
-                <div class="min-h-full">
+            <main class="flex-1 overflow-y-auto p-4 lg:p-6">
+                <div class="min-h-full mx-auto @yield('container-class', 'max-w-7xl')">
                     @yield('content')
                 </div>
             </main>
-
-            <footer class="py-4 border-t border-slate-200 flex items-center justify-between px-6">
-                <p class="text-sm text-slate-500">
-                    <strong>DevTrack</strong> &copy; {{ date('Y') }} Startup OS Inc.
-                </p>
-                <div class="flex items-center space-x-6">
-                    <a href="#" class="text-sm text-slate-500 hover:text-slate-700">Privacy</a>
-                    <a href="#" class="text-sm text-slate-500 hover:text-slate-700">Terms</a>
-                    <a href="#" class="text-sm text-slate-500 hover:text-slate-700">Support</a>
-                </div>
-            </footer>
         </div>
     </div>
 
     @yield('scripts')
+
+    <x-toast />
 </body>
 
 </html>
