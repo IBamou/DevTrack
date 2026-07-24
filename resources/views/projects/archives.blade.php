@@ -4,15 +4,17 @@
 
 @section('content')
 <div class="p-6 lg:p-8">
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <p class="text-sm font-medium text-slate-500">Workspace <span class="mx-1 text-slate-400">&rsaquo;</span> <span class="text-slate-700 font-semibold">Archives</span></p>
-            <h1 class="text-3xl font-bold text-slate-800 mt-2">Project Archives</h1>
-            <p class="mt-1 text-slate-600">View, restore, or permanently remove retired projects.</p>
+    <div class="overflow-hidden mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div class="min-w-0">
+                <p class="text-sm font-medium text-slate-500">Workspace <span class="mx-1 text-slate-400">&rsaquo;</span> <span class="text-slate-700 font-semibold">Archives</span></p>
+                <h1 class="text-3xl font-bold text-slate-800 mt-2">Project Archives</h1>
+                <p class="mt-1 text-slate-600">View, restore, or permanently remove retired projects.</p>
+            </div>
+            <a href="{{ route('projects.index') }}" class="shrink-0 inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">
+                Active Projects
+            </a>
         </div>
-        <a href="{{ route('projects.index') }}" class="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">
-            Active Projects
-        </a>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

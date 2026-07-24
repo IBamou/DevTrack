@@ -10,7 +10,7 @@
 @endphp
 
 @section('content')
-<div class="flex flex-col h-full">
+<div x-data="{}" class="flex flex-col h-full">
     <!-- Project Header -->
     <div class="mb-6 overflow-hidden">
         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
@@ -149,13 +149,43 @@
     </div>
 </x-ui.drawer>
 
+<!-- Assign Modal (hidden by default, shown when Assign button clicked in task drawer) -->
+<div id="assignModal" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+    <div class="absolute inset-0 bg-black/50" onclick="document.getElementById('assignModal').classList.add('hidden')"></div>
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="relative bg-white rounded-xl shadow-xl max-w-md w-full p-6">
+            <h3 class="text-lg font-semibold text-slate-800 mb-4">Assign Task</h3>
+            <form id="assignForm" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Assign to</label>
+                    <select name="collaborator_id" required
+                        class="w-full rounded-lg border border-slate-300 bg-white py-2 px-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                        <option value="">Select a team member</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-3">
+                    <button type="button" onclick="document.getElementById('assignModal').classList.add('hidden')"
+                        class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50">Cancel</button>
+                    <button type="submit"
+                        class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">Assign</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('scripts')
 <script>
+    window.projectCollaborators = @json($project->collaborators->map(fn($c) => ['id' => $c->id, 'pivot_id' => $c->pivot->id, 'name' => $c->name]));
+    let currentTaskData = null;
+
     // Task drawer handler
     window.addEventListener('open-task-drawer', async (e) => {
         const { taskId, projectId } = e.detail;
+        currentTaskData = { taskId, projectId };
         window.dispatchEvent(new CustomEvent('open-drawer', { detail: 'task-detail' }));
 
         try {
@@ -164,12 +194,103 @@
             });
             const html = await response.text();
             document.getElementById('task-drawer-content').innerHTML = html;
+            rebindDrawerEvents();
         } catch (error) {
             document.getElementById('task-drawer-content').innerHTML = '<p class="text-sm text-red-500">Failed to load task details.</p>';
         }
     });
 
-    // Create task drawer handler
+    function rebindDrawerEvents() {
+        const assignBtn = document.getElementById('task-drawer-content').querySelector('[data-assign-btn]');
+        if (assignBtn) {
+            assignBtn.addEventListener('click', () => openAssignModal());
+        }
+
+        const archiveForm = document.getElementById('task-drawer-content').querySelector('#archive-form');
+        if (archiveForm) {
+            archiveForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (!confirm('Archive this task?')) return;
+                await submitFormAjax(archiveForm);
+            });
+        }
+
+        const statusForm = document.getElementById('task-drawer-content').querySelector('#status-form');
+        if (statusForm) {
+            const select = statusForm.querySelector('select[name="status"]');
+            if (select) {
+                select.addEventListener('change', () => submitFormAjax(statusForm));
+            }
+        }
+    }
+
+    async function submitFormAjax(form) {
+        try {
+            const formData = new FormData(form);
+            const response = await fetch(form.action, {
+                method: form.method === 'PATCH' ? 'POST' : form.method,
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            });
+            if (response.ok && currentTaskData) {
+                const refreshResponse = await fetch(`/projects/${currentTaskData.projectId}/task/${currentTaskData.taskId}`, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+                if (refreshResponse.ok) {
+                    const html = await refreshResponse.text();
+                    document.getElementById('task-drawer-content').innerHTML = html;
+                    rebindDrawerEvents();
+                }
+            }
+        } catch (error) {
+            console.error('Form submission failed:', error);
+        }
+    }
+
+    function openAssignModal() {
+        if (!currentTaskData) return;
+        const form = document.getElementById('assignForm');
+        form.action = `/projects/${currentTaskData.projectId}/task/${currentTaskData.taskId}/assign`;
+        const select = form.querySelector('select[name="collaborator_id"]');
+        select.innerHTML = '<option value="">Select a team member</option>';
+        window.projectCollaborators.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.pivot_id;
+            opt.textContent = c.name;
+            select.appendChild(opt);
+        });
+        document.getElementById('assignModal').classList.remove('hidden');
+    }
+
+    // Assign form submission via AJAX
+    document.getElementById('assignForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        try {
+            const formData = new FormData(form);
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            });
+            if (response.ok) {
+                document.getElementById('assignModal').classList.add('hidden');
+                if (currentTaskData) {
+                    const refreshResponse = await fetch(`/projects/${currentTaskData.projectId}/task/${currentTaskData.taskId}`, {
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    });
+                    if (refreshResponse.ok) {
+                        const html = await refreshResponse.text();
+                        document.getElementById('task-drawer-content').innerHTML = html;
+                        rebindDrawerEvents();
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Assign failed:', error);
+        }
+    });
+
     window.addEventListener('open-create-task', (e) => {
         const { status } = e.detail;
         window.location.href = `{{ route('projects.tasks.create', $project) }}?status=${status}`;

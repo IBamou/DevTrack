@@ -5,65 +5,69 @@
 @section('content')
 <div class="space-y-6">
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-            <h1 class="text-2xl font-semibold tracking-tight text-slate-900">Projects</h1>
-            <p class="mt-1 text-sm text-slate-500">Manage and track all your team's active workspaces.</p>
+    <div class="overflow-hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div class="min-w-0">
+                <h1 class="text-2xl font-semibold tracking-tight text-slate-900">Projects</h1>
+                <p class="mt-1 text-sm text-slate-500">Manage and track all your team's active workspaces.</p>
+            </div>
+            <a href="{{ route('projects.create') }}" class="shrink-0 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                New Project
+            </a>
         </div>
-        <a href="{{ route('projects.create') }}" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
-            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-            New Project
-        </a>
     </div>
 
     <!-- Filters -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <!-- Filter Tabs -->
-        <div class="flex items-center gap-1 rounded-lg bg-slate-100 p-1">
-            <a href="{{ route('projects.index') }}" class="px-3 py-1.5 text-sm font-medium rounded-md {{ !request('filter') || request('filter') === '' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">All</a>
-            <a href="{{ route('projects.index', ['filter' => 'active']) }}" class="px-3 py-1.5 text-sm font-medium rounded-md {{ request('filter') === 'active' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Active</a>
-            <a href="{{ route('projects.index', ['filter' => 'archived']) }}" class="px-3 py-1.5 text-sm font-medium rounded-md {{ request('filter') === 'archived' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Archived</a>
-        </div>
-
-        <!-- Search & Sort -->
-        <form method="GET" action="{{ route('projects.index') }}" class="flex items-center gap-3">
-            @if(request('filter'))
-                <input type="hidden" name="filter" value="{{ request('filter') }}">
-            @endif
-
-            <div class="relative">
-                <svg class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                </svg>
-                <input
-                    type="text"
-                    name="search"
-                    value="{{ request('search') }}"
-                    placeholder="Search projects..."
-                    class="h-9 w-48 rounded-lg border border-slate-200 bg-white pl-9 pr-3 text-sm text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                >
+    <div class="overflow-hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <!-- Filter Tabs -->
+            <div class="flex items-center gap-1 rounded-lg bg-slate-100 p-1">
+                <a href="{{ route('projects.index') }}" class="px-3 py-1.5 text-sm font-medium rounded-md {{ !request('filter') || request('filter') === '' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">All</a>
+                <a href="{{ route('projects.index', ['filter' => 'active']) }}" class="px-3 py-1.5 text-sm font-medium rounded-md {{ request('filter') === 'active' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Active</a>
+                <a href="{{ route('projects.index', ['filter' => 'archived']) }}" class="px-3 py-1.5 text-sm font-medium rounded-md {{ request('filter') === 'archived' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Archived</a>
             </div>
 
-            <select
-                name="sort"
-                onchange="this.form.submit()"
-                class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            >
-                <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest</option>
-                <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest</option>
-            </select>
+            <!-- Search & Sort -->
+            <form method="GET" action="{{ route('projects.index') }}" class="flex items-center gap-3 min-w-0 shrink">
+                @if(request('filter'))
+                    <input type="hidden" name="filter" value="{{ request('filter') }}">
+                @endif
 
-            @if(request('search'))
-                <a href="{{ route('projects.index', array_filter(['filter' => request('filter')])) }}" class="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                <div class="relative shrink">
+                    <svg class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
-                    Clear
-                </a>
-            @endif
-        </form>
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ request('search') }}"
+                        placeholder="Search projects..."
+                        class="h-9 w-48 rounded-lg border border-slate-200 bg-white pl-9 pr-3 text-sm text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    >
+                </div>
+
+                <select
+                    name="sort"
+                    onchange="this.form.submit()"
+                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 shrink-0"
+                >
+                    <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest</option>
+                    <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest</option>
+                </select>
+
+                @if(request('search'))
+                    <a href="{{ route('projects.index', array_filter(['filter' => request('filter')])) }}" class="shrink-0 inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Clear
+                    </a>
+                @endif
+            </form>
+        </div>
     </div>
 
     <!-- Projects Grid -->

@@ -5,21 +5,23 @@
 @section('content')
     <div class="p-6 lg:p-8">
         <div class="mb-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm font-medium text-slate-500">{{ $task->project->title }}</p>
-                    <h1 class="text-3xl font-bold text-slate-800 mt-1">{{ $task->title }}</h1>
-                </div>
-                <div class="flex items-center space-x-3">
-                    <a href="{{ route('projects.show', $task->project) }}"
-                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50">
-                        <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                        </svg>
-                        Back to Project
-                    </a>
+            <div class="overflow-hidden">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div class="min-w-0">
+                        <p class="text-sm font-medium text-slate-500">{{ $task->project->title }}</p>
+                        <h1 class="text-3xl font-bold text-slate-800 mt-1">{{ $task->title }}</h1>
+                    </div>
+                    <div class="shrink-0">
+                        <a href="{{ route('projects.show', $task->project) }}"
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50">
+                            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                            Back to Project
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

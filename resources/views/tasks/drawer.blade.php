@@ -1,17 +1,8 @@
 <div class="p-6">
     <div class="mb-6">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-sm font-medium text-slate-500">{{ $task->project->title }}</p>
-                <h1 class="text-2xl font-bold text-slate-800 mt-1">{{ $task->title }}</h1>
-            </div>
-            <a href="{{ route('projects.tasks.show', ['project' => $task->project, 'task' => $task]) }}"
-                class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50">
-                <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Back to Project
-            </a>
+        <div>
+            <p class="text-sm font-medium text-slate-500">{{ $task->project->title }}</p>
+            <h1 class="text-2xl font-bold text-slate-800 mt-1">{{ $task->title }}</h1>
         </div>
     </div>
 
@@ -102,7 +93,7 @@
                         Edit Task
                     </a>
                     @can('assign', $task)
-                        <button type="button" onclick="document.getElementById('assignModal').classList.remove('hidden')"
+                        <button type="button" data-assign-btn
                             class="w-full flex items-center justify-center px-4 py-2 border border-slate-300 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-50 transition-colors">
                             <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7" />
@@ -110,13 +101,12 @@
                             Assign To
                         </button>
                     @endcan
-                    <form method="POST"
+                    <form id="archive-form" method="POST"
                         action="{{ route('projects.tasks.archive', ['project' => $task->project->id, 'task' => $task->id]) }}">
                         @csrf
                         @method('DELETE')
                         <button type="submit"
-                            class="w-full flex items-center justify-center px-4 py-2 border border-red-300 text-red-700 text-sm font-medium rounded-lg hover:bg-red-50 transition-colors"
-                            onclick="return confirm('Archive this task?')">
+                            class="w-full flex items-center justify-center px-4 py-2 border border-red-300 text-red-700 text-sm font-medium rounded-lg hover:bg-red-50 transition-colors">
                             <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                             </svg>
@@ -131,11 +121,11 @@
             @cannot('isAdmin', $task)
                 <div class="rounded-lg border border-slate-200 p-4">
                     <h2 class="text-sm font-semibold text-slate-800 mb-3">Update Status</h2>
-                    <form method="POST"
+                    <form id="status-form" method="POST"
                         action="{{ route('projects.tasks.updateStatus', ['project' => $task->project->id, 'task' => $task->id]) }}">
                         @csrf
                         @method('PATCH')
-                        <select name="status" onchange="this.form.submit()"
+                        <select name="status"
                             class="w-full rounded-lg border border-slate-300 bg-white py-2 px-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
                             <option value="todo" {{ $task->status == 'todo' ? 'selected' : '' }}>To Do</option>
                             <option value="in_progress" {{ $task->status == 'in_progress' ? 'selected' : '' }}>In Progress</option>

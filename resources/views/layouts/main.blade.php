@@ -23,10 +23,10 @@
 </head>
 
 <body class="bg-slate-50 font-sans text-slate-900 antialiased">
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex h-screen overflow-clip">
         <x-sidebar />
 
-        <div class="flex-1 flex flex-col overflow-hidden min-w-0">
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
             <x-navbar :breadcrumbs="$breadcrumbs ?? []" />
 
             <main class="flex-1 overflow-y-auto p-4 lg:p-6">

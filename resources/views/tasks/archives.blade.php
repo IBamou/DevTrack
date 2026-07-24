@@ -4,23 +4,25 @@
 
 @section('content')
 <div class="p-6 lg:p-8">
-    <div class="mb-6 flex items-center justify-between">
-        <div>
-            <p class="text-sm font-medium text-slate-500">
-                @isset($project)
-                {{ $project->title }} <span class="mx-1 text-slate-400">&rsaquo;</span> Archives
-                @else
-                Archives <span class="mx-1 text-slate-400">&rsaquo;</span> Tasks
-                @endisset
-            </p>
-            <h1 class="text-3xl font-bold text-slate-800 mt-2">Archived Tasks</h1>
-            <p class="mt-1 text-slate-600">A list of all tasks that have been archived.</p>
+    <div class="overflow-hidden mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div class="min-w-0">
+                <p class="text-sm font-medium text-slate-500">
+                    @isset($project)
+                    {{ $project->title }} <span class="mx-1 text-slate-400">&rsaquo;</span> Archives
+                    @else
+                    Archives <span class="mx-1 text-slate-400">&rsaquo;</span> Tasks
+                    @endisset
+                </p>
+                <h1 class="text-3xl font-bold text-slate-800 mt-2">Archived Tasks</h1>
+                <p class="mt-1 text-slate-600">A list of all tasks that have been archived.</p>
+            </div>
+            @isset($project)
+            <a href="{{ route('projects.show', $project) }}" class="shrink-0 inline-flex items-center px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50">
+                Back to Project
+            </a>
+            @endisset
         </div>
-        @isset($project)
-        <a href="{{ route('projects.show', $project) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50">
-            Back to Project
-        </a>
-        @endisset
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
